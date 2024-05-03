@@ -1,3 +1,5 @@
+import { CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
 import './card.css';
 
 interface CardProps {
@@ -10,15 +12,26 @@ interface CardProps {
     imageName: string;
 }
 
-export const Card = ({ location, description, startDate, endDate, price, imageName }: CardProps) => {
-    return <div className="cardContainer">
-        <h4>{location}</h4>
-        <h2>{description}</h2>
+export const Cardd = ({ location, description, startDate, endDate, price, imageName }: CardProps) => {
+    return <Card sx={{ maxWidth: 345 }}>
+        <CardHeader
+        action={
+          <IconButton aria-label="settings">
+          </IconButton>
+        }
+        title={location}
+        subheader="September 14, 2016"
+      />
+        <CardMedia
+        component="img"
+        height="194"
+        image={imageName}
+      />
+      <Typography variant="body2" color="text.secondary">
+      {description}
+        </Typography>
         <p>{startDate}</p>
         <p>{endDate}</p>
-        <p>{price}</p>
-        <p>{imageName}</p>
-    </div>
-
-    
+        <p>{price}$</p>
+        </Card>
 }

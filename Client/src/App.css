@@ -1,11 +1,13 @@
 .App {
   text-align: center;
-  background-color: aqua;
 }
 
 .cards{
   display: flex;
   justify-content: space-around;
   gap: 2px;
-  
+}
+
+.header{
+  color: white;
 }
