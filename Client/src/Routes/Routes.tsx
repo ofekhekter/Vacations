@@ -1,6 +1,7 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import { Navbar } from "../Components/NavBar/NavBar";
 import { HomeScreen } from "../Components/HomeScreen/HomeScreen";
+import { Signup } from "../Components/Signup/Signup";
 
 export const router = createBrowserRouter([
   {
@@ -8,18 +9,17 @@ export const router = createBrowserRouter([
     element: 
       <>
         <Navbar />
-        <HomeScreen />
         <Outlet />
       </>
     ,
     children: [
       {
         path: "/home",
-        element: <h1>Home</h1>,
+        element: <HomeScreen />,
       },
       {
-        path: "/signIn",
-        element: <h1>SignIn</h1>,
+        path: "/signin",
+        element: <Signup />,
       },
       {
         path: "/signup",
