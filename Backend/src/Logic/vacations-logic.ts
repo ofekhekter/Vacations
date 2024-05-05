@@ -13,10 +13,14 @@ export const getAllVacationsLogic = async (): Promise<VacationType[]> => {
   return vacation;
 };
 
-export const getOneVacationLogic = async (id: number): Promise<VacationType> => {
+export const getOneVacationLogic = async (
+  id: number
+): Promise<VacationType> => {
   const getOneVacationQuery = `SELECT * FROM vacations WHERE vacationId = "${id}"`;
 
-  const sqlResult = (await executeSqlQuery(getOneVacationQuery)) as VacationType[];
+  const sqlResult = (await executeSqlQuery(
+    getOneVacationQuery
+  )) as VacationType[];
 
   if (sqlResult.length === 0) ResourceNotFound(id);
 
@@ -25,18 +29,19 @@ export const getOneVacationLogic = async (id: number): Promise<VacationType> => 
   return vacation;
 };
 
-export const addOneVacationLogic = async (newVacation: VacationType): Promise<VacationType> => {
+export const addOneVacationLogic = async (
+  newVacation: VacationType
+): Promise<VacationType> => {
   validateVacation(newVacation);
 
-  // const checkVacationExistQuery = `
-  // SELECT * FROM vacations
-  // WHERE vacationId = "${newVacation.id}"
-  // `;
+  const checkVacationExistQuery = `
+  SELECT * FROM vacations
+  WHERE vacationId = "${newVacation.id}"
+  `;
 
-  // const isVacationExists = await executeSqlQuery(checkVacationExistQuery);
-  // console.log(isVacationExists);
-  // if (isVacationExists.length !== 0)
-  //   ValidationError("Vacation is already exists.");
+  const isVacationExists = await executeSqlQuery(checkVacationExistQuery);
+  if (isVacationExists.length !== 0)
+    ValidationError("Vacation is already exists.");
 
   const addVacationQuery = `
   INSERT INTO vacations (vacationId, location, description, startDate, endDate, price, imageName)
@@ -53,7 +58,9 @@ export const addOneVacationLogic = async (newVacation: VacationType): Promise<Va
   return newVacation;
 };
 
-export const updateVacationLogic = async (vacation: VacationType): Promise<VacationType> => {
+export const updateVacationLogic = async (
+  vacation: VacationType
+): Promise<VacationType> => {
   validateVacation(vacation);
 
   const checkVacationExistQuery = `
@@ -71,7 +78,7 @@ export const updateVacationLogic = async (vacation: VacationType): Promise<Vacat
       price = "${vacation.price}", imageName = "${vacation.imageName}"
       WHERE vacationId = "${vacation.id}"`;
 
-      const info: OkPacket = await executeSqlQuery(updateVacationQuery);
+  const info: OkPacket = await executeSqlQuery(updateVacationQuery);
 
   if (info.affectedRows <= 0) ValidationError(info.message);
 

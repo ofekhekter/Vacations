@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import { CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useState } from 'react';
 import './card.css';
 
 interface CardProps {
@@ -16,6 +17,8 @@ interface CardProps {
 }
 
 export const Cardd = ({ location, description, startDate, endDate, price, imageName }: CardProps) => {
+  const [favorites, setFavorites] = useState<boolean>(false);
+
   return <Card sx={{ maxWidth: 345 }}>
     <CardHeader
       action={
@@ -36,8 +39,8 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
     <p>{startDate}</p>
     <p>{endDate}</p>
     <p>{price}$</p>
-    <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
+    <IconButton style={favorites ? { color: "red" } : { color: "primary" }} onClick={() => setFavorites} className='favorites' aria-label="add to favorites">
+      <FavoriteIcon />
+    </IconButton>
   </Card>
 }
