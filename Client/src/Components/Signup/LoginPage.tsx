@@ -10,17 +10,17 @@ import './login.css';
 export const LoginPage = () => {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<LoginFormModel>();
-    const [userExists, setUserExists] = useState<boolean>(true);
+    const [loginExists, setLoginExists] = useState<boolean>(true);
 
     const submit = async (registerForm: LoginFormModel) => {
         try {
             const user = {
-                "username": registerForm.email,
+                "email": registerForm.email,
                 "password": registerForm.password,
             } as LoginCredentials;
             const response = await SigninUser(user);
-            if (response === undefined) setUserExists(false);
-            else setUserExists(true);
+            if (response === undefined) setLoginExists(false);
+            else setLoginExists(true);
         } catch {
             console.log("error");
         }
@@ -51,10 +51,10 @@ export const LoginPage = () => {
             <TextField id="outlined-basic" label="email" variant="outlined" required {...register('email', { required: true })} />
             <TextField id="outlined-basic" label="password" variant="outlined" required {...register('password', { required: true })} />
             <Button variant="outlined" type="submit">Login</Button>
-            {userExists ? <span className="members">don't have account?</span> : <span className="userExists">incorrerct username or password</span>}
+            {loginExists ? <span className="members">don't have account?</span> : <span className="userExists">incorrerct username or password</span>}
             <h4 className="login" onClick={() => {
                 navigate('/signup');
-            }}>Register now</h4>
+            }}>Register Now</h4>
         </Box>
     </div>
 }

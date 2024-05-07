@@ -12,18 +12,24 @@ export const RegisterPage = () => {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<RegisterFormModel>();
     const [userExists, setUserExists] = useState<boolean>(false);
+    const [userResponse, setUserResponse] = useState<string>("");
 
     const submit = async (registerForm: RegisterFormModel) => {
         try {
             const newUser = {
                 firstName: registerForm.firstName,
                 lastName: registerForm.lastName,
-                username: registerForm.email,
+                email: registerForm.email,
                 password: registerForm.password,
             } as UserType;
             const response = await SignupUser(newUser);
-            if (response === undefined) setUserExists(true);
-            else setUserExists(false);
+            if (response === "email must have at least 12 characters and special char" || response === "User is already exists" || response === `"firstName" length must be at least 2 characters long` || response === `"lastName" length must be at least 2 characters long`) {
+                setUserExists(true);
+                setUserResponse(response);
+            }
+            else {
+                setUserExists(false);
+            }
         } catch {
             console.log("error");
         }
@@ -56,7 +62,7 @@ export const RegisterPage = () => {
             <TextField id="outlined-basic" label="email" variant="outlined" required {...register('email', { required: true })} />
             <TextField id="outlined-basic" label="password" variant="outlined" required {...register('password', { required: true })} />
             <Button variant="outlined" type="submit">Register</Button>
-            {userExists ? <span className="userExists">User already Exists!</span> :
+            {userExists ? <span className="userExists">{userResponse}</span> :
                 <span className="members">already a member?</span>}
             <h4 className="login" onClick={() => {
                 navigate('/signin');

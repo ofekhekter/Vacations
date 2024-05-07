@@ -6,14 +6,14 @@ import { getNewToken } from "../Utils/cyber";
 
 export const signupUserLogic = async (user: UserType): Promise<string> => {
   validateUser(user);
-  const checkUsernameQuery = `SELECT * FROM users WHERE username = '${user.username}'`;
+  const checkUsernameQuery = `SELECT * FROM users WHERE email = '${user.email}'`;
 
   const checkUsername = await executeSqlQuery(checkUsernameQuery);
   if (checkUsername.length >= 1)
-    UnauthorizedError("Username is already exists");
+    UnauthorizedError("User is already exists");
   
   const sqlQuery = `
-  INSERT INTO users (userId, username, firstName, lastName, password, role) VALUES (null, '${user.username}', '${user.firstName}', '${user.lastName}','${user.password}', 1)`;
+  INSERT INTO users (userId, email, firstName, lastName, password, role) VALUES (null, '${user.email}', '${user.firstName}', '${user.lastName}','${user.password}', 1)`;
   
   const info: OkPacket = await executeSqlQuery(sqlQuery);
   console.log("info", info);
@@ -29,13 +29,13 @@ export const loginUserLogic = async (login: LoginCredentials): Promise<string> =
 
   const getUserQuery = `
     SELECT * FROM users
-    WHERE username = '${login.username}' 
+    WHERE email = '${login.email}' 
     AND password = '${login.password}'
     `;
 
     const userArray = await executeSqlQuery(getUserQuery);
 
-    if(userArray.length === 0 ) UnauthorizedError('incorrect username or password ');
+    if(userArray.length === 0 ) UnauthorizedError('incorrect email or password ');
 
     const user: UserType = userArray[0];
 
