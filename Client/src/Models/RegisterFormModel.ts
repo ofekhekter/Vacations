@@ -1,8 +1,11 @@
-class RegisterFormModel {
+export class RegisterFormModel {
     firstName: string = '';
     lastName: string = '';
     email: string = '';
     password: string = '';
 }
 
-export default RegisterFormModel;
+export class LoginFormModel {
+    email: string = '';
+    password: string = '';
+}

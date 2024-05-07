@@ -2,9 +2,10 @@ import { Box, Button, TextField, Typography } from "@mui/material"
 import './signup.css';
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import RegisterFormModel from "../../Models/RegisterFormModel";
+import { RegisterFormModel } from "../../Models/RegisterFormModel";
 import { appConfig } from "../../utils/appConfig";
 import axios from "axios";
+import { UserType } from "../../Models/UserModel";
 
 
 export const RegisterPage = () => {
@@ -13,14 +14,25 @@ export const RegisterPage = () => {
 
 
     const submit = async (registerForm: RegisterFormModel) => {
-        console.log("register:", registerForm);
-        const newUser = {
-            registerForm
+        try{
+            console.log("register:", registerForm);
+            const newUser = {
+                "firstName": registerForm.firstName,
+                "lastName": registerForm.lastName,
+                "username": registerForm.email,
+                "password": registerForm.password,
+            } as UserType;
+            // const newUser = JSON.stringify(registerForm);
+            // console.log("newUser:", newUser);
+            await axios.post<string>(appConfig.post.signup, newUser).then(response => {
+                console.log("response:", response);
+            }).catch(err => {
+                console.log(err)
+            });
+        }catch {
+            console.log("error")
         }
-        // const newUser = JSON.stringify(registerForm);
-        // console.log("newUser:", newUser);
-        const response = await axios.post<string>(appConfig.post.signup, registerForm);
-        console.log("response:", response);
+
     }
 
     return <div className="boxContainer">
