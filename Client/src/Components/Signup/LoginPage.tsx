@@ -3,11 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { LoginFormModel } from "../../Models/RegisterFormModel";
 import { LoginCredentials } from "../../Models/UserModel";
-import { appConfig } from "../../utils/appConfig";
-import axios from "axios";
-import './signup.css';
 import { useState } from "react";
 import { SigninUser } from "../../services/usersServices";
+import './login.css';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
@@ -21,7 +19,6 @@ export const LoginPage = () => {
                 "password": registerForm.password,
             } as LoginCredentials;
             const response = await SigninUser(user);
-            console.log(response);
             if (response === undefined) setUserExists(false);
             else setUserExists(true);
         } catch {

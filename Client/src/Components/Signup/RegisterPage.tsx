@@ -1,13 +1,11 @@
 import { Box, Button, TextField, Typography } from "@mui/material"
-import './signup.css';
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { RegisterFormModel } from "../../Models/RegisterFormModel";
-import { appConfig } from "../../utils/appConfig";
-import axios from "axios";
 import { UserType } from "../../Models/UserModel";
 import { SignupUser } from "../../services/usersServices";
 import { useState } from "react";
+import './login.css';
 
 
 export const RegisterPage = () => {
