@@ -3,6 +3,8 @@ import './signup.css';
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import RegisterFormModel from "../../Models/RegisterFormModel";
+import { appConfig } from "../../utils/appConfig";
+import axios from "axios";
 
 
 export const RegisterPage = () => {
@@ -10,10 +12,16 @@ export const RegisterPage = () => {
     const { register, handleSubmit } = useForm<RegisterFormModel>();
 
 
-    const submit = (registerForm: RegisterFormModel) => {
+    const submit = async (registerForm: RegisterFormModel) => {
         console.log("register:", registerForm);
+        const newUser = {
+            registerForm
+        }
+        // const newUser = JSON.stringify(registerForm);
+        // console.log("newUser:", newUser);
+        const response = await axios.post<string>(appConfig.post.signup, registerForm);
+        console.log("response:", response);
     }
-
 
     return <div className="boxContainer">
         <Box
