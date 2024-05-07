@@ -6,33 +6,29 @@ import { RegisterFormModel } from "../../Models/RegisterFormModel";
 import { appConfig } from "../../utils/appConfig";
 import axios from "axios";
 import { UserType } from "../../Models/UserModel";
+import { SignupUser } from "../../services/usersServices";
+import { useState } from "react";
 
 
 export const RegisterPage = () => {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<RegisterFormModel>();
-
+    const [userExists, setUserExists] = useState<boolean>(false);
 
     const submit = async (registerForm: RegisterFormModel) => {
-        try{
-            console.log("register:", registerForm);
+        try {
             const newUser = {
-                "firstName": registerForm.firstName,
-                "lastName": registerForm.lastName,
-                "username": registerForm.email,
-                "password": registerForm.password,
+                firstName: registerForm.firstName,
+                lastName: registerForm.lastName,
+                username: registerForm.email,
+                password: registerForm.password,
             } as UserType;
-            // const newUser = JSON.stringify(registerForm);
-            // console.log("newUser:", newUser);
-            await axios.post<string>(appConfig.post.signup, newUser).then(response => {
-                console.log("response:", response);
-            }).catch(err => {
-                console.log(err)
-            });
-        }catch {
-            console.log("error")
+            const response = await SignupUser(newUser);
+            if (response === undefined) setUserExists(true);
+            else setUserExists(false);
+        } catch {
+            console.log("error");
         }
-
     }
 
     return <div className="boxContainer">
@@ -62,7 +58,8 @@ export const RegisterPage = () => {
             <TextField id="outlined-basic" label="email" variant="outlined" required {...register('email', { required: true })} />
             <TextField id="outlined-basic" label="password" variant="outlined" required {...register('password', { required: true })} />
             <Button variant="outlined" type="submit">Register</Button>
-            <span className="members">already a member?</span>
+            {userExists ? <span className="userExists">User already Exists!</span> :
+                <span className="members">already a member?</span>}
             <h4 className="login" onClick={() => {
                 navigate('/signin');
             }}>login</h4>

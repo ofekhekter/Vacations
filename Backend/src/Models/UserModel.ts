@@ -28,10 +28,10 @@ export type UserType = {
 
 export const userValidationSchema = Joi.object({
   uid: Joi.number().integer().positive().optional(),
-  firstName: Joi.string().min(2).max(30).required().alphanum().trim(),
-  lastName: Joi.string().min(2).max(30).required().alphanum().trim(),
-  username: Joi.string().min(5).max(50).required(),
-  password: Joi.string().min(8).max(25).required(),
+  firstName: Joi.string().required().min(2).max(20),
+  lastName: Joi.string().required().min(2).max(20),
+  username: Joi.string().max(50).required(),
+  password: Joi.string().max(25).required(),
   role: Joi.forbidden(),
 });
 

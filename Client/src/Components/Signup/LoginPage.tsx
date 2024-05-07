@@ -6,24 +6,27 @@ import { LoginCredentials } from "../../Models/UserModel";
 import { appConfig } from "../../utils/appConfig";
 import axios from "axios";
 import './signup.css';
+import { useState } from "react";
+import { SigninUser } from "../../services/usersServices";
 
 export const LoginPage = () => {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<LoginFormModel>();
+    const [userExists, setUserExists] = useState<boolean>(true);
 
     const submit = async (registerForm: LoginFormModel) => {
-        console.log("register:", registerForm);
-        const user = {
-            "username": registerForm.email,
-            "password": registerForm.password,
-        } as LoginCredentials;
-        // const newUser = JSON.stringify(registerForm);
-        // console.log("newUser:", newUser);
-        await axios.post<string>(appConfig.post.signin, user).then(response => {
-            console.log("response:", response);
-        }).catch(err => {
-            console.log(err)
-        });
+        try {
+            const user = {
+                "username": registerForm.email,
+                "password": registerForm.password,
+            } as LoginCredentials;
+            const response = await SigninUser(user);
+            console.log(response);
+            if (response === undefined) setUserExists(false);
+            else setUserExists(true);
+        } catch {
+            console.log("error");
+        }
     }
 
     return <div className="boxContainer">
@@ -50,8 +53,8 @@ export const LoginPage = () => {
             </Typography>
             <TextField id="outlined-basic" label="email" variant="outlined" required {...register('email', { required: true })} />
             <TextField id="outlined-basic" label="password" variant="outlined" required {...register('password', { required: true })} />
-            <Button variant="outlined">Login</Button>
-            <span className="members">don't have account?</span>
+            <Button variant="outlined" type="submit">Login</Button>
+            {userExists ? <span className="members">don't have account?</span> : <span className="userExists">incorrerct username or password</span>}
             <h4 className="login" onClick={() => {
                 navigate('/signup');
             }}>Register now</h4>

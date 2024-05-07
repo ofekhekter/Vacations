@@ -6,8 +6,8 @@ import { catchAll } from './Middleware/catch-all';
 import vacationsController from './Controllers/vacations-controller';
 
 const server = express();
-server.use(cors());
 server.use(express.json());
+server.use(cors());
 
 server.use('/api', authController);
 server.use('/api', vacationsController);

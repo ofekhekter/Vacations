@@ -7,8 +7,8 @@ const router = express.Router();
 router.post("/auth/signup", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.body as UserType;
-      const token = await signupUserLogic(user);
-      res.status(201).json(token);
+      const response = await signupUserLogic(user);
+      res.status(201).json(response);
     } catch (err) {
       next(err);
     }
