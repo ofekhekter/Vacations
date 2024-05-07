@@ -1,8 +1,9 @@
 export type AppConfig = {
   baseUrl: string;
   get: {
-    oneVacation: string;
     allVacations: string;
+    oneVacation: string;
+    oneImage: string;
   };
   post: {
     vacation: string;

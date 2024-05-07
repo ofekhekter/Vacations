@@ -17,7 +17,8 @@ interface CardProps {
 export const Cardd = ({ location, description, startDate, endDate, price, imageName }: CardProps) => {
   const [favorites, setFavorites] = useState<boolean>(false);
 
-  return <Card sx={{ maxWidth: 345 }}>
+
+  return <Card className='card' sx={{ maxWidth: 345 }}>
     <CardHeader
       action={
         <IconButton aria-label="settings">

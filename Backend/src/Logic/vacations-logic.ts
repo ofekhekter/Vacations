@@ -9,6 +9,7 @@ export const getAllVacationsLogic = async (): Promise<VacationType[]> => {
   const vacation = (await executeSqlQuery(
     getAllVacationQuery
   )) as VacationType[];
+  
 
   return vacation;
 };
@@ -29,9 +30,7 @@ export const getOneVacationLogic = async (
   return vacation;
 };
 
-export const addOneVacationLogic = async (
-  newVacation: VacationType
-): Promise<VacationType> => {
+export const addOneVacationLogic = async (newVacation: VacationType): Promise<VacationType> => {
   validateVacation(newVacation);
 
   const checkVacationExistQuery = `

@@ -1,5 +1,4 @@
 .homeScreen{
-  display: flex;
-  justify-content: space-around;
+  display: grid;
   gap: 2px;
 }

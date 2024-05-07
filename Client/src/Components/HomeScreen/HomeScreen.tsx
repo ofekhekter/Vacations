@@ -1,12 +1,37 @@
+import { useEffect, useState } from "react";
 import { Cardd } from "../Card/Card"
 import './homeScreen.css';
+import { getOneImage } from "../../services/imagesServices";
+import { getAllVacations } from "../../services/vacationsServices";
+import { VacationType } from "../Signup/VacationModel";
 
 
 export const HomeScreen = () => {
-    return <section className="homeScreen">
-        <Cardd location="israel" description="blabla blabla" startDate="30/05/1989" endDate="30/05/2090" imageName="https://www.thetopvillas.com/blog/wp-content/uploads/2021/05/rsz_shutterstock_1869263059_1-1.jpg" price={400} />
-        <Cardd location="israel" description="blabla blabla" startDate="30/05/1989" endDate="30/05/2090" imageName="https://www.thetopvillas.com/blog/wp-content/uploads/2021/05/rsz_shutterstock_1869263059_1-1.jpg" price={400} />
-        <Cardd location="israel" description="blabla blabla" startDate="30/05/1989" endDate="30/05/2090" imageName="https://www.thetopvillas.com/blog/wp-content/uploads/2021/05/rsz_shutterstock_1869263059_1-1.jpg" price={400} />
-        <Cardd location="israel" description="blabla blabla" startDate="30/05/1989" endDate="30/05/2090" imageName="https://www.thetopvillas.com/blog/wp-content/uploads/2021/05/rsz_shutterstock_1869263059_1-1.jpg" price={400} />
-    </section>
+    const [images, setImages] = useState<Buffer[]>();
+    const [vacations, setVacations] = useState<VacationType[]>();
+
+    useEffect(() => {
+        const fetchAllVacations = async () => {
+            const allVacations = await getAllVacations();
+            setVacations(allVacations);
+        };
+        fetchAllVacations();
+        // const image = await getOneImage('');
+
+    }, []);
+
+    const allMoviesCards = vacations?.map((vacation) => {
+
+        return (
+            <section className="homeScreen">
+                <Cardd location={vacation.location} description={vacation.description} startDate={vacation.startDate} endDate={vacation.endDate} imageName={vacation.imageName} price={vacation.price} />
+            </section>
+        );
+    });
+
+    return (
+        <>
+{allMoviesCards}
+        </>
+    );
 }

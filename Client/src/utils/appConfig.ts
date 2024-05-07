@@ -5,6 +5,7 @@ export const appConfig: AppConfig = {
   get: {
     allVacations: "/vacations",
     oneVacation: "/vacations/",
+    oneImage: "/images/",
   },
   post: {
     vacation: "/vacations",

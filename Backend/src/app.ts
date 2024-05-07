@@ -4,6 +4,7 @@ import { appConfig } from './Utils/appConfig';
 import authController from './Controllers/auth-controller';
 import { catchAll } from './Middleware/catch-all';
 import vacationsController from './Controllers/vacations-controller';
+import imagesController from './Controllers/images-controller';
 
 const server = express();
 server.use(express.json());
@@ -11,6 +12,7 @@ server.use(cors());
 
 server.use('/api', authController);
 server.use('/api', vacationsController);
+server.use('/api', imagesController);
 
 server.use(catchAll);
 server.listen(appConfig.port, () => console.log(`Listening to http://${appConfig.host}:${appConfig.port}`));
