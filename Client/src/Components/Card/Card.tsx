@@ -30,7 +30,7 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
     <CardMedia
       component="img"
       height="194"
-      image={imageName}
+      image={`http://localhost:3001/static/images/${imageName}.jpg`}
     />
     <Typography variant="body2" color="text.secondary">
       {description}
