@@ -16,7 +16,20 @@ interface CardProps {
 
 export const Cardd = ({ location, description, startDate, endDate, price, imageName }: CardProps) => {
   const [favorites, setFavorites] = useState<boolean>(false);
+  const [imageError, setImageError] = useState(false);
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const handleFavorites = () => {
+    favorites ? setFavorites(false) : setFavorites(true);
+  };
+
+  const changeStringFormat = (value: string) => {
+    const replacedString = value.split('').map(word => word === '-' ? '.' : word).join('');
+    return replacedString;
+  }
 
   return <Card className='card' sx={{ maxWidth: 345 }}>
     <CardHeader
@@ -25,21 +38,24 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
         </IconButton>
       }
       title={location}
-      subheader={startDate + ' - ' + endDate}
+      subheader={changeStringFormat(startDate.substring(2, 10)) + ' - ' + changeStringFormat(endDate.substring(2, 10))}
     />
     <CardMedia
       component="img"
       height="194"
-      image={`http://localhost:3001/static/images/${imageName}.jpg`}
+      image={imageError ? 'http://localhost:3001/static/images/No-Image.png' : `http://localhost:3001/static/images/${imageName}.jpg`}
+      onError={handleImageError}
+      alt="Image"
     />
     <Typography variant="body2" color="text.secondary">
       {description}
     </Typography>
-    <p>{startDate}</p>
-    <p>{endDate}</p>
-    <p>{price}$</p>
-    <IconButton style={favorites ? { color: "red" } : { color: "primary" }} onClick={() => setFavorites} className='favorites' aria-label="add to favorites">
+    {price}$
+    {favorites ? <IconButton onClick={() => handleFavorites()} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
+      <FavoriteIcon />
+    </IconButton> : <IconButton onClick={() => handleFavorites()} className='favorites' aria-label="add to favorites">
       <FavoriteIcon />
     </IconButton>
+    }
   </Card>
 }

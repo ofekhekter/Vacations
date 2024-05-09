@@ -14,7 +14,7 @@ export type VacationType = {
 export const vacationValidationSchema = Joi.object({
   id: Joi.number().optional().positive().integer(),
   location: Joi.string().required().min(2).max(50),
-  description: Joi.string().required().min(10).max(200),
+  description: Joi.string().required().min(10).max(2000),
   startDate: Joi.date().required(),
   endDate: Joi.date().required(),
   price: Joi.number().required().positive().integer().max(10000),

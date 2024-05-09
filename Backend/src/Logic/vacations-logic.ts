@@ -32,7 +32,7 @@ export const getOneVacationLogic = async (
 
 export const addOneVacationLogic = async (newVacation: VacationType): Promise<VacationType> => {
   validateVacation(newVacation);
-
+  
   const checkVacationExistQuery = `
   SELECT * FROM vacations
   WHERE vacationId = "${newVacation.id}"

@@ -17,10 +17,10 @@ export const HomeScreen = () => {
         fetchAllVacations();
     }, []);
 
-    const allMoviesCards = vacations?.map((vacation) => {
+    const allMoviesCards = vacations?.map((vacation, index) => {
 
         return (
-            <Cardd location={vacation.location} description={vacation.description} startDate={vacation.startDate} endDate={vacation.endDate} imageName={vacation.imageName} price={vacation.price} />
+            <Cardd key={index} location={vacation.location} description={vacation.description} startDate={vacation.startDate} endDate={vacation.endDate} imageName={vacation.imageName} price={vacation.price} />
         );
     });
 
