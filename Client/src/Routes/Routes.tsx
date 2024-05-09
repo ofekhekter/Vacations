@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
         element: <RegisterPage />,
       },
       {
-        path: "/addVacation",
+        path: "/addvacation",
         element: <VacationCard isEditable={false}/>,
       },
     ],

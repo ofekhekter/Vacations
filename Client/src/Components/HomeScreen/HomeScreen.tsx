@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Cardd } from "../Card/Card"
 import { getAllVacations } from "../../services/vacationsServices";
-import { VacationType } from "../Signup/VacationModel";
+import { VacationType } from "../../Models/VacationModel";
 import './homeScreen.css';
 
 
@@ -19,7 +19,7 @@ export const HomeScreen = () => {
     const allMoviesCards = vacations?.map((vacation, index) => {
 
         return (
-            <Cardd key={index} location={vacation.location} description={vacation.description} startDate={vacation.startDate} endDate={vacation.endDate} imageName={vacation.imageName} price={vacation.price} />
+            <Cardd key={index} vacation={vacation}/>
         );
     });
 

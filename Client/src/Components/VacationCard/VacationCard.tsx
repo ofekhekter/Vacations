@@ -1,28 +1,43 @@
 import Card from '@mui/material/Card';
-import { VacationType } from "../Signup/VacationModel";
-import { Button, CardHeader, Divider, FormControl, TextField, Typography } from "@mui/material";
+import { Box, Button, CardHeader, Divider, FormControl, TextField, Typography } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useForm } from 'react-hook-form';
+import { VacationFormModel } from '../../Models/VacationModel';
 import './vacationCard.css';
 
 
 interface VacationCardProps {
-    vacation?: VacationType;
+    vacation?: VacationFormModel;
     isEditable: boolean;
 }
 
 export const VacationCard = ({ vacation, isEditable }: VacationCardProps) => {
+    const { register, handleSubmit } = useForm<VacationFormModel>();
+
+    const submit = async (registerForm: VacationFormModel) => {
+        console.log("register: ", registerForm.description);
+        try {
+            console.log("register");
+        } catch {
+            console.log("error");
+        }
+    }
 
     return <section className="VacationContainer">
-        <Card sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            backgroundColor: '#F8F6E3',
-            width: "400px",
-            boxShadow: '3px 2px 3px 1px #153448',
-        }}>
+        <Card
+            onSubmit={handleSubmit(submit)}
+            component="form"
+            noValidate
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                backgroundColor: '#FFFFFF',
+                width: "400px",
+                boxShadow: '3px 3px 13px 5px #153448',
+            }}>
             <CardHeader sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -38,6 +53,7 @@ export const VacationCard = ({ vacation, isEditable }: VacationCardProps) => {
                     required
                     variant="outlined"
                     style={{ margin: 16 }}
+                    {...register('destination', { required: true })}
                 />
                 <TextField
                     id="outlined-multiline-static"
@@ -47,21 +63,44 @@ export const VacationCard = ({ vacation, isEditable }: VacationCardProps) => {
                     rows={4}
                     variant="outlined"
                     style={{ margin: 16 }}
+                    {...register('description', { required: true })}
                 />
             </FormControl>
-            <Typography style={{ marginLeft: 16 }}>
-                start date:
+            <Typography style={{
+                marginLeft: 16,
+                marginBottom: -10,
+                color: "#63625B",
+            }}>
+                start on:
             </Typography>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider {...register('startDate', { required: true })} dateAdapter={AdapterDayjs}>
                 <DatePicker sx={{ m: 2, width: '28ch' }} />
             </LocalizationProvider>
-            <Typography style={{ marginLeft: 16 }}>
-                end date:
+            <Typography style={{
+                marginLeft: 16,
+                marginBottom: -10,
+                color: "#63625B",
+            }}>
+                end on:
             </Typography>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider {...register('endDate', { required: true })} dateAdapter={AdapterDayjs}>
                 <DatePicker sx={{ m: 2, width: '28ch' }} />
             </LocalizationProvider>
-            <Button variant="outlined" type="submit">Add Vacation</Button>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 1,
+            }}>
+                <Button variant="contained" type="submit"
+                    sx={{
+                        width: "250px",
+                    }}>Add Vacation</Button>
+                <Button variant="outlined" sx={{
+                    width: "250px",
+                    marginBottom: "10px",
+                }}>Cancel</Button>
+            </Box>
         </Card>
     </section>
 }

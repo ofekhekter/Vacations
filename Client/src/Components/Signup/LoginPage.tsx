@@ -39,16 +39,15 @@ export const LoginPage = () => {
             onSubmit={handleSubmit(submit)}
             component="form"
             sx={{
-                backgroundColor: "#F8F6E3",
+                backgroundColor: "#FFFFFF",
                 width: "400px",
-                boxShadow: 6,
                 alignItems: "center",
                 display: 'flex',
                 flexDirection: 'column',
+                boxShadow: '3px 3px 13px 5px #153448',
                 '& > :not(style)': { m: 1, width: '25ch' },
             }}
             noValidate
-            autoComplete="off"
         >
             <Typography gutterBottom variant="h5" component="div"
                 style={{ marginLeft: "250px" }}
@@ -56,12 +55,13 @@ export const LoginPage = () => {
             >
                 Login
             </Typography>
-            <TextField id="outlined-basic" label="email" variant="outlined" required {...register('email', { required: true })} />
+            <TextField id="outlined-basic4" label="email" variant="outlined" required {...register('email', { required: true })} />
             <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined" required>
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-password2">Password</InputLabel>
                 <OutlinedInput
                     {...register('password', { required: true })}
-                    id="outlined-adornment-password"
+                    name="password"
+                    autoComplete="password"
                     type={showPassword ? 'text' : 'password'}
                     endAdornment={
                         <InputAdornment position="end">

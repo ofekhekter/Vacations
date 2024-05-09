@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material"
+import { Button, Card, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { RegisterFormModel } from "../../Models/RegisterFormModel";
@@ -45,35 +45,38 @@ export const RegisterPage = () => {
     }
 
     return <div className="boxContainer">
-        <Box
+        <Card
             onSubmit={handleSubmit(submit)}
             component="form"
             sx={{
-                backgroundColor: "#F8F6E3",
+                backgroundColor: "#FFFFFF",
                 width: "400px",
-                boxShadow: 6,
                 alignItems: "center",
                 display: 'flex',
                 flexDirection: 'column',
+                boxShadow: '3px 3px 13px 5px #153448',
                 '& > :not(style)': { m: 1, width: '30ch' },
             }}
             noValidate
-            autoComplete="off"
         >
             <Typography gutterBottom variant="h5" component="div"
-                style={{ marginLeft: "250px" }}
-                color={{ color: "#153448" }}
+                sx={{
+                    marginLeft: "250px",
+                    color: "#153448",
+                    textAlign: 'center'
+                }}
             >
                 Register
             </Typography>
-            <TextField id="outlined-basic" label="first name" variant="outlined" required {...register('firstName', { required: true })} />
-            <TextField id="outlined-basic" label="last name" variant="outlined" required {...register('lastName', { required: true })} />
-            <TextField id="outlined-basic" label="email" variant="outlined" required {...register('email', { required: true })} />
-            <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined" required>
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+            <TextField id="outlined-basic1" label="first name" variant="outlined" required {...register('firstName', { required: true })} />
+            <TextField id="outlined-basic2" label="last name" variant="outlined" required {...register('lastName', { required: true })} />
+            <TextField id="outlined-basic3" label="email" variant="outlined" required {...register('email', { required: true })} />
+            <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password1">Password</InputLabel>
                 <OutlinedInput
                     {...register('password', { required: true })}
-                    id="outlined-adornment-password"
+                    name="password"
+                    autoComplete="password"
                     type={showPassword ? 'text' : 'password'}
                     endAdornment={
                         <InputAdornment position="end">
@@ -96,6 +99,6 @@ export const RegisterPage = () => {
             <h4 className="login" onClick={() => {
                 navigate('/signin');
             }}>login</h4>
-        </Box>
+        </Card>
     </div>
 }

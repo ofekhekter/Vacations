@@ -1,20 +1,15 @@
 import Card from '@mui/material/Card';
 import { Box, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { VacationType } from '../../Models/VacationModel';
 import { useState } from 'react';
 import './card.css';
 
 interface CardProps {
-  id?: number;
-  location: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  price: number;
-  imageName: string;
+  vacation: VacationType;
 }
 
-export const Cardd = ({ location, description, startDate, endDate, price, imageName }: CardProps) => {
+export const Cardd = ({ vacation }: CardProps) => {
   const [favorites, setFavorites] = useState<boolean>(false);
   const [imageError, setImageError] = useState(false);
 
@@ -42,7 +37,7 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
     }}>
       <CardHeader
         sx={{ color: "white" }}
-        title={location}
+        title={vacation.destination}
       />
       {favorites ? <IconButton onClick={() => handleFavorites()} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
         <FavoriteIcon />
@@ -52,12 +47,12 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
       }
     </Box>
     <Typography variant="body2" color="white">
-      {changeStringFormat(startDate.substring(2, 10)) + ' - ' + changeStringFormat(endDate.substring(2, 10))}
+      {changeStringFormat(vacation.startDate.substring(2, 10)) + ' - ' + changeStringFormat(vacation.endDate.substring(2, 10))}
     </Typography>
     <CardMedia
       component="img"
       height="194"
-      image={imageError ? 'http://localhost:3001/static/images/No-Image.png' : `http://localhost:3001/static/images/${imageName}.jpg`}
+      image={imageError ? 'http://localhost:3001/static/images/No-Image.png' : `http://localhost:3001/static/images/${vacation.imageName}.jpg`}
       onError={handleImageError}
       alt="Image"
     />
@@ -65,10 +60,10 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
       margin: '5px 5px 5px 5px',
       fontSize: 'small',
     }} variant="body2" color="#EADBC8">
-      {description}
+      {vacation.description}
     </Typography>
     <Typography variant="body1" color="#8DECB4">
-      {price}$
+      {vacation.price}$
     </Typography>
   </Card>
 }
