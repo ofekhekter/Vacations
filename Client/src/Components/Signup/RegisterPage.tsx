@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material"
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { RegisterFormModel } from "../../Models/RegisterFormModel";
@@ -6,6 +6,7 @@ import { UserType } from "../../Models/UserModel";
 import { SignupUser } from "../../services/usersServices";
 import { useState } from "react";
 import './login.css';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 
 export const RegisterPage = () => {
@@ -13,6 +14,14 @@ export const RegisterPage = () => {
     const { register, handleSubmit } = useForm<RegisterFormModel>();
     const [userExists, setUserExists] = useState<boolean>(false);
     const [userResponse, setUserResponse] = useState<string>("");
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
 
     const submit = async (registerForm: RegisterFormModel) => {
         try {
@@ -40,13 +49,13 @@ export const RegisterPage = () => {
             onSubmit={handleSubmit(submit)}
             component="form"
             sx={{
-                backgroundColor: "#F6F5F2",
+                backgroundColor: "#F8F6E3",
                 width: "400px",
                 boxShadow: 6,
                 alignItems: "center",
                 display: 'flex',
                 flexDirection: 'column',
-                '& > :not(style)': { m: 1, width: '25ch' },
+                '& > :not(style)': { m: 1, width: '30ch' },
             }}
             noValidate
             autoComplete="off"
@@ -60,7 +69,27 @@ export const RegisterPage = () => {
             <TextField id="outlined-basic" label="first name" variant="outlined" required {...register('firstName', { required: true })} />
             <TextField id="outlined-basic" label="last name" variant="outlined" required {...register('lastName', { required: true })} />
             <TextField id="outlined-basic" label="email" variant="outlined" required {...register('email', { required: true })} />
-            <TextField id="outlined-basic" label="password" variant="outlined" required {...register('password', { required: true })} />
+            <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined" required>
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                    {...register('password', { required: true })}
+                    id="outlined-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                            >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>
+                    }
+                    label="Password"
+                />
+            </FormControl>
             <Button variant="outlined" type="submit">Register</Button>
             {userExists ? <span className="userExists">{userResponse}</span> :
                 <span className="members">already a member?</span>}

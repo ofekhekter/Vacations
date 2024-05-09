@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material"
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { LoginFormModel } from "../../Models/RegisterFormModel";
@@ -6,11 +6,19 @@ import { LoginCredentials } from "../../Models/UserModel";
 import { useState } from "react";
 import { SigninUser } from "../../services/usersServices";
 import './login.css';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export const LoginPage = () => {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<LoginFormModel>();
     const [loginExists, setLoginExists] = useState<boolean>(true);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
 
     const submit = async (registerForm: LoginFormModel) => {
         try {
@@ -31,7 +39,7 @@ export const LoginPage = () => {
             onSubmit={handleSubmit(submit)}
             component="form"
             sx={{
-                backgroundColor: "#F6F5F2",
+                backgroundColor: "#F8F6E3",
                 width: "400px",
                 boxShadow: 6,
                 alignItems: "center",
@@ -49,7 +57,27 @@ export const LoginPage = () => {
                 Login
             </Typography>
             <TextField id="outlined-basic" label="email" variant="outlined" required {...register('email', { required: true })} />
-            <TextField id="outlined-basic" label="password" variant="outlined" required {...register('password', { required: true })} />
+            <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined" required>
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                    {...register('password', { required: true })}
+                    id="outlined-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                            >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>
+                    }
+                    label="Password"
+                />
+            </FormControl>
             <Button variant="outlined" type="submit">Login</Button>
             {loginExists ? <span className="members">don't have account?</span> : <span className="userExists">incorrerct username or password</span>}
             <h4 className="login" onClick={() => {

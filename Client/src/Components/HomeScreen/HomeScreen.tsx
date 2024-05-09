@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Cardd } from "../Card/Card"
-import './homeScreen.css';
-import { getOneImage } from "../../services/imagesServices";
 import { getAllVacations } from "../../services/vacationsServices";
 import { VacationType } from "../Signup/VacationModel";
+import './homeScreen.css';
 
 
 export const HomeScreen = () => {
