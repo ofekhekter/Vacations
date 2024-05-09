@@ -1,5 +1,5 @@
 import Card from '@mui/material/Card';
-import { CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
+import { Box, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from 'react';
 import './card.css';
@@ -31,15 +31,29 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
     return replacedString;
   }
 
-  return <Card className='card' sx={{ maxWidth: 345 }}>
-    <CardHeader
-      action={
-        <IconButton aria-label="settings">
-        </IconButton>
+  return <Card className='card'
+    sx={{
+      maxWidth: 345,
+      backgroundColor: "#153448"
+    }}>
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'space-between'
+    }}>
+      <CardHeader
+        sx={{ color: "white" }}
+        title={location}
+      />
+      {favorites ? <IconButton onClick={() => handleFavorites()} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
+        <FavoriteIcon />
+      </IconButton> : <IconButton onClick={() => handleFavorites()} style={{ color: "white" }} className='favorites' aria-label="add to favorites">
+        <FavoriteIcon />
+      </IconButton>
       }
-      title={location}
-      subheader={changeStringFormat(startDate.substring(2, 10)) + ' - ' + changeStringFormat(endDate.substring(2, 10))}
-    />
+    </Box>
+    <Typography variant="body2" color="white">
+      {changeStringFormat(startDate.substring(2, 10)) + ' - ' + changeStringFormat(endDate.substring(2, 10))}
+    </Typography>
     <CardMedia
       component="img"
       height="194"
@@ -47,15 +61,14 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
       onError={handleImageError}
       alt="Image"
     />
-    <Typography variant="body2" color="text.secondary">
+    <Typography sx={{
+      margin: '5px 5px 5px 5px',
+      fontSize: 'small',
+    }} variant="body2" color="white">
       {description}
     </Typography>
-    {price}$
-    {favorites ? <IconButton onClick={() => handleFavorites()} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
-      <FavoriteIcon />
-    </IconButton> : <IconButton onClick={() => handleFavorites()} className='favorites' aria-label="add to favorites">
-      <FavoriteIcon />
-    </IconButton>
-    }
+    <Typography variant="body1" color="#8DECB4">
+      {price}$
+    </Typography>
   </Card>
 }
