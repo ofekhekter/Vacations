@@ -3,6 +3,7 @@ import { Navbar } from "../Components/NavBar/NavBar";
 import { HomeScreen } from "../Components/HomeScreen/HomeScreen";
 import { RegisterPage } from "../Components/Signup/RegisterPage";
 import { LoginPage } from "../Components/Signup/LoginPage";
+import { VacationCard } from "../Components/VacationCard/VacationCard";
 
 
 export const router = createBrowserRouter([
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: "/signup",
         element: <RegisterPage />,
+      },
+      {
+        path: "/addVacation",
+        element: <VacationCard isEditable={false}/>,
       },
     ],
   },

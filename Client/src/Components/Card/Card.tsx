@@ -64,7 +64,7 @@ export const Cardd = ({ location, description, startDate, endDate, price, imageN
     <Typography sx={{
       margin: '5px 5px 5px 5px',
       fontSize: 'small',
-    }} variant="body2" color="white">
+    }} variant="body2" color="#EADBC8">
       {description}
     </Typography>
     <Typography variant="body1" color="#8DECB4">
