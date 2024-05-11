@@ -9,11 +9,9 @@ export type VacationType = {
 };
 
 export class VacationFormModel {
-  id: number = 0;
   destination: string = "";
   description: string = "";
   startDate: string = "";
   endDate: string = "";
-  price: number = 0;
-  imageName: string = "";
+  // imageName: string = "";
 }

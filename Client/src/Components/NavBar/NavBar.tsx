@@ -13,6 +13,10 @@ export const Navbar = () => {
         navigate('/home');
     }
 
+    const handleVacationClicked = () => {
+        navigate('/addvacation');
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar className="appBar" position="static" style={{ backgroundColor: "#153448" }}>
@@ -21,6 +25,7 @@ export const Navbar = () => {
                         Vacations
                     </Typography>
                     <Button onClick={handleSigninClicked} color="inherit">Login</Button>
+                    <Button onClick={handleVacationClicked} color="inherit">Add Vacation</Button>
                 </Toolbar>
             </AppBar>
         </Box >

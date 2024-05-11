@@ -1,4 +1,4 @@
-import { Button, Card, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material"
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { RegisterFormModel } from "../../Models/RegisterFormModel";
@@ -25,6 +25,7 @@ export const RegisterPage = () => {
 
     const submit = async (registerForm: RegisterFormModel) => {
         try {
+            console.log("register: ", registerForm);
             const newUser = {
                 firstName: registerForm.firstName,
                 lastName: registerForm.lastName,
@@ -45,7 +46,7 @@ export const RegisterPage = () => {
     }
 
     return <div className="boxContainer">
-        <Card
+        <Box
             onSubmit={handleSubmit(submit)}
             component="form"
             sx={{
@@ -99,6 +100,6 @@ export const RegisterPage = () => {
             <h4 className="login" onClick={() => {
                 navigate('/signin');
             }}>login</h4>
-        </Card>
+        </Box>
     </div>
 }

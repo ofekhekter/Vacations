@@ -5,8 +5,8 @@ import { LoginFormModel } from "../../Models/RegisterFormModel";
 import { LoginCredentials } from "../../Models/UserModel";
 import { useState } from "react";
 import { SigninUser } from "../../services/usersServices";
-import './login.css';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import './login.css';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
@@ -22,6 +22,7 @@ export const LoginPage = () => {
 
     const submit = async (registerForm: LoginFormModel) => {
         try {
+            console.log("register: ", registerForm);
             const user = {
                 "email": registerForm.email,
                 "password": registerForm.password,
@@ -35,54 +36,53 @@ export const LoginPage = () => {
     }
 
     return <div className="boxContainer">
-        <Box
-            onSubmit={handleSubmit(submit)}
-            component="form"
-            sx={{
-                backgroundColor: "#FFFFFF",
-                width: "400px",
-                alignItems: "center",
-                display: 'flex',
-                flexDirection: 'column',
-                boxShadow: '3px 3px 13px 5px #153448',
-                '& > :not(style)': { m: 1, width: '25ch' },
-            }}
-            noValidate
-        >
-            <Typography gutterBottom variant="h5" component="div"
-                style={{ marginLeft: "250px" }}
-                color={{ color: "#153448" }}
+        <form onSubmit={handleSubmit(submit)} noValidate>
+            <Box
+                sx={{
+                    backgroundColor: "#FFFFFF",
+                    width: "400px",
+                    alignItems: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxShadow: '3px 3px 13px 5px #153448',
+                    '& > :not(style)': { m: 1, width: '25ch' },
+                }}
             >
-                Login
-            </Typography>
-            <TextField id="outlined-basic4" label="email" variant="outlined" required {...register('email', { required: true })} />
-            <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined" required>
-                <InputLabel htmlFor="outlined-adornment-password2">Password</InputLabel>
-                <OutlinedInput
-                    {...register('password', { required: true })}
-                    name="password"
-                    autoComplete="password"
-                    type={showPassword ? 'text' : 'password'}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                            >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                    label="Password"
-                />
-            </FormControl>
-            <Button variant="outlined" type="submit">Login</Button>
-            {loginExists ? <span className="members">don't have account?</span> : <span className="userExists">incorrerct username or password</span>}
-            <h4 className="login" onClick={() => {
-                navigate('/signup');
-            }}>Register Now</h4>
-        </Box>
+                <Typography gutterBottom variant="h5" component="div"
+                    style={{ marginLeft: "250px" }}
+                    color={{ color: "#153448" }}
+                >
+                    Login
+                </Typography>
+                <TextField id="outlined-basic4" label="email" variant="outlined" required {...register('email', { required: true })} />
+                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined" required>
+                    <InputLabel htmlFor="outlined-adornment-password2">Password</InputLabel>
+                    <OutlinedInput
+                        {...register('password', { required: true })}
+                        name="password"
+                        autoComplete="password"
+                        type={showPassword ? 'text' : 'password'}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                        label="Password"
+                    />
+                </FormControl>
+                <Button variant="outlined" type="submit">Login</Button>
+                {loginExists ? <span className="members">don't have account?</span> : <span className="userExists">incorrerct username or password</span>}
+                <h4 className="login" onClick={() => {
+                    navigate('/signup');
+                }}>Register Now</h4>
+            </Box>
+        </form>
     </div>
 }

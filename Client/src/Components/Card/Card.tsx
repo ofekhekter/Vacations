@@ -1,4 +1,3 @@
-import Card from '@mui/material/Card';
 import { Box, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { VacationType } from '../../Models/VacationModel';
@@ -9,7 +8,7 @@ interface CardProps {
   vacation: VacationType;
 }
 
-export const Cardd = ({ vacation }: CardProps) => {
+export const Card = ({ vacation }: CardProps) => {
   const [favorites, setFavorites] = useState<boolean>(false);
   const [imageError, setImageError] = useState(false);
 
@@ -26,7 +25,7 @@ export const Cardd = ({ vacation }: CardProps) => {
     return replacedString;
   }
 
-  return <Card className='card'
+  return <Box className='card'
     sx={{
       maxWidth: 345,
       backgroundColor: "#153448"
@@ -65,5 +64,5 @@ export const Cardd = ({ vacation }: CardProps) => {
     <Typography variant="body1" color="#8DECB4">
       {vacation.price}$
     </Typography>
-  </Card>
+  </Box>
 }

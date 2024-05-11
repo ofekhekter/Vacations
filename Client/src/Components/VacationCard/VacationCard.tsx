@@ -6,6 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationFormModel } from '../../Models/VacationModel';
 import './vacationCard.css';
+import { useState } from 'react';
 
 
 interface VacationCardProps {
@@ -13,40 +14,36 @@ interface VacationCardProps {
     isEditable: boolean;
 }
 
-export const VacationCard = ({ vacation, isEditable }: VacationCardProps) => {
+export const VacationCard = ({ isEditable }: VacationCardProps) => {
     const { register, handleSubmit } = useForm<VacationFormModel>();
 
     const submit = async (registerForm: VacationFormModel) => {
-        console.log("register: ", registerForm.description);
         try {
-            console.log("register");
+            console.log("register: ", registerForm);
         } catch {
             console.log("error");
         }
     }
 
     return <section className="VacationContainer">
-        <Card
-            onSubmit={handleSubmit(submit)}
-            component="form"
-            noValidate
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                backgroundColor: '#FFFFFF',
-                width: "400px",
-                boxShadow: '3px 3px 13px 5px #153448',
-            }}>
-            <CardHeader sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                color: "#153448",
-            }}
-                title='Add Vacation'
-            />
-            <Divider variant="middle" />
-            <FormControl>
+        <form onSubmit={handleSubmit(submit)} noValidate>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    backgroundColor: '#FFFFFF',
+                    width: "400px",
+                    boxShadow: '3px 3px 13px 5px #153448',
+                }}>
+                <CardHeader sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    color: "#153448",
+                }}
+                    title='Add Vacation'
+                />
+                <Divider variant="middle" />
                 <TextField
                     id="outlined-full-width"
                     label="destination"
@@ -65,42 +62,39 @@ export const VacationCard = ({ vacation, isEditable }: VacationCardProps) => {
                     style={{ margin: 16 }}
                     {...register('description', { required: true })}
                 />
-            </FormControl>
-            <Typography style={{
-                marginLeft: 16,
-                marginBottom: -10,
-                color: "#63625B",
-            }}>
-                start on:
-            </Typography>
-            <LocalizationProvider {...register('startDate', { required: true })} dateAdapter={AdapterDayjs}>
-                <DatePicker sx={{ m: 2, width: '28ch' }} />
-            </LocalizationProvider>
-            <Typography style={{
-                marginLeft: 16,
-                marginBottom: -10,
-                color: "#63625B",
-            }}>
-                end on:
-            </Typography>
-            <LocalizationProvider {...register('endDate', { required: true })} dateAdapter={AdapterDayjs}>
-                <DatePicker sx={{ m: 2, width: '28ch' }} />
-            </LocalizationProvider>
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: 1,
-            }}>
-                <Button variant="contained" type="submit"
-                    sx={{
+                <Typography style={{
+                    marginLeft: 16,
+                    marginBottom: -10,
+                    color: "#63625B",
+                }}>
+                    start on:
+                </Typography>
+                <LocalizationProvider {...register('startDate', { required: true })} dateAdapter={AdapterDayjs}>
+                    <DatePicker sx={{ m: 2, width: '28ch' }} />
+                </LocalizationProvider>
+                <Typography style={{
+                    marginLeft: 16,
+                    marginBottom: -10,
+                    color: "#63625B",
+                }}>
+                    end on:
+                </Typography>
+                <LocalizationProvider {...register('endDate', { required: true })} dateAdapter={AdapterDayjs}>
+                    <DatePicker sx={{ m: 2, width: '28ch' }} />
+                </LocalizationProvider>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 1,
+                }}>
+                    <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>
+                    <Button variant="outlined" sx={{
                         width: "250px",
-                    }}>Add Vacation</Button>
-                <Button variant="outlined" sx={{
-                    width: "250px",
-                    marginBottom: "10px",
-                }}>Cancel</Button>
+                        marginBottom: "10px",
+                    }}>Cancel</Button>
+                </Box>
             </Box>
-        </Card>
+        </form>
     </section>
 }
