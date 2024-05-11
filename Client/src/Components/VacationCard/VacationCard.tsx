@@ -13,7 +13,7 @@ interface VacationCardProps {
 }
 
 export const VacationCard = ({ isEditable }: VacationCardProps) => {
-    const { register, handleSubmit } = useForm<VacationFormModel>();
+    const { register, handleSubmit, setValue } = useForm<VacationFormModel>();
 
     const submit = async (registerForm: VacationFormModel) => {
         try {
@@ -67,8 +67,12 @@ export const VacationCard = ({ isEditable }: VacationCardProps) => {
                 }}>
                     start on:
                 </Typography>
-                <LocalizationProvider {...register('startDate', { required: true })} dateAdapter={AdapterDayjs}>
-                    <DatePicker sx={{ m: 2, width: '28ch' }} />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        {...register('startDate', { required: true })}
+                        onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        sx={{ m: 2, width: '28ch' }}
+                    />
                 </LocalizationProvider>
                 <Typography style={{
                     marginLeft: 16,
@@ -77,8 +81,12 @@ export const VacationCard = ({ isEditable }: VacationCardProps) => {
                 }}>
                     end on:
                 </Typography>
-                <LocalizationProvider {...register('endDate', { required: true })} dateAdapter={AdapterDayjs}>
-                    <DatePicker sx={{ m: 2, width: '28ch' }} />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        {...register('endDate', { required: true })}
+                        onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        sx={{ m: 2, width: '28ch' }}
+                    />
                 </LocalizationProvider>
                 <Box sx={{
                     display: 'flex',
