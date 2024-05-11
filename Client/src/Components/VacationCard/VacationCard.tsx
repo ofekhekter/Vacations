@@ -1,12 +1,10 @@
-import Card from '@mui/material/Card';
-import { Box, Button, CardHeader, Divider, FormControl, TextField, Typography } from "@mui/material";
+import { Box, Button, CardHeader, Divider, TextField, Typography } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationFormModel } from '../../Models/VacationModel';
 import './vacationCard.css';
-import { useState } from 'react';
 
 
 interface VacationCardProps {
