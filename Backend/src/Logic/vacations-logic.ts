@@ -44,7 +44,7 @@ export const addOneVacationLogic = async (newVacation: VacationType): Promise<Va
 
   const addVacationQuery = `
   INSERT INTO vacations (vacationId, location, description, startDate, endDate, price, imageName)
-  VALUES (null, "${newVacation.location}", "${newVacation.description}", 
+  VALUES (null, "${newVacation.destination}", "${newVacation.description}", 
   "${newVacation.startDate}", "${newVacation.endDate}", 
   "${newVacation.price}", "${newVacation.imageName}")`;
 
@@ -72,7 +72,7 @@ export const updateVacationLogic = async (
   if (isVacationExists.length === 0) ValidationError("Vacation is not exists.");
 
   const updateVacationQuery = `
-      UPDATE vacations SET location = "${vacation.location}", description = "${vacation.description}", 
+      UPDATE vacations SET destination = "${vacation.destination}", description = "${vacation.description}", 
       startDate = "${vacation.startDate}", endDate = "${vacation.endDate}", 
       price = "${vacation.price}", imageName = "${vacation.imageName}"
       WHERE vacationId = "${vacation.id}"`;

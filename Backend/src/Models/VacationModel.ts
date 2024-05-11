@@ -3,7 +3,7 @@ import { ValidationError } from "./ErrorModels";
 
 export type VacationType = {
   id: number;
-  location: string;
+  destination: string;
   description: string;
   startDate: string;
   endDate: string;
@@ -13,7 +13,7 @@ export type VacationType = {
 
 export const vacationValidationSchema = Joi.object({
   id: Joi.number().optional().positive().integer(),
-  location: Joi.string().required().min(2).max(50),
+  destination: Joi.string().required().min(2).max(50),
   description: Joi.string().required().min(10).max(2000),
   startDate: Joi.date().required(),
   endDate: Joi.date().required(),
