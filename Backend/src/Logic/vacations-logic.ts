@@ -43,7 +43,7 @@ export const addOneVacationLogic = async (newVacation: VacationType): Promise<Va
     ValidationError("Vacation is already exists.");
 
   const addVacationQuery = `
-  INSERT INTO vacations (vacationId, location, description, startDate, endDate, price, imageName)
+  INSERT INTO vacations (vacationId, destination, description, startDate, endDate, price, imageName)
   VALUES (null, "${newVacation.destination}", "${newVacation.description}", 
   "${newVacation.startDate}", "${newVacation.endDate}", 
   "${newVacation.price}", "${newVacation.imageName}")`;

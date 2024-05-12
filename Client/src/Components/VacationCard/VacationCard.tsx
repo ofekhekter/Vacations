@@ -1,10 +1,11 @@
-import { Box, Button, CardHeader, Divider, TextField, Typography } from "@mui/material";
+import { Box, Button, CardHeader, Divider, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationFormModel } from '../../Models/VacationModel';
 import './vacationCard.css';
+import { changeStringFormat } from "../Card/Card";
 
 
 interface VacationCardProps {
@@ -12,12 +13,16 @@ interface VacationCardProps {
     isEditable: boolean;
 }
 
-export const VacationCard = ({ isEditable }: VacationCardProps) => {
+export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
     const { register, handleSubmit, setValue } = useForm<VacationFormModel>();
 
     const submit = async (registerForm: VacationFormModel) => {
         try {
             console.log("register: ", registerForm);
+            const startDate = changeStringFormat(registerForm.startDate.substring(2, 10))
+            const endDate = changeStringFormat(registerForm.endDate.substring(2, 10))
+            console.log("startDate: ", startDate);
+            console.log("endDate: ", endDate);
         } catch {
             console.log("error");
         }
@@ -88,12 +93,24 @@ export const VacationCard = ({ isEditable }: VacationCardProps) => {
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>
+                <FormControl style={{ margin: 16 }}>
+                    <InputLabel htmlFor="outlined-adornment-amount">price</InputLabel>
+                    <OutlinedInput
+                        type="number"
+                        id="outlined-adornment-amount"
+                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                        label="price"
+                        required
+                        {...register('price', { required: true })}
+                    />
+                </FormControl>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: 1,
                 }}>
+                    <input type="file" className="filetype" />
                     <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>
                     <Button variant="outlined" sx={{
                         width: "250px",

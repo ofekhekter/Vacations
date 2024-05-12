@@ -8,6 +8,11 @@ interface CardProps {
   vacation: VacationType;
 }
 
+export const changeStringFormat = (value: string) => {
+  const replacedString = value.split('').map(word => word === '-' ? '.' : word).join('');
+  return replacedString;
+}
+
 export const Card = ({ vacation }: CardProps) => {
   const [favorites, setFavorites] = useState<boolean>(false);
   const [imageError, setImageError] = useState(false);
@@ -20,10 +25,6 @@ export const Card = ({ vacation }: CardProps) => {
     favorites ? setFavorites(false) : setFavorites(true);
   };
 
-  const changeStringFormat = (value: string) => {
-    const replacedString = value.split('').map(word => word === '-' ? '.' : word).join('');
-    return replacedString;
-  }
 
   return <Box className='card'
     sx={{

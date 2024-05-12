@@ -13,5 +13,6 @@ export class VacationFormModel {
   description: string = "";
   startDate: string = "";
   endDate: string = "";
-  // imageName: string = "";
+  price: number = 0;
+  imageName: string = "";
 }
