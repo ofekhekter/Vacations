@@ -6,6 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationFormModel } from '../../Models/VacationModel';
 import './vacationCard.css';
+import { useState } from 'react';
 
 
 interface VacationCardProps {
@@ -15,8 +16,8 @@ interface VacationCardProps {
 
 export const VacationCard = ({ vacation, isEditable }: VacationCardProps) => {
     const { register, handleSubmit } = useForm<VacationFormModel>();
-
-    const submit = async (registerForm: VacationFormModel) => {
+    
+    const submit = (registerForm: VacationFormModel) => {
         console.log("register: ", registerForm.description);
         try {
             console.log("register");
@@ -25,7 +26,7 @@ export const VacationCard = ({ vacation, isEditable }: VacationCardProps) => {
         }
     }
 
-    return <section className="VacationContainer">
+    return <div className="VacationContainer">
         <Card
             onSubmit={handleSubmit(submit)}
             component="form"
@@ -102,5 +103,5 @@ export const VacationCard = ({ vacation, isEditable }: VacationCardProps) => {
                 }}>Cancel</Button>
             </Box>
         </Card>
-    </section>
+    </div>
 }

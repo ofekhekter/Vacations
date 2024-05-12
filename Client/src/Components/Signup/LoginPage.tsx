@@ -5,8 +5,8 @@ import { LoginFormModel } from "../../Models/RegisterFormModel";
 import { LoginCredentials } from "../../Models/UserModel";
 import { useState } from "react";
 import { SigninUser } from "../../services/usersServices";
-import './login.css';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import './login.css';
 
 export const LoginPage = () => {
     const navigate = useNavigate();
@@ -38,6 +38,7 @@ export const LoginPage = () => {
         <Box
             onSubmit={handleSubmit(submit)}
             component="form"
+            noValidate
             sx={{
                 backgroundColor: "#FFFFFF",
                 width: "400px",
@@ -47,7 +48,6 @@ export const LoginPage = () => {
                 boxShadow: '3px 3px 13px 5px #153448',
                 '& > :not(style)': { m: 1, width: '25ch' },
             }}
-            noValidate
         >
             <Typography gutterBottom variant="h5" component="div"
                 style={{ marginLeft: "250px" }}
@@ -79,6 +79,9 @@ export const LoginPage = () => {
                 />
             </FormControl>
             <Button variant="outlined" type="submit">Login</Button>
+            <Button variant="outlined" onClick={() => {
+                navigate('/addvacation');
+            }}>vacationCard</Button>
             {loginExists ? <span className="members">don't have account?</span> : <span className="userExists">incorrerct username or password</span>}
             <h4 className="login" onClick={() => {
                 navigate('/signup');

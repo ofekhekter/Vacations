@@ -9,7 +9,6 @@ export type VacationType = {
 };
 
 export class VacationFormModel {
-  id: number = 0;
   destination: string = "";
   description: string = "";
   startDate: string = "";
