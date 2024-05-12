@@ -1,12 +1,18 @@
-import { Box, Button, CardHeader, Divider, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material";
+import { Box, Button, CardHeader, Divider, FormControl, Input, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationFormModel } from '../../Models/VacationModel';
-import './vacationCard.css';
 import { changeStringFormat } from "../Card/Card";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import './vacationCard.css';
+import CustomFileInput from "./UploadFile";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface VacationCardProps {
     vacation?: VacationFormModel;
@@ -19,8 +25,8 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
     const submit = async (registerForm: VacationFormModel) => {
         try {
             console.log("register: ", registerForm);
-            const startDate = changeStringFormat(registerForm.startDate.substring(2, 10))
-            const endDate = changeStringFormat(registerForm.endDate.substring(2, 10))
+            const startDate = dayjs.utc(registerForm.startDate).tz(dayjs.tz.guess()).format();
+            const endDate = dayjs.utc(registerForm.endDate).tz(dayjs.tz.guess()).format();
             console.log("startDate: ", startDate);
             console.log("endDate: ", endDate);
         } catch {
@@ -70,7 +76,7 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                     marginBottom: -10,
                     color: "#63625B",
                 }}>
-                    start on:
+                    start on
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
@@ -84,7 +90,7 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                     marginBottom: -10,
                     color: "#63625B",
                 }}>
-                    end on:
+                    end on
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
@@ -104,13 +110,21 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                         {...register('price', { required: true })}
                     />
                 </FormControl>
+                <Typography style={{
+                    marginLeft: 16,
+                    marginBottom: 10,
+                    fontSize: 16,
+                    color: "#63625B",
+                }}>
+                    cover image
+                </Typography>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap: 1,
                 }}>
-                    <input type="file" className="filetype" />
+                    <CustomFileInput />
                     <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>
                     <Button variant="outlined" sx={{
                         width: "250px",
