@@ -3,16 +3,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
-import { VacationFormModel } from '../../Models/VacationModel';
-import { changeStringFormat } from "../Card/Card";
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import { VacationFormModel, VacationType } from '../../Models/VacationModel';
+import { addVacation } from "../../services/vacationsServices";
 import './vacationCard.css';
-import CustomFileInput from "./UploadFile";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 interface VacationCardProps {
     vacation?: VacationFormModel;
@@ -24,11 +17,15 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
 
     const submit = async (registerForm: VacationFormModel) => {
         try {
-            console.log("register: ", registerForm);
-            const startDate = dayjs.utc(registerForm.startDate).tz(dayjs.tz.guess()).format();
-            const endDate = dayjs.utc(registerForm.endDate).tz(dayjs.tz.guess()).format();
-            console.log("startDate: ", startDate);
-            console.log("endDate: ", endDate);
+            const vacation = {
+                "destination": registerForm.description,
+                "description": registerForm.description,
+                "startDate": registerForm.startDate,
+                "endDate": registerForm.endDate,
+                "price": registerForm.price,
+            } as unknown as VacationType;
+            const response = await addVacation(vacation);
+            console.log("response: ", response);
         } catch {
             console.log("error");
         }
@@ -124,7 +121,20 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                     alignItems: 'center',
                     gap: 1,
                 }}>
-                    <CustomFileInput />
+                    <div className="selectImage" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                        width: '300px',
+                        height: '120px',
+                        border: '1px solid black',
+                    }}>
+                        <label htmlFor="file-input">
+                            <span className="selectImage">Select Image</span>
+                            <Input id="file-input" type="file" className="filetype" style={{ display: 'none' }} />
+                        </label>
+                    </div>
                     <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>
                     <Button variant="outlined" sx={{
                         width: "250px",

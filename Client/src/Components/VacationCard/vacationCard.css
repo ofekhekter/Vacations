@@ -3,3 +3,10 @@
     justify-content: center;
     margin-top: 30px;
 }
+
+.selectImage:hover{
+    cursor: pointer;
+}
+.filetype:hover{
+    cursor: pointer;
+}

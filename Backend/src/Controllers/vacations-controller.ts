@@ -26,7 +26,7 @@ router.get("/vacations/:id", async (req: Request, res: Response, next: NextFunct
     }
   );
   
-  router.post("/vacations", verifyAdminMW, async (req: Request, res: Response, next: NextFunction) => {
+  router.post("/vacations", async (req: Request, res: Response, next: NextFunction) => {
       try {
         const vacation = req.body as VacationType;
         const newVacation = await addOneVacationLogic(vacation);
