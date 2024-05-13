@@ -15,4 +15,5 @@ export class VacationFormModel {
   endDate: string = "";
   price: number = 0;
   imageName: string = "";
+  image: HTMLImageElement = null;
 }

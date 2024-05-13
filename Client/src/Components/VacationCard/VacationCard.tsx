@@ -18,11 +18,12 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
     const submit = async (registerForm: VacationFormModel) => {
         try {
             const vacation = {
-                "destination": registerForm.description,
+                "destination": registerForm.destination,
                 "description": registerForm.description,
                 "startDate": registerForm.startDate,
                 "endDate": registerForm.endDate,
                 "price": registerForm.price,
+                "imageName": registerForm.destination,
             } as unknown as VacationType;
             const response = await addVacation(vacation);
             console.log("response: ", response);
@@ -132,7 +133,7 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                     }}>
                         <label htmlFor="file-input">
                             <span className="selectImage">Select Image</span>
-                            <Input id="file-input" type="file" className="filetype" style={{ display: 'none' }} />
+                            <input id="file-input" type="file" className="filetype" style={{ display: 'none' }} />
                         </label>
                     </div>
                     <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>
