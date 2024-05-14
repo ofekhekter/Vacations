@@ -1,4 +1,4 @@
-import { Box, Button, CardHeader, Divider, FormControl, Input, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material";
+import { Box, Button, CardHeader, Divider, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { VacationFormModel, VacationType } from '../../Models/VacationModel';
 import { addVacation } from "../../services/vacationsServices";
 import './vacationCard.css';
+import { useState } from "react";
 
 interface VacationCardProps {
     vacation?: VacationFormModel;
@@ -14,6 +15,7 @@ interface VacationCardProps {
 
 export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
     const { register, handleSubmit, setValue } = useForm<VacationFormModel>();
+    const [imageSrc, setImageSrc] = useState<string | null>(null);
 
     const submit = async (registerForm: VacationFormModel) => {
         try {
@@ -23,7 +25,7 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                 "startDate": registerForm.startDate,
                 "endDate": registerForm.endDate,
                 "price": registerForm.price,
-                "imageName": registerForm.destination,
+                "coverImage": imageSrc
             } as unknown as VacationType;
             const response = await addVacation(vacation);
             console.log("response: ", response);
@@ -31,6 +33,18 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
             console.log("error");
         }
     }
+
+    const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageSrc(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
 
     return <section className="VacationContainer">
         <form onSubmit={handleSubmit(submit)} noValidate>
@@ -127,13 +141,22 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         textAlign: 'center',
-                        width: '300px',
-                        height: '120px',
+                        width: '250px',
+                        height: '80px',
                         border: '1px solid black',
                     }}>
+                        {imageSrc && (
+                            <img src={imageSrc} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+                        )}
                         <label htmlFor="file-input">
                             <span className="selectImage">Select Image</span>
-                            <input id="file-input" type="file" className="filetype" style={{ display: 'none' }} />
+                            <input
+                                id="file-input"
+                                type="file"
+                                className="filetype"
+                                style={{ display: 'none' }}
+                                onChange={handleFileInputChange}
+                            />
                         </label>
                     </div>
                     <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>
