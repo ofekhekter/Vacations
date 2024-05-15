@@ -9,7 +9,7 @@ import path from 'path';
 
 const server = express();
 server.use(express.json());
-server.use(cors());
+server.use(cors({ origin: 'http://localhost:3000' }));
 server.use('/static', express.static(path.join(__dirname, 'Assets')));
 
 server.use('/api', authController);

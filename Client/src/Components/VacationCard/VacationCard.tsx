@@ -5,8 +5,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationFormModel, VacationType } from '../../Models/VacationModel';
 import { addVacation } from "../../services/vacationsServices";
-import './vacationCard.css';
 import { useState } from "react";
+import './vacationCard.css';
+import { addOneImage, getImageFile } from "../../services/imagesServices";
 
 interface VacationCardProps {
     vacation?: VacationFormModel;
@@ -19,6 +20,9 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
 
     const submit = async (registerForm: VacationFormModel) => {
         try {
+            if (!imageSrc) {
+                throw new Error('No image selected');
+            }
             const vacation = {
                 "destination": registerForm.destination,
                 "description": registerForm.description,
@@ -27,6 +31,8 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                 "price": registerForm.price,
                 "coverImage": imageSrc
             } as unknown as VacationType;
+            const imageFile = await getImageFile(imageSrc);
+            await addOneImage("test1", imageFile);
             const response = await addVacation(vacation);
             console.log("response: ", response);
         } catch {
