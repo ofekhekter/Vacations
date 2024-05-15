@@ -1,5 +1,4 @@
-import { UploadedFile } from "express-fileupload";
-
-export type ImageFileModel = {
-    imageFile: UploadedFile;
-}
+export type ImageModel = {
+  imageName: string;
+  imageFile: Express.Multer.File;
+};

@@ -943,3 +943,21 @@
 -----------------------------------------------------------------------------------------
 14.5.2024 - request entity too large
 -----------------------------------------------------------------------------------------
+15/05/2024 - request entity too large
+-----------------------------------------------------------------------------------------
+15/05/2024 - The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+-----------------------------------------------------------------------------------------
+15/05/2024 - The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+-----------------------------------------------------------------------------------------
+15/05/2024 - The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+-----------------------------------------------------------------------------------------
+15/05/2024 - The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+-----------------------------------------------------------------------------------------
+15/05/2024 - The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+-----------------------------------------------------------------------------------------
+15/05/2024 - The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+-----------------------------------------------------------------------------------------
+15/05/2024 - The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+-----------------------------------------------------------------------------------------
+15/05/2024 - No image file provided
+-----------------------------------------------------------------------------------------

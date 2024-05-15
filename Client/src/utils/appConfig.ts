@@ -11,6 +11,7 @@ export const appConfig: AppConfig = {
     vacation: "/vacations",
     signup: "/auth/signup",
     signin: "/auth/signin",
+    addOneImage: "/images",
   },
   delete: {
     vacation: "/vacations/",
