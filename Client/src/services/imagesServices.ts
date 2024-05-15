@@ -1,6 +1,5 @@
 import axios from "axios";
 import { appConfig } from "../utils/appConfig";
-import { ImageModel } from "../Models/ImageModel";
 
 export const getOneImage = async (imageName: string): Promise<Buffer> => {
   const fullUrl = appConfig.baseUrl + appConfig.get.oneImage + imageName;
