@@ -4,6 +4,7 @@ import { HomeScreen } from "../Components/HomeScreen/HomeScreen";
 import { RegisterPage } from "../Components/Signup/RegisterPage";
 import { LoginPage } from "../Components/Signup/LoginPage";
 import { VacationCard } from "../Components/VacationCard/VacationCard";
+import StandardImageList from "../Components/Layout/StandardImageList";
 
 
 export const router = createBrowserRouter([
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/home",
+        element: <StandardImageList />,
+      },
+      {
+        path: "/userPage",
         element: <HomeScreen />,
       },
       {

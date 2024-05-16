@@ -32,7 +32,7 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                 "coverImage": imageSrc
             } as unknown as VacationType;
             const imageFile = await getImageFile(imageSrc);
-            await addOneImage("test1", imageFile);
+            await addOneImage(registerForm.destination, imageFile);
             const response = await addVacation(vacation);
             console.log("response: ", response);
         } catch {

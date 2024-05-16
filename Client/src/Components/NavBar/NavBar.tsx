@@ -1,16 +1,32 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
-import "./navbar.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../features/loginSlice";
+import "./navbar.css";
+import { emailAddress } from "../../features/emailSlice";
 
 export const Navbar = () => {
     const navigate = useNavigate();
+    const loginState = useSelector((state: any) => state.login.text);
+    const userEmail = useSelector((state: any) => state.emailAddress.text);
+    const dispatch = useDispatch()
 
     const handleSigninClicked = () => {
-        navigate('/signin');
+        if (loginState === 'Login') {
+            navigate('/signin');
+        } else {
+            dispatch(login("Login"));
+            dispatch(emailAddress(""));
+            navigate('/home');
+        }
     }
 
     const handleHomeClicked = () => {
         navigate('/home');
+    }
+
+    const handleCardClicked = () => {
+        navigate('/userPage');
     }
 
     const handleVacationClicked = () => {
@@ -18,16 +34,19 @@ export const Navbar = () => {
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar className="appBar" position="static" style={{ backgroundColor: "#153448" }}>
-                <Toolbar>
-                    <Typography onClick={handleHomeClicked} variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Vacations
+        <AppBar className="appBar" position="static" style={{ backgroundColor: "#153448" }}>
+            <Toolbar sx={{ display: 'flex', justifyContent: "space-between" }}>
+                <Typography onClick={handleHomeClicked} variant="h6" component="div">
+                    Vacations
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
+                    <Typography variant="subtitle2" onClick={handleCardClicked} component="address">
+                        {userEmail}
                     </Typography>
-                    <Button onClick={handleSigninClicked} color="inherit">Login</Button>
-                    <Button onClick={handleVacationClicked} color="inherit">Add Vacation</Button>
-                </Toolbar>
-            </AppBar>
-        </Box >
+                    <Button onClick={handleSigninClicked} color="inherit">{loginState}</Button>
+                </Box>
+                {/* <Button onClick={handleVacationClicked} color="inherit">Add Vacation</Button> */}
+            </Toolbar>
+        </AppBar>
     );
 };

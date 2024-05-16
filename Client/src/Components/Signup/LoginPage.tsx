@@ -6,13 +6,17 @@ import { LoginCredentials } from "../../Models/UserModel";
 import { useState } from "react";
 import { SigninUser } from "../../services/usersServices";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/loginSlice";
 import './login.css';
+import { emailAddress } from "../../features/emailSlice";
 
 export const LoginPage = () => {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm<LoginFormModel>();
     const [loginExists, setLoginExists] = useState<boolean>(true);
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const dispatch = useDispatch()
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -29,7 +33,12 @@ export const LoginPage = () => {
             } as LoginCredentials;
             const response = await SigninUser(user);
             if (response === undefined) setLoginExists(false);
-            else setLoginExists(true);
+            else {
+                setLoginExists(true);
+                dispatch(login("Logout"));
+                dispatch(emailAddress(registerForm.email));
+                navigate("/userPage");
+            }
         } catch {
             console.log("error");
         }
