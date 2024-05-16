@@ -3,12 +3,10 @@ import { appConfig } from "../utils/appConfig";
 
 export const getOneImage = async (imageName: string): Promise<Buffer> => {
   const fullUrl = appConfig.baseUrl + appConfig.get.oneImage + imageName;
-
   const data = await axios
     .get(fullUrl)
     .then((res) => res.data)
     .catch((e) => console.log(e));
-
   return data as Buffer;
 };
 
@@ -17,7 +15,6 @@ export const addOneImage = async (imageName: string, imageFile: File): Promise<v
   const formData = new FormData();
   formData.append('imageName', imageName);
   formData.append('imageFile', imageFile);
-
   try {
     const response = await axios.post(fullUrl, formData);
     console.log('Image uploaded successfully:', response.data);
