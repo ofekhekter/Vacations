@@ -10,6 +10,7 @@ export type AppConfig = {
     signup: string;
     signin: string;
     addOneImage: string;
+    isAdmin: string;
   };
   update: {
     vacation: string;

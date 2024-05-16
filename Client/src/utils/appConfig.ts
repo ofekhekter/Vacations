@@ -12,6 +12,7 @@ export const appConfig: AppConfig = {
     signup: "/auth/signup",
     signin: "/auth/signin",
     addOneImage: "/images",
+    isAdmin: "/auth/isadmin",
   },
   delete: {
     vacation: "/vacations/",

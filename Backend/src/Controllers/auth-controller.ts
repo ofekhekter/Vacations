@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { LoginCredentials, UserType } from "../Models/UserModel";
-import {  loginUserLogic, signupUserLogic } from "../Logic/auth-logic";
+import {  isAdminLogic, loginUserLogic, signupUserLogic } from "../Logic/auth-logic";
 
 const router = express.Router();
 
@@ -20,6 +20,17 @@ router.post("/auth/signin", async (req: Request, res: Response, next: NextFuncti
       const login = req.body as LoginCredentials;
       const token = await loginUserLogic(login);
       res.status(200).json(token);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.post("/auth/isadmin", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const email = req.body as { email: string };
+      const isAdmin = await isAdminLogic(email.email);
+      res.status(200).json(isAdmin);
     } catch (err) {
       next(err);
     }

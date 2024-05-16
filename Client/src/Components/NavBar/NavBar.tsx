@@ -2,14 +2,15 @@ import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/loginSlice";
-import "./navbar.css";
 import { emailAddress } from "../../features/emailSlice";
+import "./navbar.css";
 
 export const Navbar = () => {
     const navigate = useNavigate();
     const loginState = useSelector((state: any) => state.login.text);
     const userEmail = useSelector((state: any) => state.emailAddress.text);
-    const dispatch = useDispatch()
+    const isAdmin = useSelector((state: any) => state.admin);
+    const dispatch = useDispatch();
 
     const handleSigninClicked = () => {
         if (loginState === 'Login') {
@@ -39,13 +40,13 @@ export const Navbar = () => {
                 <Typography onClick={handleHomeClicked} variant="h6" component="div">
                     Vacations
                 </Typography>
+                {isAdmin ? <Button onClick={handleVacationClicked} sx={{ color: "#B0EBB4" }}>Add Vacation</Button> : <span></span>}
                 <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
                     <Typography variant="subtitle2" onClick={handleCardClicked} component="address">
                         {userEmail}
                     </Typography>
                     <Button onClick={handleSigninClicked} color="inherit">{loginState}</Button>
                 </Box>
-                {/* <Button onClick={handleVacationClicked} color="inherit">Add Vacation</Button> */}
             </Toolbar>
         </AppBar>
     );

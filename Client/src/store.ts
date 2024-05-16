@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import usersSlice from "./features/usersSlice";
+import adminSlice from "./features/adminSlice";
 import emailSlice from "./features/emailSlice";
 import loginSlice from "./features/loginSlice";
 
 export const store = configureStore({
   reducer: {
-    users: usersSlice,
+    admin: adminSlice,
     emailAddress: emailSlice,
     login: loginSlice,
   },
