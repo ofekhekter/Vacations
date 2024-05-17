@@ -2,9 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const adminSlice = createSlice({
   name: "user",
-  initialState: false,
+  initialState: {
+    isAdmin: false,
+  },
   reducers: {
-    userRole: (state: boolean) => !state,
+    userRole: (state, action) => {
+      state.isAdmin = action.payload;
+    },
   },
 });
 

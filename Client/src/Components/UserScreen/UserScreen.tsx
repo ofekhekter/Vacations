@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { getAllVacations } from "../../services/vacationsServices";
 import { VacationType } from "../../Models/VacationModel";
 import { Card } from "../Card/Card";
-import './homeScreen.css';
+import './userScreen.css';
 
 
-export const HomeScreen = () => {
+export const UserScreen = () => {
     const [vacations, setVacations] = useState<VacationType[]>();
 
     useEffect(() => {

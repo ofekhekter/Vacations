@@ -29,7 +29,6 @@ export const RegisterPage = () => {
 
     const submit = async (registerForm: RegisterFormModel) => {
         try {
-            console.log("register: ", registerForm);
             const newUser = {
                 firstName: registerForm.firstName,
                 lastName: registerForm.lastName,
@@ -45,7 +44,7 @@ export const RegisterPage = () => {
                 setUserExists(false);
                 dispatch(login("Logout"));
                 dispatch(emailAddress(registerForm.email));
-                navigate('/userPage');
+                navigate('/userpage');
             }
         } catch {
             console.log("error");

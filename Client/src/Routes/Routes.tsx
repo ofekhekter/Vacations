@@ -1,16 +1,17 @@
-import { Outlet, createBrowserRouter } from "react-router-dom";
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 import { Navbar } from "../Components/NavBar/NavBar";
-import { HomeScreen } from "../Components/HomeScreen/HomeScreen";
+import { UserScreen } from "../Components/UserScreen/UserScreen";
 import { RegisterPage } from "../Components/Signup/RegisterPage";
 import { LoginPage } from "../Components/Signup/LoginPage";
+import { HomePage } from "../Components/HomePage/HomePage";
 import { VacationCard } from "../Components/VacationCard/VacationCard";
-import StandardImageList from "../Components/Layout/StandardImageList";
+import NotFound from "../Components/404Page/NotFound";
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: 
+    element:
       <>
         <Navbar />
         <Outlet />
@@ -18,12 +19,16 @@ export const router = createBrowserRouter([
     ,
     children: [
       {
-        path: "/home",
-        element: <StandardImageList />,
+        path: "/",
+        element: <Navigate to="/home" replace />,
       },
       {
-        path: "/userPage",
-        element: <HomeScreen />,
+        path: "/home",
+        element: <HomePage />,
+      },
+      {
+        path: "/userpage",
+        element: <UserScreen />,
       },
       {
         path: "/signin",
@@ -35,7 +40,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/addvacation",
-        element: <VacationCard isEditable={false}/>,
+        element: <VacationCard isEditable={false} />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },

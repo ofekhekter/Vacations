@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/loginSlice";
 import { emailAddress } from "../../features/emailSlice";
+import { userRole } from "../../features/adminSlice";
 import "./navbar.css";
 
 export const Navbar = () => {
     const navigate = useNavigate();
     const loginState = useSelector((state: any) => state.login.text);
     const userEmail = useSelector((state: any) => state.emailAddress.text);
-    const isAdmin = useSelector((state: any) => state.admin);
+    const isAdmin = useSelector((state: any) => state.userRole.isAdmin);
     const dispatch = useDispatch();
 
     const handleSigninClicked = () => {
@@ -18,6 +19,7 @@ export const Navbar = () => {
         } else {
             dispatch(login("Login"));
             dispatch(emailAddress(""));
+            dispatch(userRole(false));
             navigate('/home');
         }
     }
@@ -27,7 +29,7 @@ export const Navbar = () => {
     }
 
     const handleCardClicked = () => {
-        navigate('/userPage');
+        navigate('/userpage');
     }
 
     const handleVacationClicked = () => {

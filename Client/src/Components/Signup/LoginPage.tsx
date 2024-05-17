@@ -41,7 +41,7 @@ export const LoginPage = () => {
                 dispatch(login("Logout"));
                 dispatch(emailAddress(registerForm.email));
                 setLoginExists(true);
-                navigate("/userPage");
+                navigate("/userpage");
             }
         } catch {
             console.log("error");
