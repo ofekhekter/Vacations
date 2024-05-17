@@ -38,16 +38,21 @@ export const Navbar = () => {
 
     return (
         <AppBar className="appBar" position="static" style={{ backgroundColor: "#153448" }}>
-            <Toolbar sx={{ display: 'flex', justifyContent: "space-between" }}>
+            <Toolbar sx={{ display: 'flex', justifyContent: "space-between"}}>
                 <Typography onClick={handleHomeClicked} variant="h6" component="div">
-                    Vacations
+                    Home
                 </Typography>
-                {isAdmin ? <Button onClick={handleVacationClicked} sx={{ color: "#B0EBB4" }}>Add Vacation</Button> : <span></span>}
-                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: "center" }}>
-                    <Typography variant="subtitle2" onClick={handleCardClicked} component="address">
+                <Box sx={{display: "flex"}}>
+                    <Typography variant="h4" sx={{}} component="div">
+                        Vacations
+                    </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: "center" }}>
+                    <Typography variant="subtitle2" onClick={handleCardClicked} sx={{marginRight: "6px"}}>
                         {userEmail}
                     </Typography>
-                    <Button onClick={handleSigninClicked} color="inherit">{loginState}</Button>
+                    {isAdmin ? <Button onClick={handleVacationClicked} sx={{ color: "#B0EBB4", border: "1px solid white", marginRight: "6px" }}>Add Vacation</Button> : <span></span>}
+                    <Button onClick={handleSigninClicked} color="inherit" sx={{ border: "1px solid white" }}>{loginState}</Button>
                 </Box>
             </Toolbar>
         </AppBar>
