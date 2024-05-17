@@ -3,25 +3,30 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
-import { VacationFormModel, VacationType } from '../../Models/VacationModel';
+import { VacationType } from '../../Models/VacationModel';
 import { addVacation } from "../../services/vacationsServices";
 import { useState } from "react";
-import './vacationCard.css';
 import { addOneImage, getImageFile } from "../../services/imagesServices";
+import dayjs, { Dayjs } from 'dayjs';
+import './vacationCard.css';
+import { useNavigate } from "react-router-dom";
 
 interface VacationCardProps {
-    vacation?: VacationFormModel;
+    vacation?: VacationType;
     isEditable: boolean;
 }
 
 export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
-    const { register, handleSubmit, setValue } = useForm<VacationFormModel>();
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
+    const navigate = useNavigate();
+    const { register, handleSubmit, setValue } = useForm<VacationType>();
+    const [imageSrc, setImageSrc] = useState<string>("");
+    const [selectImage, setSelectImage] = useState<string>("Select Image");
+    const today: Dayjs = dayjs();
 
-    const submit = async (registerForm: VacationFormModel) => {
+    const submit = async (registerForm: VacationType) => {
         try {
             if (!imageSrc) {
-                throw new Error('No image selected');
+                setSelectImage("no image selected");
             }
             const vacation = {
                 "destination": registerForm.destination,
@@ -29,12 +34,13 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                 "startDate": registerForm.startDate,
                 "endDate": registerForm.endDate,
                 "price": registerForm.price,
-                "coverImage": imageSrc
-            } as unknown as VacationType;
+                "imageName": registerForm.destination
+            } as VacationType;
             const imageFile = await getImageFile(imageSrc);
             await addOneImage(registerForm.destination, imageFile);
             const response = await addVacation(vacation);
             console.log("response: ", response);
+            navigate('/userpage');
         } catch {
             console.log("error");
         }
@@ -98,6 +104,7 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                        minDate={today}
                         {...register('startDate', { required: true })}
                         onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
                         sx={{ m: 2, width: '28ch' }}
@@ -155,7 +162,7 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                             <img src={imageSrc} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                         )}
                         <label htmlFor="file-input">
-                            <span className="selectImage">Select Image</span>
+                            <span className="selectImage">{selectImage}</span>
                             <input
                                 id="file-input"
                                 type="file"

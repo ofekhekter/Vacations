@@ -8,7 +8,7 @@ import imagesController from './Controllers/images-controller';
 import path from 'path';
 
 const server = express();
-server.use(express.json());
+server.use(express.json({limit: '50mb'}));
 server.use(cors({ origin: 'http://localhost:3000' }));
 server.use('/static', express.static(path.join(__dirname, 'Assets')));
 

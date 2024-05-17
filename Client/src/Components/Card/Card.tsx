@@ -1,7 +1,10 @@
-import { Box, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
+import { Box, Button, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { VacationType } from '../../Models/VacationModel';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { currentVacation } from '../../features/vacationSlice';
 import './card.css';
 
 interface CardProps {
@@ -14,13 +17,21 @@ export const changeStringFormat = (value: string) => {
 }
 
 export const Card = ({ vacation }: CardProps) => {
+  const navigate = useNavigate();
   const [favorites, setFavorites] = useState<boolean>(false);
   const [imageError, setImageError] = useState(false);
-
+  const isAdmin = useSelector((state: any) => state.userRole.isAdmin);
+  const dispatch = useDispatch();
+  
   const handleImageError = () => {
     setImageError(true);
   };
 
+  const handleEdit = () => {
+    dispatch(currentVacation(vacation));
+    navigate('/editvacation');
+  };
+  
   const handleFavorites = () => {
     favorites ? setFavorites(false) : setFavorites(true);
   };
@@ -39,12 +50,19 @@ export const Card = ({ vacation }: CardProps) => {
         sx={{ color: "white" }}
         title={vacation.destination}
       />
-      {favorites ? <IconButton onClick={() => handleFavorites()} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
-        <FavoriteIcon />
-      </IconButton> : <IconButton onClick={() => handleFavorites()} style={{ color: "white" }} className='favorites' aria-label="add to favorites">
-        <FavoriteIcon />
-      </IconButton>
-      }
+      {isAdmin === true ? (
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Button onClick={() => handleEdit()} sx={{ color: "#B0EBB4", backgroundColor: "#006769", height: "25px", width: "60px" }} size="small">Edit</Button>
+          <Button sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
+        </Box>
+      ) : (
+        favorites ? (<IconButton onClick={() => handleFavorites()} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>) : (<IconButton onClick={() => handleFavorites()} style={{ color: "white" }} className='favorites' aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>
+        )
+      )}
     </Box>
     <Typography variant="body2" color="white">
       {changeStringFormat(vacation.startDate.substring(2, 10)) + ' - ' + changeStringFormat(vacation.endDate.substring(2, 10))}

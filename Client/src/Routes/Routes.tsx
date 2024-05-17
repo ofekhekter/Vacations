@@ -43,6 +43,10 @@ export const router = createBrowserRouter([
         element: <VacationCard isEditable={false} />,
       },
       {
+        path: "/editvacation'",
+        element: <VacationCard isEditable={true} />,
+      },
+      {
         path: "*",
         element: <NotFound />,
       },

@@ -30,7 +30,6 @@ export const addVacation = async ( vacation: VacationType ): Promise<VacationTyp
     const data = await axios.post(fullUrl, vacation);
     return data;
   } catch (e: any) {
-    console.log(e);
     return e.response.data;
   }
 };
