@@ -1159,3 +1159,7 @@
 -----------------------------------------------------------------------------------------
 18.5.2024 - can't find the resource you want:  0
 -----------------------------------------------------------------------------------------
+18.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Liberté, Egalité, Fraternité" first appeared during the French Revolution....' at line 2
+-----------------------------------------------------------------------------------------
+18.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Liberté, Egalité, Fraternité" first appeared during the French Revolution....' at line 2
+-----------------------------------------------------------------------------------------
