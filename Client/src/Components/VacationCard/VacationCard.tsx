@@ -25,7 +25,6 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const today: Dayjs = dayjs();
     const minEndDate = dayjs().add(1, 'day');
     const [oneVacation, setOneVacation] = useState<VacationType>();
-    const [price, setPrice] = useState<number>(0);
 
     useEffect(() => {
         const fetchAllVacations = async () => {
@@ -180,6 +179,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     {isEditMode ? (<OutlinedInput
                         type="number"
                         id="outlined-adornment-amount"
+                        multiline
                         defaultValue={oneVacation?.price}
                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         label="price"
@@ -222,13 +222,20 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                         )}
                         <label htmlFor="file-input">
                             <span className="selectImage">{selectImage}</span>
-                            <input
+                            {isEditMode ? (<input
+                                id="file-input"
+                                type="file"
+                                className="filetype"
+                                style={{ display: 'none' }}
+                                src={`http://localhost:3001/static/images/${oneVacation?.imageName}.jpg`}
+                                onChange={handleFileInputChange}
+                            />) : (<input
                                 id="file-input"
                                 type="file"
                                 className="filetype"
                                 style={{ display: 'none' }}
                                 onChange={handleFileInputChange}
-                            />
+                            />)}
                         </label>
                     </div>
                     {isEditMode ? <Button variant="contained" type="submit" sx={{ width: "250px" }}>Update</Button> :
