@@ -12,8 +12,8 @@ interface CardProps {
 }
 
 export const changeStringFormat = (value: string) => {
-  const replacedString = value.split('').map(word => word === '-' ? '.' : word).join('');
-  return replacedString;
+  const [year, month, day] = value.split('').map(word => word === '-' ? '.' : word).join('').split('.');
+  return `${day}.${month}.${year}`;
 }
 
 export const Card = ({ vacation }: CardProps) => {
@@ -22,16 +22,16 @@ export const Card = ({ vacation }: CardProps) => {
   const [imageError, setImageError] = useState(false);
   const isAdmin = useSelector((state: any) => state.userRole.isAdmin);
   const dispatch = useDispatch();
-  
+
   const handleImageError = () => {
     setImageError(true);
   };
 
   const handleEdit = () => {
-    dispatch(currentVacation(vacation));
+    dispatch(currentVacation(vacation.vacationId));
     navigate('/editvacation');
   };
-  
+
   const handleFavorites = () => {
     favorites ? setFavorites(false) : setFavorites(true);
   };
@@ -50,9 +50,9 @@ export const Card = ({ vacation }: CardProps) => {
         sx={{ color: "white" }}
         title={vacation.destination}
       />
-      {isAdmin === true ? (
+      {isAdmin ? (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Button onClick={() => handleEdit()} sx={{ color: "#B0EBB4", backgroundColor: "#006769", height: "25px", width: "60px" }} size="small">Edit</Button>
+          <Button onClick={handleEdit} sx={{ color: "#B0EBB4", backgroundColor: "#006769", height: "25px", width: "60px" }} size="small">Edit</Button>
           <Button sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
         </Box>
       ) : (

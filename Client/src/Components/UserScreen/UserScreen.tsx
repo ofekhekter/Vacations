@@ -7,6 +7,7 @@ import './userScreen.css';
 
 export const UserScreen = () => {
     const [vacations, setVacations] = useState<VacationType[]>();
+    console.log("vacations: ", vacations)
 
     useEffect(() => {
         const fetchAllVacations = async () => {
@@ -16,7 +17,7 @@ export const UserScreen = () => {
         fetchAllVacations();
     }, []);
 
-    const allMoviesCards = vacations?.map((vacation, index) => {
+    const allVacationsCards = vacations?.map((vacation, index) => {
 
         return (
             <Card key={index} vacation={vacation}/>
@@ -26,7 +27,7 @@ export const UserScreen = () => {
     return (
         <>
             <section className="homeScreen">
-                {allMoviesCards}
+                {allVacationsCards}
             </section>
         </>
     );

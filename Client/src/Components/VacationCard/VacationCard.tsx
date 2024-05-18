@@ -4,24 +4,36 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationType } from '../../Models/VacationModel';
-import { addVacation } from "../../services/vacationsServices";
-import { useState } from "react";
+import { addVacation, getOneVacation } from "../../services/vacationsServices";
+import { useEffect, useState } from "react";
 import { addOneImage, getImageFile } from "../../services/imagesServices";
 import dayjs, { Dayjs } from 'dayjs';
-import './vacationCard.css';
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import './vacationCard.css';
 
 interface VacationCardProps {
-    vacation?: VacationType;
-    isEditable: boolean;
+    isEditMode: boolean;
 }
 
-export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
+export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const navigate = useNavigate();
     const { register, handleSubmit, setValue } = useForm<VacationType>();
     const [imageSrc, setImageSrc] = useState<string>("");
     const [selectImage, setSelectImage] = useState<string>("Select Image");
+    const vacationId = useSelector((state: any) => state.currentVacation.vacationId);
     const today: Dayjs = dayjs();
+    const minEndDate = dayjs().add(1, 'day');
+    const [oneVacation, setOneVacation] = useState<VacationType>();
+    const [price, setPrice] = useState<number>(0);
+
+    useEffect(() => {
+        const fetchAllVacations = async () => {
+            const vacation = await getOneVacation(vacationId);
+            setOneVacation(vacation);
+        };
+        fetchAllVacations();
+    }, [vacationId]);
 
     const submit = async (registerForm: VacationType) => {
         try {
@@ -74,18 +86,40 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                     flexDirection: 'column',
                     color: "#153448",
                 }}
-                    title='Add Vacation'
+                    title={isEditMode ? 'Edit Vacation' : 'Add Vacation'}
                 />
                 <Divider variant="middle" />
-                <TextField
+                {isEditMode ? (<TextField
+                    id="outlined-full-width"
+                    label="destination"
+                    required
+                    multiline
+                    rows={1}
+                    InputLabelProps={{ shrink: true }}
+                    defaultValue={oneVacation?.destination}
+                    variant="outlined"
+                    style={{ margin: 16 }}
+                    {...register('destination', { required: true })}
+                />) : (<TextField
                     id="outlined-full-width"
                     label="destination"
                     required
                     variant="outlined"
                     style={{ margin: 16 }}
                     {...register('destination', { required: true })}
-                />
-                <TextField
+                />)}
+                {isEditMode ? (<TextField
+                    id="outlined-multiline-static"
+                    label="description"
+                    required
+                    InputLabelProps={{ shrink: true }}
+                    defaultValue={oneVacation?.description}
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    style={{ margin: 16 }}
+                    {...register('description', { required: true })}
+                />) : (<TextField
                     id="outlined-multiline-static"
                     label="description"
                     required
@@ -94,7 +128,7 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                     variant="outlined"
                     style={{ margin: 16 }}
                     {...register('description', { required: true })}
-                />
+                />)}
                 <Typography style={{
                     marginLeft: 16,
                     marginBottom: -10,
@@ -102,14 +136,22 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                 }}>
                     start on
                 </Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        value={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
+                        minDate={today}
+                        {...register('startDate', { required: true })}
+                        onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        sx={{ m: 2, width: '28ch' }}
+                    />
+                </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         minDate={today}
                         {...register('startDate', { required: true })}
                         onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
                         sx={{ m: 2, width: '28ch' }}
                     />
-                </LocalizationProvider>
+                </LocalizationProvider>)}
                 <Typography style={{
                     marginLeft: 16,
                     marginBottom: -10,
@@ -117,23 +159,40 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                 }}>
                     end on
                 </Typography>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                        value={oneVacation?.endDate ? dayjs(oneVacation.endDate) : null}
+                        minDate={minEndDate}
                         {...register('endDate', { required: true })}
                         onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
                         sx={{ m: 2, width: '28ch' }}
                     />
-                </LocalizationProvider>
+                </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        minDate={minEndDate}
+                        {...register('endDate', { required: true })}
+                        onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        sx={{ m: 2, width: '28ch' }}
+                    />
+                </LocalizationProvider>)}
                 <FormControl style={{ margin: 16 }}>
                     <InputLabel htmlFor="outlined-adornment-amount">price</InputLabel>
-                    <OutlinedInput
+                    {isEditMode ? (<OutlinedInput
+                        type="number"
+                        id="outlined-adornment-amount"
+                        defaultValue={oneVacation?.price}
+                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                        label="price"
+                        required
+                        {...register('price', { required: true })}
+                    />) : (<OutlinedInput
                         type="number"
                         id="outlined-adornment-amount"
                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         label="price"
                         required
                         {...register('price', { required: true })}
-                    />
+                    />)}
                 </FormControl>
                 <Typography style={{
                     marginLeft: 16,
@@ -172,7 +231,8 @@ export const VacationCard = ({ isEditable, vacation }: VacationCardProps) => {
                             />
                         </label>
                     </div>
-                    <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>
+                    {isEditMode ? <Button variant="contained" type="submit" sx={{ width: "250px" }}>Update</Button> :
+                        <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>}
                     <Button variant="outlined" sx={{
                         width: "250px",
                         marginBottom: "10px",

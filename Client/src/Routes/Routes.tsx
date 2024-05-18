@@ -40,11 +40,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/addvacation",
-        element: <VacationCard isEditable={false} />,
+        element: <VacationCard isEditMode={false} />,
       },
       {
-        path: "/editvacation'",
-        element: <VacationCard isEditable={true} />,
+        path: "/editvacation",
+        element: <VacationCard isEditMode={true} />,
       },
       {
         path: "*",

@@ -16,6 +16,8 @@ export const getAllVacations = async (): Promise<VacationType[]> => {
 export const getOneVacation = async (id: string): Promise<VacationType> => {
   const fullUrl = appConfig.baseUrl + appConfig.get.oneVacation + id;
 
+  console.log("fullUrl: " , fullUrl);
+
   const data = await axios
     .get(fullUrl)
     .then((res) => res.data)
@@ -37,7 +39,7 @@ export const addVacation = async ( vacation: VacationType ): Promise<VacationTyp
 export const updateVacation = async (
   vacation: VacationType
 ): Promise<VacationType> => {
-  const fullUrl = appConfig.baseUrl + appConfig.update.vacation + vacation.id;
+  const fullUrl = appConfig.baseUrl + appConfig.update.vacation + vacation.vacationId;
   const formData = new FormData().append("Vacation", JSON.stringify(vacation));
   const data = await axios
     .put(fullUrl, formData)

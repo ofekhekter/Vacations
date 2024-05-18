@@ -1,5 +1,5 @@
 export type VacationType = {
-  id: number;
+  vacationId: number;
   destination: string;
   description: string;
   startDate: string;
@@ -7,12 +7,3 @@ export type VacationType = {
   price: number;
   imageName: string;
 };
-
-// export class VacationFormModel {
-//   destination: string = "";
-//   description: string = "";
-//   startDate: string = "";
-//   endDate: string = "";
-//   price: number = 0;
-//   coverImage: string = "";
-// }
