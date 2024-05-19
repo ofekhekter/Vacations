@@ -11,6 +11,7 @@ export type AppConfig = {
     signin: string;
     addOneImage: string;
     isAdmin: string;
+    addFollow: string;
   };
   update: {
     vacation: string;
@@ -18,5 +19,6 @@ export type AppConfig = {
   delete: {
     vacation: string;
     removeImage: string;
+    removeFollow: string;
   };
 };

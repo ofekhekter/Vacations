@@ -1249,3 +1249,27 @@
 -----------------------------------------------------------------------------------------
 19/05/2024 - can't find the resource you want:  0
 -----------------------------------------------------------------------------------------
+19.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 2
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_BAD_FIELD_ERROR: Unknown column 'vacationId' in 'field list'
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_DUP_ENTRY: Duplicate entry '54' for key 'userId_2'
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_DUP_ENTRY: Duplicate entry '54' for key 'userId_2'
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_DUP_ENTRY: Duplicate entry '57' for key 'userId_2'
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_DUP_ENTRY: Duplicate entry '57' for key 'userId_2'
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_DUP_ENTRY: Duplicate entry '57' for key 'userId_2'
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_DUP_ENTRY: Duplicate entry '54' for key 'userId_2'
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`))
+-----------------------------------------------------------------------------------------
+19.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+19.5.2024 - ER_DUP_ENTRY: Duplicate entry '57' for key 'userId_2'
+-----------------------------------------------------------------------------------------

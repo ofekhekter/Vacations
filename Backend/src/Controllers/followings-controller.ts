@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.post("/followings/:vacationId", async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = req.body as number;
+      const userId = req.body as { userId: number };
       const vacationId = +req.params.vacationId;
-      await addfollowingLogic(userId, vacationId);
+      await addfollowingLogic(userId.userId, vacationId);
       res.status(201).json("add following successfully");
     } catch (err) {
       next(err);

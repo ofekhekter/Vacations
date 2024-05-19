@@ -13,10 +13,12 @@ export const appConfig: AppConfig = {
     signin: "/auth/signin",
     addOneImage: "/images",
     isAdmin: "/auth/isadmin",
+    addFollow: "/followings/",
   },
   delete: {
     vacation: "/vacations/",
     removeImage: "/images/",
+    removeFollow: "/followings/",
   },
   update: {
     vacation: "/vacations/",
