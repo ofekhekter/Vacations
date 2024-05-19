@@ -17,6 +17,7 @@ export const Navbar = () => {
         if (loginState === 'Login') {
             navigate('/signin');
         } else {
+            localStorage.removeItem("token");
             dispatch(login("Login"));
             dispatch(emailAddress(""));
             dispatch(userRole(false));

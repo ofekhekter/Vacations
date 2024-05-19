@@ -5,11 +5,11 @@ import { RegisterFormModel } from "../../Models/RegisterFormModel";
 import { UserType } from "../../Models/UserModel";
 import { SignupUser } from "../../services/usersServices";
 import { useState } from "react";
-import './login.css';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/loginSlice";
 import { emailAddress } from "../../features/emailSlice";
+import './login.css';
 
 
 export const RegisterPage = () => {
@@ -36,11 +36,11 @@ export const RegisterPage = () => {
                 password: registerForm.password,
             } as UserType;
             const response = await SignupUser(newUser);
-            if (response === "email must have at least 12 characters and special char" || response === "User is already exists" || response === `"firstName" length must be at least 2 characters long` || response === `"lastName" length must be at least 2 characters long`) {
+            if (response.status !== 201) {
                 setUserExists(true);
                 setUserResponse(response);
-            }
-            else {
+            } else {
+                localStorage.setItem('token', response.data);
                 setUserExists(false);
                 dispatch(login("Logout"));
                 dispatch(emailAddress(registerForm.email));

@@ -36,6 +36,7 @@ export const LoginPage = () => {
                 setLoginExists(false);
             }
             else {
+                localStorage.setItem('token', response);
                 const result = await checkIsAdmin({ email: registerForm.email });
                 dispatch(userRole(result));
                 dispatch(login("Logout"));
