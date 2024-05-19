@@ -2,7 +2,6 @@ import express, { NextFunction, Request, Response } from "express";
 import { addOneVacationLogic, deleteVacationLogic, getAllVacationsLogic, getOneVacationLogic, updateVacationLogic } from "../Logic/vacations-logic";
 import { VacationType } from "../Models/VacationModel";
 import { verifyAdminMW } from "../Middleware/varify-admin";
-import { upload } from "../Middleware/multer";
 
 const router = express.Router();
 

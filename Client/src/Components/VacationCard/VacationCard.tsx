@@ -39,23 +39,23 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
         try {
             if (!imageSrc) {
                 setSelectImage("no image selected");
-            }
-            const vacation = {
-                "destination": registerForm.destination,
-                "description": registerForm.description,
-                "startDate": registerForm.startDate,
-                "endDate": registerForm.endDate,
-                "price": registerForm.price,
-                "imageName": registerForm.destination
-            } as VacationType;
-            const imageFile = await getImageFile(imageSrc);
-            await addOneImage(registerForm.destination, imageFile);
-            const response = await addVacation(vacation);
-            console.log("response: ", response.status);
-            if (response.status === 201) {
-                navigate('/userpage');
             } else {
-                setResponseMessage(response);
+                const vacation = {
+                    "destination": registerForm.destination,
+                    "description": registerForm.description,
+                    "startDate": registerForm.startDate,
+                    "endDate": registerForm.endDate,
+                    "price": registerForm.price,
+                    "imageName": registerForm.destination
+                } as VacationType;
+                const imageFile = await getImageFile(imageSrc);
+                await addOneImage(registerForm.destination, imageFile);
+                const response = await addVacation(vacation);
+                if (response.status === 201) {
+                    navigate('/userpage');
+                } else {
+                    setResponseMessage(response);
+                }
             }
         } catch {
             console.log("error");
@@ -67,12 +67,15 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                console.log("reader.result: ", reader.result);
                 setImageSrc(reader.result as string);
             };
             reader.readAsDataURL(file);
         }
     };
+
+    const returnToUserScreen = () => {
+        navigate('/userpage');
+    }
 
 
     return <section className="VacationContainer">
@@ -247,7 +250,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     </div>
                     {isEditMode ? <Button variant="contained" type="submit" sx={{ width: "250px" }}>Update</Button> :
                         <Button variant="contained" type="submit" sx={{ width: "250px" }}>Add Vacation</Button>}
-                    <Button variant="outlined" sx={{
+                    <Button onClick={returnToUserScreen} variant="outlined" sx={{
                         width: "250px",
                         marginBottom: "10px",
                     }}>Cancel</Button>

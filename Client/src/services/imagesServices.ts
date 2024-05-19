@@ -24,6 +24,17 @@ export const addOneImage = async (imageName: string, imageFile: File): Promise<v
   }
 };
 
+export const deleteImage = async (imageName: string): Promise<void> => {
+  const fullUrl = appConfig.baseUrl + appConfig.delete.removeImage + imageName;
+  try {
+    const response = await axios.delete(fullUrl);
+    console.log('Image deleted successfully:', response);
+  } catch (error) {
+    console.error('Error deleted image:', error);
+    throw new Error('Error deleted image');
+  }
+};
+
 export const getImageFile = async (imageSrc: string): Promise<File> => {
   const response = await fetch(imageSrc);
   const blob = await response.blob();

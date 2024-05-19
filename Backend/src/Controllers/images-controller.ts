@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { addOneImageLogic, getOneImageLogic } from "../Logic/images-logic";
+import { addOneImageLogic, deleteImageLogic, getOneImageLogic } from "../Logic/images-logic";
 import { ImageModel } from "../Models/ImageModel";
 import { upload } from "../Middleware/multer";
 
@@ -21,8 +21,17 @@ router.post("/images", upload.single('imageFile'), async (req: Request, res: Res
     const imageFile = req.file;
     const image = { imageName, imageFile } as ImageModel;
     await addOneImageLogic(image);
-
     res.status(200).json({ message: 'Image uploaded successfully' });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete("/images/:imageName", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const imageName = req.params.imageName;
+    await deleteImageLogic(imageName);
+    res.status(200).json({ message: 'Image deleted successfully' });
   } catch (err) {
     next(err);
   }

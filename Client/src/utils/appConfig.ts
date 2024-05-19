@@ -16,6 +16,7 @@ export const appConfig: AppConfig = {
   },
   delete: {
     vacation: "/vacations/",
+    removeImage: "/images/",
   },
   update: {
     vacation: "/vacations/",

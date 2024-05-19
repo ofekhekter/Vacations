@@ -16,3 +16,8 @@ export const addOneImageLogic = async (image: ImageModel): Promise<void> => {
   const destinationPath = `./src/Assets/images/${image.imageName}.jpg`;
   fs.renameSync(tempFilePath, destinationPath);
 };
+
+export const deleteImageLogic = async (imageName: string): Promise<void> => {
+  const destinationPath = `./src/Assets/images/${imageName}.jpg`;
+  fs.unlinkSync(destinationPath);
+};

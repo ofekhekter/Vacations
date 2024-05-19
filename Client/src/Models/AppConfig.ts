@@ -17,5 +17,6 @@ export type AppConfig = {
   };
   delete: {
     vacation: string;
+    removeImage: string;
   };
 };

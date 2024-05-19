@@ -14,7 +14,7 @@ export const UserScreen = () => {
             setVacations(allVacations);
         };
         fetchAllVacations();
-    }, []);
+    }, [vacations]);
 
     const allVacationsCards = vacations?.map((vacation, index) => {
 

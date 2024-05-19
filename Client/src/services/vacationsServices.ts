@@ -23,7 +23,7 @@ export const getOneVacation = async (id: string): Promise<VacationType> => {
   return data as VacationType;
 };
 
-export const addVacation = async ( vacation: VacationType ): Promise<VacationType | any> => {
+export const addVacation = async (vacation: VacationType): Promise<VacationType | any> => {
   try {
     const fullUrl = appConfig.baseUrl + appConfig.post.vacation;
     const data = await axios.post(fullUrl, vacation);
@@ -46,11 +46,14 @@ export const updateVacation = async (
   return data as VacationType;
 };
 
-export const deleteVacation = async (id: string): Promise<void> => {
+export const deleteVacation = async (id: string, token: string): Promise<void> => {
   const fullUrl = appConfig.baseUrl + appConfig.delete.vacation + id;
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
 
   await axios
-    .delete(fullUrl)
+    .delete(fullUrl, config)
     .then((res) => console.log("deleted, status: " + res.status))
     .catch((e) => console.log(e));
 };
