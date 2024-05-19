@@ -89,6 +89,9 @@ export const Card = ({ vacation }: CardProps) => {
 
   const handleFavorites = () => {
     favorites ? setFavorites(false) : setFavorites(true);
+    if (favorites) {
+      
+    }
   };
 
   return <Box className='card'
@@ -125,9 +128,9 @@ export const Card = ({ vacation }: CardProps) => {
           </Popper>
         </Box>
       ) : (
-        favorites ? (<IconButton onClick={() => handleFavorites()} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
+        favorites ? (<IconButton onClick={handleFavorites} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton>) : (<IconButton onClick={() => handleFavorites()} style={{ color: "white" }} className='favorites' aria-label="add to favorites">
+        </IconButton>) : (<IconButton onClick={handleFavorites} style={{ color: "white" }} className='favorites' aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
         )
