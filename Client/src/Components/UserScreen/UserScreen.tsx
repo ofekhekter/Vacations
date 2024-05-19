@@ -7,7 +7,6 @@ import './userScreen.css';
 
 export const UserScreen = () => {
     const [vacations, setVacations] = useState<VacationType[]>();
-    console.log("vacations: ", vacations)
 
     useEffect(() => {
         const fetchAllVacations = async () => {

@@ -20,6 +20,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const navigate = useNavigate();
     const { register, handleSubmit, setValue } = useForm<VacationType>();
     const [imageSrc, setImageSrc] = useState<string>("");
+    const [responseMessage, setResponseMessage] = useState<string>("");
     const [selectImage, setSelectImage] = useState<string>("Select Image");
     const vacationId = useSelector((state: any) => state.currentVacation.vacationId);
     const today: Dayjs = dayjs();
@@ -50,8 +51,12 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
             const imageFile = await getImageFile(imageSrc);
             await addOneImage(registerForm.destination, imageFile);
             const response = await addVacation(vacation);
-            console.log("response: ", response);
-            navigate('/userpage');
+            console.log("response: ", response.status);
+            if (response.status === 201) {
+                navigate('/userpage');
+            } else {
+                setResponseMessage(response);
+            }
         } catch {
             console.log("error");
         }
@@ -62,6 +67,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
+                console.log("reader.result: ", reader.result);
                 setImageSrc(reader.result as string);
             };
             reader.readAsDataURL(file);
@@ -117,7 +123,9 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     rows={4}
                     variant="outlined"
                     style={{ margin: 16 }}
-                    {...register('description', { required: true })}
+                    {...register('description', {
+                        required: true
+                    })}
                 />) : (<TextField
                     id="outlined-multiline-static"
                     label="description"
@@ -198,9 +206,9 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     marginLeft: 16,
                     marginBottom: 10,
                     fontSize: 16,
-                    color: "#63625B",
+                    color: "red",
                 }}>
-                    cover image
+                    {responseMessage}
                 </Typography>
                 <Box sx={{
                     display: 'flex',
@@ -227,7 +235,6 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                                 type="file"
                                 className="filetype"
                                 style={{ display: 'none' }}
-                                src={`http://localhost:3001/static/images/${oneVacation?.imageName}.jpg`}
                                 onChange={handleFileInputChange}
                             />) : (<input
                                 id="file-input"

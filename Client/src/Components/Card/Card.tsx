@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { currentVacation } from '../../features/vacationSlice';
 import './card.css';
+import { deleteVacation } from '../../services/vacationsServices';
 
 interface CardProps {
   vacation: VacationType;
@@ -32,6 +33,11 @@ export const Card = ({ vacation }: CardProps) => {
     navigate('/editvacation');
   };
 
+  const handleDelete = () => {
+    deleteVacation(vacation.vacationId.toString())
+    navigate('/userpage');
+  };
+
   const handleFavorites = () => {
     favorites ? setFavorites(false) : setFavorites(true);
   };
@@ -53,7 +59,7 @@ export const Card = ({ vacation }: CardProps) => {
       {isAdmin ? (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Button onClick={handleEdit} sx={{ color: "#B0EBB4", backgroundColor: "#006769", height: "25px", width: "60px" }} size="small">Edit</Button>
-          <Button sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
+          <Button onClick={handleDelete} sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
         </Box>
       ) : (
         favorites ? (<IconButton onClick={() => handleFavorites()} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
