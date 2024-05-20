@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { VacationType } from '../../Models/VacationModel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { currentVacation } from '../../features/vacationSlice';
@@ -11,6 +11,7 @@ import { deleteImage } from '../../services/imagesServices';
 import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
+import { addFollow } from '../../services/followingsServices';
 import './card.css';
 
 interface FadeProps {
@@ -60,6 +61,7 @@ export const Card = ({ vacation }: CardProps) => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isAdmin = useSelector((state: any) => state.userRole.isAdmin);
+  const userEmail = useSelector((state: any) => state.emailAddress.text);
   const dispatch = useDispatch();
 
   const canBeOpen = open && Boolean(anchorEl);
@@ -89,8 +91,14 @@ export const Card = ({ vacation }: CardProps) => {
 
   const handleFavorites = () => {
     favorites ? setFavorites(false) : setFavorites(true);
-    if (favorites) {
-      
+    if (!favorites) {
+      console.log(userEmail);
+    //   useEffect(() => {
+    //     const setFollowToDB = async () => {
+    //         const allVacations = await addFollow(, vacation.vacationId);
+    //     };
+    //     setFollowToDB();
+    // }, [favorites]);
     }
   };
 

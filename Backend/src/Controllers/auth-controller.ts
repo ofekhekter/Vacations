@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { LoginCredentials, UserType } from "../Models/UserModel";
-import {  isAdminLogic, loginUserLogic, signupUserLogic } from "../Logic/auth-logic";
+import {  getUserIdByEmail, isAdminLogic, loginUserLogic, signupUserLogic } from "../Logic/auth-logic";
 
 const router = express.Router();
 
@@ -31,6 +31,17 @@ router.post("/auth/isadmin", async (req: Request, res: Response, next: NextFunct
       const email = req.body as { email: string };
       const isAdmin = await isAdminLogic(email.email);
       res.status(200).json(isAdmin);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.get("/auth/:email", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const email = req.params.email;
+      const userId = await getUserIdByEmail(email);
+      res.status(200).json(userId);
     } catch (err) {
       next(err);
     }

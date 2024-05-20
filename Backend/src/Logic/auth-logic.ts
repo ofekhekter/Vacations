@@ -1,4 +1,4 @@
-import { UnauthorizedError } from "./../Models/ErrorModels";
+import { UnauthorizedError, ValidationError } from "./../Models/ErrorModels";
 import { OkPacket } from "mysql";
 import { LoginCredentials, UserType, validateLogin, validateUser } from "../Models/UserModel";
 import { executeSqlQuery } from "../Utils/dal";
@@ -51,4 +51,11 @@ export const isAdminLogic = async (email: string): Promise<boolean> => {
   const result = await executeSqlQuery(query);
   if (result.length > 0) isAdmin = true;
   return isAdmin;
+};
+
+export const getUserIdByEmail = async (email: string): Promise<number> => {
+  const query = `SELECT userId FROM users WHERE email = '${email}'`;
+  const result = await executeSqlQuery(query);
+  if (result.length === 0) ValidationError(email);
+  return result[0].userId;
 };
