@@ -11,7 +11,8 @@ import { deleteImage } from '../../services/imagesServices';
 import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
-import { addFollow } from '../../services/followingsServices';
+import { addFollow, deleteFollow, getAllFollowings } from '../../services/followingsServices';
+import { getUserId } from '../../services/usersServices';
 import './card.css';
 
 interface FadeProps {
@@ -89,17 +90,25 @@ export const Card = ({ vacation }: CardProps) => {
     setOpen((previousOpen) => !previousOpen);
   };
 
-  const handleFavorites = () => {
+  // useEffect(() => {
+  //   const fetchAllFollowings = async () => {
+  //     console.log(allFollowings);
+  //   };
+  //   fetchAllFollowings();
+  // }, []);
+  
+  const handleFavorites = async () => {
     favorites ? setFavorites(false) : setFavorites(true);
-    if (!favorites) {
-      console.log(userEmail);
-    //   useEffect(() => {
-    //     const setFollowToDB = async () => {
-    //         const allVacations = await addFollow(, vacation.vacationId);
-    //     };
-    //     setFollowToDB();
-    // }, [favorites]);
+    const userId = await getUserId(userEmail);
+    // const allFollowings = await getAllFollowings(userId);
+    if (favorites) {
+      await deleteFollow(userId, vacation.vacationId);
     }
+    else {
+      await addFollow(userId, vacation.vacationId);
+      // const matchFavorites = allFollowings.map((i: any) => i.vacationId);
+      // console.log(matchFavorites);
+    } 
   };
 
   return <Box className='card'

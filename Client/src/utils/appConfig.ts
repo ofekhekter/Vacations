@@ -4,8 +4,10 @@ export const appConfig: AppConfig = {
   baseUrl: "http://localhost:3001/api",
   get: {
     allVacations: "/vacations",
+    allFollowings: "/followings/",
     oneVacation: "/vacations/",
     oneImage: "/images/",
+    getUserId: "/auth/",
   },
   post: {
     vacation: "/vacations",

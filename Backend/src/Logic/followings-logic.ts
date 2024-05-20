@@ -20,6 +20,13 @@ export const addfollowingLogic = async (userId: number, vacationId: number): Pro
   }
 };
 
+export const getAllFollowingsLogic = async (userId: number): Promise<any> => {
+  const query = `SELECT vacationId FROM followings WHERE userId = '${userId}'`;
+  const result = await executeSqlQuery(query);
+  if (result.length === 0) ResourceNotFound(userId);
+  return result;
+};
+
 export const deletefollowingLogic = async (userId: number, vacationId: number): Promise<void> => {
   const escapedUserId = mysql.escape(userId);
   const escapedVacationId = mysql.escape(vacationId);

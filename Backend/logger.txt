@@ -1321,3 +1321,59 @@
 -----------------------------------------------------------------------------------------
 20.5.2024 - ofek@12
 -----------------------------------------------------------------------------------------
+20.5.2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''followings' WHERE 'userId' = '55'' at line 1
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''followings' WHERE 'userId' = '55'' at line 1
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''followings' WHERE 'userId' = 55' at line 1
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''followings' WHERE 'userId' = 55' at line 1
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''followings' WHERE 'userId' = '55'' at line 1
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''followings' WHERE 'userId' = '55'' at line 1
+-----------------------------------------------------------------------------------------
+20.5.2024 - ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''followings' WHERE 'userId' = '55'' at line 1
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - can't find the resource you want:  55
+-----------------------------------------------------------------------------------------
+20.5.2024 - can't find the resource you want:  55
+-----------------------------------------------------------------------------------------
+20.5.2024 - can't find the resource you want:  55
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20.5.2024 - can't find the resource you want:  55
+-----------------------------------------------------------------------------------------
+20.5.2024 - can't find the resource you want:  55
+-----------------------------------------------------------------------------------------
+20.5.2024 - can't find the resource you want:  55
+-----------------------------------------------------------------------------------------

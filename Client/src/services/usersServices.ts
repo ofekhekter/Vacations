@@ -30,3 +30,13 @@ export const checkIsAdmin = async (email: { email: string }): Promise<any> => {
     console.error(e.response.data);
   }
 };
+
+export const getUserId = async (email: string ): Promise<number | any> => {
+  try {
+    const fullUrl = appConfig.baseUrl + appConfig.get.getUserId + email;
+    const data = await axios.get(fullUrl);
+    return data.data;
+  } catch (e: any) {
+    console.error(e.response.data);
+  }
+};
