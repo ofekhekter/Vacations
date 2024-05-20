@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 16, 2024 at 09:50 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: May 20, 2024 at 03:05 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,13 +24,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `followers`
+-- Table structure for table `followings`
 --
 
-CREATE TABLE `followers` (
+CREATE TABLE `followings` (
   `userId` int(11) NOT NULL,
-  `vacationsId` int(11) NOT NULL
+  `vacationId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `followings`
+--
+
+INSERT INTO `followings` (`userId`, `vacationId`) VALUES
+(55, 1),
+(55, 2),
+(55, 3),
+(55, 4),
+(55, 7),
+(60, 1),
+(60, 2),
+(60, 7);
 
 -- --------------------------------------------------------
 
@@ -53,7 +67,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`userId`, `firstName`, `lastName`, `email`, `password`, `role`) VALUES
 (22, 'Ofek', 'Hekter', 'ofekh1989@gmail.com', 'Ofek1989', 2),
-(54, 'ofek', 'hekter', 'ofek@123', 'Ofek1989', 1);
+(55, 'ofek', 'hekter', 'ofek@123', 'Ofek1989', 1),
+(60, 'bdgdfgdxg', 'sdsdfsdfsd', 'sdsdf@dvsdfsdf', '1234', 1);
 
 -- --------------------------------------------------------
 
@@ -81,25 +96,27 @@ INSERT INTO `vacations` (`vacationId`, `destination`, `description`, `startDate`
 (3, 'France', 'A legacy of the Age of Enlightenment, the motto \"Liberté, Egalité, Fraternité\" first appeared during the French Revolution. Although it was often called into question, it finally established itself under the Third Republic. It was written into the 1958 Co', '2024-06-12', '2024-06-25', 2990, 'France'),
 (4, 'Germany', 'In several smaller essays written in the late 1760s and the 1770s, Herder discussed German political history. In How the German Bishops Became an Estate of the Realm Herder spelled out his views on the ancient German constitution and the history of the Ho', '2024-06-01', '2024-06-06', 3550, 'Germany'),
 (5, 'Usa', 'Standing tall on Liberty Island in New York Harbor, just off Lower Manhattan in New York City, the Statue of Liberty is among the USA\'s most beloved sights and an enduring symbol of liberty and freedom.  Yet this statue wasn’t conceived by a U.S. citizen.', '2024-06-11', '2024-06-15', 5000, 'Usa'),
-(6, 'Brazil', 'South America\'s giant, Brazil is a seductive country with dazzling beaches, tropical islands and picturesque colonial towns. Its verdant rainforests boast an astounding array of wildlife, while its wildly energetic cities are home to a multitude of ethnic', '2024-07-02', '2024-07-12', 4000, 'Brazil'),
 (7, 'Argentina', 'As one of the largest countries on the continent, Argentina has an impressive variety of landscapes, from the rainforest surrounding Iguazu Falls to the arid Andean plateau of the Northwest and the vast Patagonian clear lakes and snow-capped mountains, to', '2024-07-10', '2024-07-21', 4500, 'Argentina'),
 (8, 'Canada', 'As one of the largest countries in the world, Canada is a treasure trove of unique landscapes and unparalleled encounters with nature. In the west, the sparkling coastline of British Columbia is bordered by rainforests and mysterious islands where whales ', '2024-07-29', '2024-08-05', 3800, 'Canada'),
 (9, 'Egypt', 'Egypt is not only a country of antiquity, but also of magnificent landscapes offering cities and oases, deserts and beaches, ancient obelisks, and modern hotels. Bordered by the Mediterranean, the Red Sea, and the fabled Nile River, you can experience era', '2024-08-12', '2024-08-23', 1200, 'Egypt'),
 (10, 'Japan', 'Known as the ‘Land of the Rising Sun’, Japan is an eclectic mix of past, present, and future, combining ancient samurai traditions and an impressive history with a modern-day persona and new world technology. The country is unique in that, until the late ', '2024-08-13', '2024-08-27', 2650, 'Japan'),
 (11, 'Spain', 'Nationals of third States who travel to Spain for stays of up to 90 days (during any period of 180 days) for tourism, business, family visits, medical treatment, study, non-work internships or volunteer activities with a duration not exceeding 3 months, o', '2024-08-02', '2024-08-09', 3150, 'Spain'),
 (12, 'Turkey', 'It is full of archeological findings, diverse cultures, authentic villages, and mosques. While the capital, Ankara, features ancient Ottoman culture in its central squares and bright markets, Antalya\'s well-known beaches and Mediterranean seaside resorts ', '2024-09-04', '2024-09-14', 2000, 'Turkey'),
-(18, 'india', 'Liberty Style, also known as ‘stile floreale’ (floral style) in Italy, is the very specific Italian artistic variant of Art Nouveau which truly became Sicilian thanks to Giovan Battista Filippo and Ernesto Basile. The new movement took different forms in', '2024-08-14', '2024-08-28', 3000, 'india');
+(18, 'india', 'Liberty Style, also known as ‘stile floreale’ (floral style) in Italy, is the very specific Italian artistic variant of Art Nouveau which truly became Sicilian thanks to Giovan Battista Filippo and Ernesto Basile. The new movement took different forms in', '2024-08-14', '2024-08-28', 3000, 'india'),
+(32, 'Brazil', 'South America\'s giant, Brazil is a seductive country with dazzling beaches, tropical islands and picturesque colonial towns. Its verdant rainforests boast an astounding array of wildlife, while its wildly energetic cities are home to a multitude of ethnic', '2024-05-19', '2024-05-21', 4000, 'Brazil'),
+(50, 'fghdfhdfgd', 'fgfxbxfbxxcv', '2024-05-20', '2024-05-22', 525, 'fghdfhdfgd');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `followers`
+-- Indexes for table `followings`
 --
-ALTER TABLE `followers`
-  ADD KEY `userId` (`userId`,`vacationsId`),
-  ADD KEY `vacationsId` (`vacationsId`);
+ALTER TABLE `followings`
+  ADD PRIMARY KEY (`userId`,`vacationId`),
+  ADD KEY `userId` (`userId`),
+  ADD KEY `vacationId` (`vacationId`);
 
 --
 -- Indexes for table `users`
@@ -121,24 +138,24 @@ ALTER TABLE `vacations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `vacations`
 --
 ALTER TABLE `vacations`
-  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `followers`
+-- Constraints for table `followings`
 --
-ALTER TABLE `followers`
-  ADD CONSTRAINT `followers_ibfk_1` FOREIGN KEY (`vacationsId`) REFERENCES `vacations` (`vacationId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `followers_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `followings`
+  ADD CONSTRAINT `followings_ibfk_1` FOREIGN KEY (`vacationId`) REFERENCES `vacations` (`vacationId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
