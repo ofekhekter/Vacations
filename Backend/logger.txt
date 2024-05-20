@@ -1273,3 +1273,27 @@
 -----------------------------------------------------------------------------------------
 19.5.2024 - ER_DUP_ENTRY: Duplicate entry '57' for key 'userId_2'
 -----------------------------------------------------------------------------------------
+20/05/2024 - can't find the resource you want:  0
+-----------------------------------------------------------------------------------------
+20/05/2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `vacations` (`vacationId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20/05/2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `vacations` (`vacationId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20/05/2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `vacations` (`vacationId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20/05/2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20/05/2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20/05/2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20/05/2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20/05/2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20/05/2024 - following is already exists
+-----------------------------------------------------------------------------------------
+20/05/2024 - ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`vacations`.`followings`, CONSTRAINT `followings_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE)
+-----------------------------------------------------------------------------------------
+20/05/2024 - following is already exists
+-----------------------------------------------------------------------------------------
