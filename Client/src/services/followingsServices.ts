@@ -12,7 +12,7 @@ export const addFollow = async (userId: string, vacationId: string): Promise<str
 };
 
 export const deleteFollow = async (userId: string, vacationId: string): Promise<void> => {
-  const fullUrl = appConfig.baseUrl + appConfig.delete.removeFollow + vacationId;
+  const fullUrl = appConfig.baseUrl + appConfig.delete.removeFollow + vacationId + "/" + userId;
 
   await axios
     .delete(fullUrl)

@@ -15,10 +15,10 @@ router.post("/followings/:vacationId", async (req: Request, res: Response, next:
   }
 );
 
-router.delete("/followings/:vacationId", async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/followings/:vacationId/:userId", async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = req.body as number;
       const vacationId = +req.params.vacationId;
+      const userId = +req.params.userId;
       await deletefollowingLogic(userId, vacationId);
       res.sendStatus(204);
     } catch (err) {
