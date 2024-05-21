@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { VacationType } from '../../Models/VacationModel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { currentVacation } from '../../features/vacationSlice';
@@ -13,7 +13,7 @@ import { getUserId } from '../../services/usersServices';
 import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
-import { addFollow, deleteFollow, getAllFollowings } from '../../services/followingsServices';
+import { addFollow, deleteFollow } from '../../services/followingsServices';
 import './card.css';
 
 interface FadeProps {
@@ -49,6 +49,7 @@ const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, re
 
 interface CardProps {
   vacation: VacationType;
+  vacationIdsOfUser: number[] | undefined;
 }
 
 export const changeStringFormat = (value: string) => {
@@ -56,7 +57,7 @@ export const changeStringFormat = (value: string) => {
   return `${day}.${month}.${year}`;
 }
 
-export const Card = ({ vacation }: CardProps) => {
+export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState<boolean>(false);
   const [imageError, setImageError] = useState(false);
@@ -65,6 +66,17 @@ export const Card = ({ vacation }: CardProps) => {
   const isAdmin = useSelector((state: any) => state.userRole.isAdmin);
   const userEmail = useSelector((state: any) => state.emailAddress.text);
   const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    if (vacationIdsOfUser !== undefined) {
+      for (const vacationId of vacationIdsOfUser) {
+        if (vacationId === vacation.vacationId) {
+          setFavorites(true);
+        }
+      }
+    }
+  }, [vacationIdsOfUser, vacation.vacationId]);
 
   const canBeOpen = open && Boolean(anchorEl);
   const id = canBeOpen ? 'spring-popper' : undefined;
@@ -77,7 +89,7 @@ export const Card = ({ vacation }: CardProps) => {
     dispatch(currentVacation(vacation.vacationId));
     navigate('/editvacation');
   };
-  
+
   const removeCard = async () => {
     const token = localStorage.getItem('token');
     if (token !== null) {
@@ -92,19 +104,16 @@ export const Card = ({ vacation }: CardProps) => {
     setAnchorEl(event.currentTarget);
     setOpen((previousOpen) => !previousOpen);
   };
-  
+
   const handleFavorites = async () => {
-    favorites ? setFavorites(false) : setFavorites(true);
     const userId = await getUserId(userEmail);
-    // const allFollowings = await getAllFollowings(userId);
     if (favorites) {
+      setFavorites(false)
       await deleteFollow(userId, vacation.vacationId);
-    }
-    else {
+    } else {
+      setFavorites(true);
       await addFollow(userId, vacation.vacationId);
-      // const matchFavorites = allFollowings.map((i: any) => i.vacationId);
-      // console.log(matchFavorites);
-    } 
+    }
   };
 
   return <Box className='card'

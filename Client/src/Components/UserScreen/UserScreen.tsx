@@ -5,13 +5,17 @@ import { Card } from "../Card/Card";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useDispatch, useSelector } from "react-redux";
-import './userScreen.css';
 import { isDeleted } from "../../features/deletedCardSlice";
+import { getUserId } from "../../services/usersServices";
+import { getAllFollowings } from "../../services/followingsServices";
+import './userScreen.css';
 
 
 export const UserScreen = () => {
     const [vacations, setVacations] = useState<VacationType[]>();
+    const [vacationIdsOfUser, setVacationIdsOfUser] = useState<number[]>();
     const removedCard = useSelector((state: any) => state.isDeleted.deleted);
+    const userEmail = useSelector((state: any) => state.emailAddress.text);
     const dispatch = useDispatch();
     dispatch(isDeleted(false));
 
@@ -19,6 +23,12 @@ export const UserScreen = () => {
         const fetchAllVacations = async () => {
             const allVacations = await getAllVacations();
             setVacations(allVacations);
+            const userId = await getUserId(userEmail);
+            const allFollowings = await getAllFollowings(userId);
+            if (allFollowings !== undefined) {
+                const vacationIds: number[] = allFollowings.map((following: { vacationId: number; }) => following.vacationId);
+                setVacationIdsOfUser(vacationIds);
+            }
         };
         fetchAllVacations();
     }, [removedCard]);
@@ -26,7 +36,7 @@ export const UserScreen = () => {
     const allVacationsCards = vacations?.map((vacation, index) => {
 
         return (
-            <Card key={index} vacation={vacation} />
+            <Card vacationIdsOfUser={vacationIdsOfUser} key={index} vacation={vacation} />
         );
     });
 
