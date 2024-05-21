@@ -22,10 +22,10 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const [imageSrc, setImageSrc] = useState<string>("");
     const [responseMessage, setResponseMessage] = useState<string>("");
     const [selectImage, setSelectImage] = useState<string>("Select Image");
+    const [oneVacation, setOneVacation] = useState<VacationType>();
     const vacationId = useSelector((state: any) => state.currentVacation.vacationId);
     const today: Dayjs = dayjs();
     const minEndDate = dayjs().add(1, 'day');
-    const [oneVacation, setOneVacation] = useState<VacationType>();
 
     useEffect(() => {
         const fetchAllVacations = async () => {
@@ -48,10 +48,10 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     "price": registerForm.price,
                     "imageName": registerForm.destination
                 } as VacationType;
-                const imageFile = await getImageFile(imageSrc);
-                await addOneImage(registerForm.destination, imageFile);
                 const response = await addVacation(vacation);
                 if (response.status === 201) {
+                    const imageFile = await getImageFile(imageSrc);
+                    await addOneImage(registerForm.destination, imageFile);
                     navigate('/userpage');
                 } else {
                     setResponseMessage(response);

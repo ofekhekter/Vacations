@@ -2,17 +2,18 @@ import * as React from 'react';
 import { Button, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { VacationType } from '../../Models/VacationModel';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { currentVacation } from '../../features/vacationSlice';
+import { isDeleted } from '../../features/deletedCardSlice';
 import { deleteVacation } from '../../services/vacationsServices';
 import { deleteImage } from '../../services/imagesServices';
+import { getUserId } from '../../services/usersServices';
 import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
 import { addFollow, deleteFollow, getAllFollowings } from '../../services/followingsServices';
-import { getUserId } from '../../services/usersServices';
 import './card.css';
 
 interface FadeProps {
@@ -76,12 +77,14 @@ export const Card = ({ vacation }: CardProps) => {
     dispatch(currentVacation(vacation.vacationId));
     navigate('/editvacation');
   };
-
-  const removeCard = () => {
+  
+  const removeCard = async () => {
     const token = localStorage.getItem('token');
     if (token !== null) {
-      deleteVacation(vacation.vacationId.toString(), token);
-      deleteImage(vacation.imageName);
+      await deleteVacation(vacation.vacationId.toString(), token);
+      await deleteImage(vacation.imageName);
+      dispatch(isDeleted(true));
+      setOpen(false);
     }
   };
 
@@ -89,13 +92,6 @@ export const Card = ({ vacation }: CardProps) => {
     setAnchorEl(event.currentTarget);
     setOpen((previousOpen) => !previousOpen);
   };
-
-  // useEffect(() => {
-  //   const fetchAllFollowings = async () => {
-  //     console.log(allFollowings);
-  //   };
-  //   fetchAllFollowings();
-  // }, []);
   
   const handleFavorites = async () => {
     favorites ? setFavorites(false) : setFavorites(true);
