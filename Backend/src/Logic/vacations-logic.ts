@@ -57,9 +57,7 @@ export const addOneVacationLogic = async (newVacation: VacationType): Promise<Va
   return newVacation;
 };
 
-export const updateVacationLogic = async (
-  vacation: VacationType
-): Promise<VacationType> => {
+export const updateVacationLogic = async ( vacation: VacationType ): Promise<VacationType> => {
   validateVacation(vacation);
 
   const checkVacationExistQuery = `

@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationType } from '../../Models/VacationModel';
-import { addVacation, getOneVacation } from "../../services/vacationsServices";
+import { addVacation, getOneVacation, updateVacation } from "../../services/vacationsServices";
 import { useEffect, useState } from "react";
 import { addOneImage, getImageFile } from "../../services/imagesServices";
 import dayjs, { Dayjs } from 'dayjs';
@@ -48,13 +48,24 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     "price": registerForm.price,
                     "imageName": registerForm.destination
                 } as VacationType;
-                const response = await addVacation(vacation);
-                if (response.status === 201) {
-                    const imageFile = await getImageFile(imageSrc);
-                    await addOneImage(registerForm.destination, imageFile);
-                    navigate('/userpage');
+                if (isEditMode) {
+                    const response = await updateVacation(vacation, vacationId);
+                    if (response.status === 200) {
+                        const imageFile = await getImageFile(imageSrc);
+                        await addOneImage(registerForm.destination, imageFile);
+                        navigate('/userpage');
+                    } else {
+                        setResponseMessage(response);
+                    }
                 } else {
-                    setResponseMessage(response);
+                    const response = await addVacation(vacation);
+                    if (response.status === 201) {
+                        const imageFile = await getImageFile(imageSrc);
+                        await addOneImage(registerForm.destination, imageFile);
+                        navigate('/userpage');
+                    } else {
+                        setResponseMessage(response);
+                    }
                 }
             }
         } catch {

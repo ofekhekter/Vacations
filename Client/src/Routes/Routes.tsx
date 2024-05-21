@@ -6,6 +6,7 @@ import { LoginPage } from "../Components/Signup/LoginPage";
 import { HomePage } from "../Components/HomePage/HomePage";
 import { VacationCard } from "../Components/VacationCard/VacationCard";
 import NotFound from "../Components/404Page/NotFound";
+import PrivateRoute from "./PrivateRoute";
 
 
 export const router = createBrowserRouter([
@@ -28,7 +29,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/userpage",
-        element: <UserScreen />,
+        element: (
+          <PrivateRoute>
+            <UserScreen />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/signin",

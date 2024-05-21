@@ -37,7 +37,7 @@ router.get("/vacations/:id", async (req: Request, res: Response, next: NextFunct
     }
   );
   
-  router.put("/vacations/:id", verifyAdminMW, async (req: Request, res: Response, next: NextFunction) => {
+  router.put("/vacations/:id", async (req: Request, res: Response, next: NextFunction) => {
       try {
         const vacation = req.body as VacationType;
         vacation.id = +req.params.id;

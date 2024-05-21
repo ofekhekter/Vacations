@@ -33,17 +33,14 @@ export const addVacation = async (vacation: VacationType): Promise<VacationType 
   }
 };
 
-export const updateVacation = async (
-  vacation: VacationType
-): Promise<VacationType> => {
-  const fullUrl = appConfig.baseUrl + appConfig.update.vacation + vacation.vacationId;
-  const formData = new FormData().append("Vacation", JSON.stringify(vacation));
-  const data = await axios
-    .put(fullUrl, formData)
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
-
-  return data as VacationType;
+export const updateVacation = async (vacation: VacationType, vacationId: number): Promise<VacationType | any> => {
+  try {
+    const fullUrl = appConfig.baseUrl + appConfig.update.vacation + vacationId;
+    const data = await axios.put(fullUrl, vacation);
+    return data;
+  } catch (e: any) {
+    return e.response.data;
+  }
 };
 
 export const deleteVacation = async (id: string, token: string): Promise<void> => {
