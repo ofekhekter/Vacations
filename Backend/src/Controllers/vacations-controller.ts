@@ -5,10 +5,11 @@ import { verifyAdminMW } from "../Middleware/varify-admin";
 
 const router = express.Router();
 
-router.get("/vacations", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/vacations/:pageNumber", async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const vacations = await getAllVacationsLogic();
-      res.status(200).json(vacations);
+      const page = +req.params.pageNumber;
+      const vacationsObj = await getAllVacationsLogic(page);
+      res.status(200).json(vacationsObj);
     } catch (err) {
       next(err);
     }

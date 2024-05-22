@@ -12,19 +12,20 @@ import './userScreen.css';
 
 export const UserScreen: React.FC = () => {
     const [vacations, setVacations] = useState<VacationType[]>([]);
+    const [totalCount, setTotalCount] = useState<number>(0);
     const [vacationIdsOfUser, setVacationIdsOfUser] = useState<number[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [itemsPerPage] = useState<number>(10);
-
     const removedCard = useSelector((state: any) => state.isDeleted.deleted);
     const userEmail = useSelector((state: any) => state.emailAddress.text);
     const dispatch = useDispatch();
     dispatch(isDeleted(false));
+    const itemsPerPage: number = 10;
 
     useEffect(() => {
         const fetchAllVacations = async () => {
-            const allVacations = await getAllVacations();
-            setVacations(allVacations);
+            const { vacations, totalCount } = await getAllVacations(currentPage);
+            setVacations(vacations);
+            setTotalCount(totalCount);
             const userId = await getUserId(userEmail);
             const allFollowings = await getAllFollowings(userId);
             if (allFollowings !== undefined) {
@@ -33,17 +34,13 @@ export const UserScreen: React.FC = () => {
             }
         };
         fetchAllVacations();
-    }, [removedCard, userEmail]);
+    }, [removedCard, userEmail, currentPage]);
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page);
     };
 
-    const indexOfLastVacation = currentPage * itemsPerPage;
-    const indexOfFirstVacation = indexOfLastVacation - itemsPerPage;
-    const currentVacations = vacations.slice(indexOfFirstVacation, indexOfLastVacation);
-
-    const allVacationsCards = currentVacations.map((vacation, index) => (
+    const allVacationsCards = vacations.map((vacation, index) => (
         <Card vacationIdsOfUser={vacationIdsOfUser} key={index} vacation={vacation} />
     ));
 
@@ -51,7 +48,7 @@ export const UserScreen: React.FC = () => {
         <>
             <Stack spacing={2}>
                 <Pagination
-                    count={Math.ceil(vacations.length / itemsPerPage)}
+                    count={Math.ceil(totalCount / itemsPerPage)}
                     page={currentPage}
                     onChange={handlePageChange}
                     variant="outlined"

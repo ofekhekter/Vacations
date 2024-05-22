@@ -3,25 +3,27 @@ import { VacationType, validateVacation } from "../Models/VacationModel";
 import { executeSqlQuery } from "../Utils/dal";
 import { OkPacket } from "mysql";
 
-export const getAllVacationsLogic = async (): Promise<VacationType[]> => {
-  const getAllVacationQuery = `SELECT * FROM vacations`;
+export const getAllVacationsLogic = async (page: number): Promise<{ vacations: VacationType[], totalCount: number }> => {
+  const limit = 10;
+  const offset = (page - 1) * limit;
 
-  const vacation = (await executeSqlQuery(
-    getAllVacationQuery
-  )) as VacationType[];
-  
+  const getAllVacationQuery = `SELECT * FROM vacations LIMIT ${limit} OFFSET ${offset}`;
+  const getTotalCountQuery = `SELECT COUNT(*) as totalCount FROM vacations`;
 
-  return vacation;
+  const [vacations, totalCountResult] = await Promise.all([
+    executeSqlQuery(getAllVacationQuery) as Promise<VacationType[]>,
+    executeSqlQuery(getTotalCountQuery)
+  ]);
+
+  const totalCount = totalCountResult[0].totalCount;
+
+  return { vacations, totalCount };
 };
 
-export const getOneVacationLogic = async (
-  id: number
-): Promise<VacationType> => {
+export const getOneVacationLogic = async (id: number): Promise<VacationType> => {
   const getOneVacationQuery = `SELECT * FROM vacations WHERE vacationId = "${id}"`;
 
-  const sqlResult = (await executeSqlQuery(
-    getOneVacationQuery
-  )) as VacationType[];
+  const sqlResult = (await executeSqlQuery(getOneVacationQuery)) as VacationType[];
 
   if (sqlResult.length === 0) ResourceNotFound(id);
 
@@ -32,7 +34,7 @@ export const getOneVacationLogic = async (
 
 export const addOneVacationLogic = async (newVacation: VacationType): Promise<VacationType> => {
   validateVacation(newVacation);
-  
+
   const checkVacationExistQuery = `
   SELECT * FROM vacations
   WHERE vacationId = "${newVacation.id}"
@@ -57,7 +59,7 @@ export const addOneVacationLogic = async (newVacation: VacationType): Promise<Va
   return newVacation;
 };
 
-export const updateVacationLogic = async ( vacation: VacationType ): Promise<VacationType> => {
+export const updateVacationLogic = async (vacation: VacationType): Promise<VacationType> => {
   validateVacation(vacation);
 
   const checkVacationExistQuery = `

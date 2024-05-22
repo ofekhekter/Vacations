@@ -108,7 +108,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   const handleFavorites = async () => {
     const userId = await getUserId(userEmail);
     if (favorites) {
-      setFavorites(false)
+      setFavorites(false);
       await deleteFollow(userId, vacation.vacationId);
     } else {
       setFavorites(true);

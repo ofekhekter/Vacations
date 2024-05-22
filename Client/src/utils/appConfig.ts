@@ -3,7 +3,7 @@ import { AppConfig } from "../Models/AppConfig";
 export const appConfig: AppConfig = {
   baseUrl: "http://localhost:3001/api",
   get: {
-    allVacations: "/vacations",
+    allVacations: "/vacations/",
     allFollowings: "/followings/",
     oneVacation: "/vacations/",
     oneImage: "/images/",
