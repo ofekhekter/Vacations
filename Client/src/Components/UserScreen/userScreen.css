@@ -1,7 +1,14 @@
-.homeScreen{
+.homeScreenContainer {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.homeScreen {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, auto);
+  gap: 160px;
+  padding: 16px;
 }
