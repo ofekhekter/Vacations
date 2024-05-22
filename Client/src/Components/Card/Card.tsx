@@ -132,7 +132,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
       {isAdmin ? (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Button onClick={handleEdit} sx={{ color: "#B0EBB4", backgroundColor: "#006769", height: "25px", width: "60px" }} size="small">Edit</Button>
-          <Button aria-describedby={id} onClick={handleDelete} sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
+          <Button onClick={handleDelete} aria-describedby={id} sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
           <Popper id={id} open={open} anchorEl={anchorEl} transition>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>
