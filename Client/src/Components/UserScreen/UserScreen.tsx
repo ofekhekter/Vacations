@@ -23,8 +23,10 @@ export const UserScreen: React.FC = () => {
     useEffect(() => {
         const fetchAllVacations = async () => {
             const userId = await getUserId(userEmail);
+            console.log("userId: " ,userId);
             const { vacations, totalCount } = await getAllVacations(currentPage, userId);
             const vacationIds = vacations.map((vacation: VacationType) => vacation.followedVacationId).filter((vacationId)=> vacationId !== null);
+            console.log("vacationIds: " ,vacationIds);
             setVacationIdsOfUser(vacationIds);
             setVacations(vacations);
             setTotalCount(totalCount);
