@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import { useDispatch, useSelector } from "react-redux";
 import { isDeleted } from "../../features/deletedCardSlice";
 import { getUserId } from "../../services/usersServices";
-import { getAllFollowings } from "../../services/followingsServices";
 import './userScreen.css';
 
 export const UserScreen: React.FC = () => {
@@ -23,15 +22,12 @@ export const UserScreen: React.FC = () => {
 
     useEffect(() => {
         const fetchAllVacations = async () => {
-            const { vacations, totalCount } = await getAllVacations(currentPage);
+            const userId = await getUserId(userEmail);
+            const { vacations, totalCount } = await getAllVacations(currentPage, userId);
+            const vacationIds = vacations.map((vacation: VacationType) => vacation.followedVacationId).filter((vacationId)=> vacationId !== null);
+            setVacationIdsOfUser(vacationIds);
             setVacations(vacations);
             setTotalCount(totalCount);
-            const userId = await getUserId(userEmail);
-            const allFollowings = await getAllFollowings(userId);
-            if (allFollowings !== undefined) {
-                const vacationIds: number[] = allFollowings.map((following: { vacationId: number; }) => following.vacationId);
-                setVacationIdsOfUser(vacationIds);
-            }
         };
         fetchAllVacations();
     }, [removedCard, userEmail, currentPage]);

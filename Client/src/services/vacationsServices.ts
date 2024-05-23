@@ -2,11 +2,11 @@ import axios from "axios";
 import { appConfig } from "../utils/appConfig";
 import { VacationType } from "../Models/VacationModel";
 
-export const getAllVacations = async (currentPage: number): Promise<{ vacations: VacationType[], totalCount: number }> => {
-  const fullUrl = `${appConfig.baseUrl}${appConfig.get.allVacations}${currentPage}`;
-
+export const getAllVacations = async (currentPage: number, userId: number): Promise<{ vacations: VacationType[], totalCount: number }> => {
+  const fullUrl = `${appConfig.baseUrl}${appConfig.get.allVacations}${currentPage}/${userId}`;
   try {
     const response = await axios.get(fullUrl);
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error(error);

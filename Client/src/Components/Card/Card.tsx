@@ -49,7 +49,7 @@ const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, re
 
 interface CardProps {
   vacation: VacationType;
-  vacationIdsOfUser: number[] | undefined;
+  vacationIdsOfUser: number[];
 }
 
 export const changeStringFormat = (value: string) => {
@@ -69,13 +69,13 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
 
 
   useEffect(() => {
-    if (vacationIdsOfUser !== undefined) {
+    if (vacationIdsOfUser.length > 0) {
       for (const vacationId of vacationIdsOfUser) {
         if (vacationId === vacation.vacationId) {
           setFavorites(true);
         }
       }
-    }
+    } else setFavorites(false);
   }, [vacationIdsOfUser, vacation.vacationId]);
 
   const canBeOpen = open && Boolean(anchorEl);

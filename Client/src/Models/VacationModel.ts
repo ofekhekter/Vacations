@@ -6,4 +6,5 @@ export type VacationType = {
   endDate: string;
   price: number;
   imageName: string;
+  followedVacationId: number;
 };
