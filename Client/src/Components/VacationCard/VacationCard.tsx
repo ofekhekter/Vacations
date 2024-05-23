@@ -52,18 +52,11 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
             if (!imageSrc) {
                 setSelectImage("no image selected");
             } else {
-                // console.log(registerForm.startDate)
-                // console.log(registerForm.endDate)
-
-                const startDateUTC = dayjs(registerForm.startDate).tz("Asia/Jerusalem").utc().format();
-                const endDateUTC = dayjs(registerForm.endDate).tz("Asia/Jerusalem").utc().format();
-                console.log(startDateUTC)
-                console.log(endDateUTC)
                 const vacation = {
                     "destination": registerForm.destination,
                     "description": registerForm.description,
-                    "startDate": startDateUTC,
-                    "endDate": endDateUTC,
+                    "startDate": registerForm.startDate,
+                    "endDate": registerForm.endDate,
                     "price": registerForm.price,
                     "imageName": registerForm.destination
                 } as VacationType;
@@ -180,6 +173,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 </Typography>
                 {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                        timezone="Asia/Jerusalem"
                         defaultValue={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         value={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         minDate={today}
@@ -203,6 +197,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 </Typography>
                 {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                        timezone="Asia/Jerusalem"
                         value={oneVacation?.endDate ? dayjs(oneVacation.endDate) : null}
                         minDate={minEndDate}
                         onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
@@ -210,6 +205,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     />
                 </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                        timezone="Asia/Jerusalem"
                         minDate={minEndDate}
                         onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
                         sx={{ m: 2, width: '28ch' }}
