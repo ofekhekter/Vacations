@@ -26,7 +26,11 @@ export const Navbar = () => {
     }
 
     const handleHomeClicked = () => {
-        navigate('/home');
+        if (loginState === 'Login') {
+            navigate('/signin');
+        } else {
+            navigate('/userpage');
+        }
     }
 
     const handleCardClicked = () => {

@@ -2,11 +2,21 @@ import axios from "axios";
 import { appConfig } from "../utils/appConfig";
 import { VacationType } from "../Models/VacationModel";
 
+export const getAllImageNames = async (): Promise<string[] | []> => {
+  const fullUrl = `${appConfig.baseUrl}${appConfig.get.allVacations}`;
+  try {
+    const response = await axios.get(fullUrl);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 export const getAllVacations = async (currentPage: number, userId: number): Promise<{ vacations: VacationType[], totalCount: number }> => {
   const fullUrl = `${appConfig.baseUrl}${appConfig.get.allVacations}${currentPage}/${userId}`;
   try {
     const response = await axios.get(fullUrl);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -30,7 +40,11 @@ export const addVacation = async (vacation: VacationType): Promise<VacationType 
     const data = await axios.post(fullUrl, vacation);
     return data;
   } catch (e: any) {
-    return e.response.data;
+    if (e.response && e.response.data) {
+      return e.response.data;
+    } else {
+      return 'An unknown error occurred';
+    }
   }
 };
 

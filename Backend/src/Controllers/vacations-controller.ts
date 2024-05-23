@@ -1,15 +1,25 @@
 import express, { NextFunction, Request, Response } from "express";
-import { addOneVacationLogic, deleteVacationLogic, getAllVacationsLogic, getOneVacationLogic, updateVacationLogic } from "../Logic/vacations-logic";
+import { addOneVacationLogic, deleteVacationLogic, getAllVacationsLogic, getAllVacationsOffsetLogic, getOneVacationLogic, updateVacationLogic } from "../Logic/vacations-logic";
 import { VacationType } from "../Models/VacationModel";
 import { verifyAdminMW } from "../Middleware/varify-admin";
 
 const router = express.Router();
 
+router.get("/vacations", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const vacations = await getAllVacationsLogic();
+      res.status(200).json(vacations);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
 router.get("/vacations/:pageNumber/:userId", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const page = +req.params.pageNumber;
       const userId = +req.params.userId;
-      const vacationsObj = await getAllVacationsLogic(page, userId);
+      const vacationsObj = await getAllVacationsOffsetLogic(page, userId);
       res.status(200).json(vacationsObj);
     } catch (err) {
       next(err);

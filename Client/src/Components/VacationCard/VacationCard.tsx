@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationType } from '../../Models/VacationModel';
-import { addVacation, getOneVacation, updateVacation } from "../../services/vacationsServices";
+import { addVacation, getAllImageNames, getOneVacation, updateVacation } from "../../services/vacationsServices";
 import { useEffect, useState } from "react";
 import { addOneImage, getImageFile } from "../../services/imagesServices";
 import dayjs, { Dayjs } from 'dayjs';
@@ -49,6 +49,8 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     "imageName": registerForm.destination
                 } as VacationType;
                 if (isEditMode) {
+                    const imagesNames = await getAllImageNames();
+                    console.log(imagesNames);
                     const response = await updateVacation(vacation, vacationId);
                     if (response.status === 200) {
                         const imageFile = await getImageFile(imageSrc);

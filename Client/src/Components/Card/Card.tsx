@@ -120,6 +120,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   return <Box className='card'
     sx={{
       width: 345,
+      height: 420,
       backgroundColor: "#153448"
     }}>
     <Box sx={{

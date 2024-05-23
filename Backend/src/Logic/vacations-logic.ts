@@ -3,11 +3,19 @@ import { VacationType, validateVacation } from "../Models/VacationModel";
 import { executeSqlQuery } from "../Utils/dal";
 import { OkPacket } from "mysql";
 
-export const getAllVacationsLogic = async (page: number, userId: number): Promise<{ vacations: VacationType[], totalCount: number }> => {
+export const getAllVacationsLogic = async (): Promise<string[]> => {
+  const getAllVacationQuery = `SELECT imageName FROM vacations`;
+  const vacationsResult = await executeSqlQuery(getAllVacationQuery);
+  if (vacationsResult.length > 0) {
+    const vacationNames: string[] = vacationsResult.map((vacation: any) => vacation.imageName);
+    return vacationNames;
+  } else return [];
+};
+
+export const getAllVacationsOffsetLogic = async (page: number, userId: number): Promise<{ vacations: VacationType[], totalCount: number }> => {
   const limit = 10;
   const offset = (page - 1) * limit;
 
-  // const getAllVacationQuery = `SELECT * FROM vacations LIMIT ${limit} OFFSET ${offset}`;
   const getAllVacationQuery = `WITH FollowedVacations AS (
     SELECT vacationId
     FROM followings
