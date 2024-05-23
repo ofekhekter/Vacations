@@ -71,7 +71,6 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   useEffect(() => {
     setFavorites(false);
     if (vacationIdsOfUser.length > 0) {
-      console.log(vacationIdsOfUser);
       for (const vacationId of vacationIdsOfUser) {
         if (vacationId === vacation.vacationId) {
           setFavorites(true);
