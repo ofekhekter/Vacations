@@ -1,4 +1,4 @@
-.VacationContainer{
+.vacationContainer{
     display: flex;
     justify-content: center;
     margin-top: 30px;
@@ -7,6 +7,27 @@
 .selectImage:hover{
     cursor: pointer;
 }
-.filetype:hover{
+
+.selectImage{
+    font-size: 15px;
+    color: black;
+    text-shadow: 1px 0 5px #000000;
+    cursor: pointer;
+    /* -webkit-text-stroke: 0.1px #ffffff; */
+}
+
+/* .filetype:hover{
+    cursor: pointer;
+} */
+
+.changeImage{
+    font-size: 20px;
+    color: white;
+    text-shadow: 1px 0 5px #000000;
+    cursor: pointer;
+    -webkit-text-stroke: 0.3px #000000;
+}
+
+.changeImage:hover{
     cursor: pointer;
 }

@@ -44,11 +44,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "/addvacation",
-        element: <VacationCard isEditMode={false} />,
+        element: (
+          <PrivateRoute>
+            <VacationCard isEditMode={false} />
+          </PrivateRoute>),
       },
       {
         path: "/editvacation",
-        element: <VacationCard isEditMode={true} />,
+        element: (
+          <PrivateRoute>
+            <VacationCard isEditMode={true} />
+          </PrivateRoute>),
       },
       {
         path: "*",

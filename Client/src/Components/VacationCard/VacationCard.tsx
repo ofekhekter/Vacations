@@ -22,15 +22,18 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const [imageSrc, setImageSrc] = useState<string>("");
     const [responseMessage, setResponseMessage] = useState<string>("");
     const [selectImage, setSelectImage] = useState<string>("Select Image");
+    const [border, setBorder] = useState<string>('1px solid black');
     const [oneVacation, setOneVacation] = useState<VacationType>();
     const vacationId = useSelector((state: any) => state.currentVacation.vacationId);
     const today: Dayjs = dayjs();
     const minEndDate = dayjs().add(1, 'day');
 
+
     useEffect(() => {
         const fetchAllVacations = async () => {
             const vacation = await getOneVacation(vacationId);
             setOneVacation(vacation);
+            if (isEditMode) setImageSrc(`http://localhost:3001/static/images/${vacation.imageName}.jpg`);
         };
         fetchAllVacations();
     }, [vacationId]);
@@ -73,7 +76,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
         } catch {
             console.log("error");
         }
-    }
+    };
 
     const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -84,14 +87,15 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
             };
             reader.readAsDataURL(file);
         }
+        setBorder('none');
     };
 
     const returnToUserScreen = () => {
         navigate('/userpage');
-    }
+    };
 
 
-    return <section className="VacationContainer">
+    return <section className="vacationContainer">
         <form onSubmit={handleSubmit(submit)} noValidate>
             <Box
                 sx={{
@@ -113,14 +117,14 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 {isEditMode ? (<TextField
                     id="outlined-full-width"
                     label="destination"
-                    required
                     multiline
                     rows={1}
+                    required
                     InputLabelProps={{ shrink: true }}
                     defaultValue={oneVacation?.destination}
                     variant="outlined"
                     style={{ margin: 16 }}
-                    {...register('destination', { required: true })}
+                    {...register('destination', { required: false })}
                 />) : (<TextField
                     id="outlined-full-width"
                     label="destination"
@@ -135,19 +139,18 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     required
                     InputLabelProps={{ shrink: true }}
                     defaultValue={oneVacation?.description}
+                    // value={oneVacation?.description}
                     multiline
-                    rows={4}
+                    rows={3}
                     variant="outlined"
                     style={{ margin: 16 }}
-                    {...register('description', {
-                        required: true
-                    })}
+                    {...register('description', { required: false })}
                 />) : (<TextField
                     id="outlined-multiline-static"
                     label="description"
                     required
                     multiline
-                    rows={4}
+                    rows={3}
                     variant="outlined"
                     style={{ margin: 16 }}
                     {...register('description', { required: true })}
@@ -161,9 +164,10 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 </Typography>
                 {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                        defaultValue={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         value={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         minDate={today}
-                        {...register('startDate', { required: true })}
+                        {...register('startDate', { required: false })}
                         onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
                         sx={{ m: 2, width: '28ch' }}
                     />
@@ -186,7 +190,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     <DatePicker
                         value={oneVacation?.endDate ? dayjs(oneVacation.endDate) : null}
                         minDate={minEndDate}
-                        {...register('endDate', { required: true })}
+                        {...register('endDate', { required: false })}
                         onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
                         sx={{ m: 2, width: '28ch' }}
                     />
@@ -208,7 +212,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         label="price"
                         required
-                        {...register('price', { required: true })}
+                        {...register('price', { required: false })}
                     />) : (<OutlinedInput
                         type="number"
                         id="outlined-adornment-amount"
@@ -237,28 +241,22 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         textAlign: 'center',
-                        width: '250px',
-                        height: '80px',
-                        border: '1px solid black',
+                        width: '200px',
+                        height: '100px',
+                        border: `${border}`,
+                        backgroundImage: imageSrc ? `url(${imageSrc})` : 'url(http://localhost:3001/static/images/No-Image.png)',
+                        backgroundSize: '200px 100px',
+                        backgroundRepeat: 'no-repeat',
                     }}>
-                        {imageSrc && (
-                            <img src={imageSrc} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} />
-                        )}
                         <label htmlFor="file-input">
-                            <span className="selectImage">{selectImage}</span>
-                            {isEditMode ? (<input
+                            {imageSrc ? <span className="changeImage">Change Image</span> : <span className="selectImage">{selectImage}</span>}
+                            <input
                                 id="file-input"
                                 type="file"
                                 className="filetype"
                                 style={{ display: 'none' }}
                                 onChange={handleFileInputChange}
-                            />) : (<input
-                                id="file-input"
-                                type="file"
-                                className="filetype"
-                                style={{ display: 'none' }}
-                                onChange={handleFileInputChange}
-                            />)}
+                            />
                         </label>
                     </div>
                     {isEditMode ? <Button variant="contained" type="submit" sx={{ width: "250px" }}>Update</Button> :

@@ -94,10 +94,10 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   const removeCard = async () => {
     const token = localStorage.getItem('token');
     if (token !== null) {
-      await deleteVacation(vacation.vacationId.toString(), token);
-      await deleteImage(vacation.imageName);
       dispatch(isDeleted(true));
       setOpen(false);
+      await deleteVacation(vacation.vacationId.toString(), token);
+      await deleteImage(vacation.imageName);
     }
   };
 
@@ -140,7 +140,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
               <Fade {...TransitionProps}>
                 <Box sx={{ border: 1, p: 2, bgcolor: 'background.paper' }}>
                   <Typography>Are you sure you want to delete the vacation?</Typography>
-                  <Button size='small' onClick={() => removeCard()} variant="contained" color="success">
+                  <Button size='small' onClick={removeCard} variant="contained" color="success">
                     Yes
                   </Button>
                   <Button size='small' onClick={() => setOpen(false)} variant="contained" color="error">
@@ -173,6 +173,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
     <Typography sx={{
       margin: '5px 5px 5px 5px',
       fontSize: 'small',
+      overflowWrap: 'break-word',
     }} variant="body2" color="#EADBC8">
       {vacation.description}
     </Typography>
