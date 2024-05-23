@@ -8,9 +8,14 @@ import { addVacation, getAllImageNames, getOneVacation, updateVacation } from ".
 import { useEffect, useState } from "react";
 import { addOneImage, getImageFile } from "../../services/imagesServices";
 import dayjs, { Dayjs } from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import './vacationCard.css';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface VacationCardProps {
     isEditMode: boolean;
@@ -25,29 +30,39 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const [border, setBorder] = useState<string>('1px solid black');
     const [oneVacation, setOneVacation] = useState<VacationType>();
     const vacationId = useSelector((state: any) => state.currentVacation.vacationId);
-    const today: Dayjs = dayjs();
-    const minEndDate = dayjs().add(1, 'day');
+    const today: Dayjs = dayjs().tz("Asia/Jerusalem");
+    const minEndDate = dayjs().tz("Asia/Jerusalem").add(1, 'day');
 
 
     useEffect(() => {
         const fetchAllVacations = async () => {
             const vacation = await getOneVacation(vacationId);
-            setOneVacation(vacation);
+            setOneVacation({
+                ...vacation,
+                startDate: dayjs(vacation.startDate).tz("Asia/Jerusalem").format(),
+                endDate: dayjs(vacation.endDate).tz("Asia/Jerusalem").format(),
+            });
             if (isEditMode) setImageSrc(`http://localhost:3001/static/images/${vacation.imageName}.jpg`);
         };
         fetchAllVacations();
-    }, [vacationId]);
+    }, [vacationId, isEditMode]);
 
     const submit = async (registerForm: VacationType) => {
         try {
             if (!imageSrc) {
                 setSelectImage("no image selected");
             } else {
+                // console.log(registerForm.startDate)
+                // console.log(registerForm.endDate)
+
+                const startDateUTC = dayjs(registerForm.startDate).tz("Asia/Jerusalem").utc().format();
+                const endDateUTC = dayjs(registerForm.endDate).tz("Asia/Jerusalem").utc().format();
+
                 const vacation = {
                     "destination": registerForm.destination,
                     "description": registerForm.description,
-                    "startDate": registerForm.startDate,
-                    "endDate": registerForm.endDate,
+                    "startDate": startDateUTC,
+                    "endDate": endDateUTC,
                     "price": registerForm.price,
                     "imageName": registerForm.destination
                 } as VacationType;
