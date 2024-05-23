@@ -52,6 +52,8 @@ export const getOneVacationLogic = async (id: number): Promise<VacationType> => 
 
 export const addOneVacationLogic = async (newVacation: VacationType): Promise<VacationType> => {
   validateVacation(newVacation);
+  console.log(newVacation.startDate)
+  console.log(newVacation.endDate)
 
   const checkVacationExistQuery = `
   SELECT * FROM vacations

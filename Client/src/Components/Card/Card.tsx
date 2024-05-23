@@ -67,7 +67,6 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   const userEmail = useSelector((state: any) => state.emailAddress.text);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     setFavorites(false);
     if (vacationIdsOfUser.length > 0) {
