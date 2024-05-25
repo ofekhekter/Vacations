@@ -33,15 +33,10 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const today: Dayjs = dayjs().tz("Asia/Jerusalem");
     const minEndDate = dayjs().tz("Asia/Jerusalem").add(1, 'day');
 
-
     useEffect(() => {
         const fetchAllVacations = async () => {
             const vacation = await getOneVacation(vacationId);
-            setOneVacation({
-                ...vacation,
-                startDate: dayjs(vacation.startDate).tz("Asia/Jerusalem").format(),
-                endDate: dayjs(vacation.endDate).tz("Asia/Jerusalem").format(),
-            });
+            setOneVacation(vacation);
             if (isEditMode) setImageSrc(`http://localhost:3001/static/images/${vacation.imageName}.jpg`);
         };
         fetchAllVacations();
@@ -72,6 +67,8 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                         setResponseMessage(response);
                     }
                 } else {
+                    console.log("registerForm.startDate: ", registerForm.startDate);
+                    console.log("registerForm.endDate: ", registerForm.endDate);
                     const response = await addVacation(vacation);
                     if (response.status === 201) {
                         const imageFile = await getImageFile(imageSrc);
@@ -102,6 +99,35 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const returnToUserScreen = () => {
         navigate('/userpage');
     };
+
+    const chengeDateFormatToIsoString = (d: dayjs.Dayjs | null, isStartDate: boolean) => {
+        const inputDateString = `${d?.toDate().toLocaleString()}`;
+        const date = new Date(inputDateString);
+        const options: any = {
+            timeZone: 'Asia/Jerusalem',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        const parts = formatter.formatToParts(date);
+        const getPart = (type: string, defaultValue = "00") => {
+            const part = parts.find(p => p.type === type);
+            return part ? part.value : defaultValue;
+        };
+
+        const adjustedDateString = `${getPart('year')}-${getPart('month')}-${getPart('day')}T${getPart('hour')}:${getPart('minute')}:${getPart('second')}`;
+
+        const adjustedDate = new Date(adjustedDateString + "Z");
+
+        const isoString = adjustedDate.toISOString();
+
+        isStartDate ? setValue('startDate', isoString) : setValue('endDate', isoString);
+    }
 
 
     return <section className="vacationContainer">
@@ -173,18 +199,16 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 </Typography>
                 {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        timezone="Asia/Jerusalem"
                         defaultValue={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         value={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         minDate={today}
-                        onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        onChange={(d) => chengeDateFormatToIsoString(d, true)}
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        timezone="Asia/Jerusalem"
                         minDate={today}
-                        onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        onChange={(d) => chengeDateFormatToIsoString(d, true)}
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>)}
@@ -197,17 +221,15 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 </Typography>
                 {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        timezone="Asia/Jerusalem"
                         value={oneVacation?.endDate ? dayjs(oneVacation.endDate) : null}
                         minDate={minEndDate}
-                        onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        onChange={(d) => chengeDateFormatToIsoString(d, false)}
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        timezone="Asia/Jerusalem"
                         minDate={minEndDate}
-                        onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        onChange={(d) => chengeDateFormatToIsoString(d, false)}
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>)}
