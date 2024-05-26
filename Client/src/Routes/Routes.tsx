@@ -6,6 +6,7 @@ import { LoginPage } from "../Components/Signup/LoginPage";
 import { VacationCard } from "../Components/VacationCard/VacationCard";
 import NotFound from "../Components/404Page/NotFound";
 import PrivateRoute from "./PrivateRoute";
+import { CheckBoxCards } from "../Components/CheckBoxCards/CheckBoxCards";
 
 
 export const router = createBrowserRouter([
@@ -55,6 +56,11 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <VacationCard isEditMode={true} />
           </PrivateRoute>),
+      },
+      {
+        path: "/filters",
+        element: <CheckBoxCards />
+        ,
       },
       {
         path: "*",

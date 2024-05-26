@@ -6,6 +6,9 @@ import { login } from "../../features/loginSlice";
 import { emailAddress } from "../../features/emailSlice";
 import { userRole } from "../../features/adminSlice";
 import Checkbox from '@mui/material/Checkbox';
+import { getAllVacationsByUserId } from '../../services/vacationsServices';
+import { getUserId } from '../../services/usersServices';
+import { vacations } from '../../features/vacationsSlice';
 import "./navbar.css";
 
 export const Navbar = () => {
@@ -18,14 +21,34 @@ export const Navbar = () => {
     const [checkedUpcoming, setCheckedUpcoming] = React.useState(false);
     const [checkedCurrently, setCheckedCurrently] = React.useState(false);
 
-    const handleChangeFollowings = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckedFollowings(event.target.checked);
+    const handleChangeFollowings = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const isChecked = event.target.checked;
+        setCheckedFollowings(isChecked);
+        setCheckedUpcoming(false);
+        setCheckedCurrently(false);
+        
+        if (isChecked) {
+            const userId = await getUserId(userEmail);
+            const vacationss = await getAllVacationsByUserId(userId);
+            dispatch(vacations(vacationss));
+            navigate("/filters");
+        } else {
+            navigate("/userpage");
+        }
     };
+
     const handleChangeUpcoming = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckedUpcoming(event.target.checked);
+        const isChecked = event.target.checked;
+        setCheckedUpcoming(isChecked);
+        setCheckedFollowings(false);
+        setCheckedCurrently(false);
     };
+
     const handleChangeCurrently = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCheckedCurrently(event.target.checked);
+        const isChecked = event.target.checked;
+        setCheckedCurrently(isChecked);
+        setCheckedFollowings(false);
+        setCheckedUpcoming(false);
     };
 
     const handleSigninClicked = () => {
@@ -38,23 +61,23 @@ export const Navbar = () => {
             dispatch(userRole(false));
             navigate('/home');
         }
-    }
+    };
 
     const handleCardClicked = () => {
         navigate('/userpage');
-    }
+    };
 
     const handleVacationClicked = () => {
         navigate('/addvacation');
-    }
+    };
 
     return (
         <AppBar className="appBar" position="static" style={{ backgroundColor: "#153448" }}>
             <Toolbar sx={{ display: 'flex', justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex" }}>
-                    <Typography variant="h4" sx={{}} component="div">
-                        Vacations
-                    </Typography>
+                <Typography variant="h4" sx={{}} component="div">
+                    Vacations
+                </Typography>
+                {userEmail && <Box sx={{ display: "flex" }}>
                     <Box sx={{ display: "flex", flexDirection: "column", marginLeft: "15px" }}>
                         Followings
                         <Checkbox
@@ -79,7 +102,7 @@ export const Navbar = () => {
                             inputProps={{ 'aria-label': 'controlled' }}
                         />
                     </Box>
-                </Box>
+                </Box>}
                 <Box sx={{ display: 'flex', alignItems: "center" }}>
                     <Typography variant="subtitle2" onClick={handleCardClicked} sx={{ marginRight: "6px" }}>
                         {userEmail}

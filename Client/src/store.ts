@@ -4,6 +4,7 @@ import loginSlice from "./features/loginSlice";
 import adminSlice from "./features/adminSlice";
 import vacationSlice from "./features/vacationSlice";
 import deletedCardSlice from "./features/deletedCardSlice";
+import vacationsSlice from "./features/vacationsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     login: loginSlice,
     currentVacation: vacationSlice,
     isDeleted: deletedCardSlice,
+    vacations: vacationsSlice,
   },
 });

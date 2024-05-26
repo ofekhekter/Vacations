@@ -5,7 +5,6 @@ export const appConfig: AppConfig = {
   get: {
     allVacations: "/vacations/",
     allFollowings: "/followings/",
-    oneVacation: "/vacations/",
     oneImage: "/images/",
     getUserId: "/auth/",
   },

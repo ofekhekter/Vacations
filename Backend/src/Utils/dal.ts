@@ -19,3 +19,15 @@ export const executeSqlQuery = (sql: string): Promise<any> => {
     });
   });
 };
+
+export const executeSqlQueryWithParams = (sql: string, params: any[]): Promise<any> => {
+  return new Promise<any>((res, rej) => {
+    connection.query(sql, params, (err, result) => {
+      if (err) {
+        rej(err);
+        return;
+      }
+      res(result);
+    });
+  });
+};

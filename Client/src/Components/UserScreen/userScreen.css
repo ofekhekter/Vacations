@@ -1,12 +1,7 @@
-.homeScreenContainer {
-  display: flex;
-  justify-content: center;
-  /* align-items: center; */
-  /* min-height: 100vh; */
-}
-
 .homeScreen {
-  display: grid;
+  justify-content: center;
+  flex-wrap: wrap;
+  display: flex;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, auto);
   gap: 100px;

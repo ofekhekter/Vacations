@@ -3,7 +3,6 @@ export type AppConfig = {
   get: {
     allVacations: string;
     allFollowings: string;
-    oneVacation: string;
     oneImage: string;
     getUserId: string;
   };

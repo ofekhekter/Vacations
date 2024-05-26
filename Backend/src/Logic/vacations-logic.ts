@@ -1,6 +1,6 @@
 import { ResourceNotFound, ValidationError } from "../Models/ErrorModels";
 import { VacationType, validateVacation } from "../Models/VacationModel";
-import { executeSqlQuery } from "../Utils/dal";
+import { executeSqlQuery, executeSqlQueryWithParams } from "../Utils/dal";
 import { OkPacket } from "mysql";
 
 export const getAllVacationsLogic = async (): Promise<string[]> => {
@@ -9,6 +9,27 @@ export const getAllVacationsLogic = async (): Promise<string[]> => {
   if (vacationsResult.length > 0) {
     const vacationNames: string[] = vacationsResult.map((vacation: any) => vacation.imageName);
     return vacationNames;
+  } else return [];
+};
+
+export const getAllVacationsByIdLogic = async (userId: number): Promise<VacationType[]> => {
+  const getAllVacationQuery = `
+    SELECT v.*
+    FROM vacations v
+    JOIN followings f ON v.vacationId = f.vacationId
+    WHERE f.userId = ?`;
+  
+  const vacationsResult = await executeSqlQueryWithParams(getAllVacationQuery, [userId]);
+  if (vacationsResult.length > 0) {
+    return vacationsResult;
+  } else return [];
+};
+
+export const getAllFutureVacationsLogic = async (): Promise<VacationType[]> => {
+  const getAllVacationQuery = `SELECT * FROM vacations WHERE startDate > CURDATE()`;
+  const vacationsResult = await executeSqlQuery(getAllVacationQuery);
+  if (vacationsResult.length > 0) {
+    return vacationsResult;
   } else return [];
 };
 

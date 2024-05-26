@@ -15,6 +15,7 @@ import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
 import { addFollow, deleteFollow } from '../../services/followingsServices';
 import './card.css';
+import { changeStringFormat } from '../../utils/changeFormat';
 
 interface FadeProps {
   children?: React.ReactElement;
@@ -50,11 +51,6 @@ const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, re
 interface CardProps {
   vacation: VacationType;
   vacationIdsOfUser: number[];
-}
-
-export const changeStringFormat = (value: string) => {
-  const [year, month, day] = value.split('').map(word => word === '-' ? '.' : word).join('').split('.');
-  return `${day}.${month}.${year}`;
 }
 
 export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {

@@ -24,8 +24,19 @@ export const getAllVacations = async (currentPage: number, userId: number): Prom
   }
 };
 
+export const getAllVacationsByUserId = async (userId: number): Promise<VacationType[]> => {
+  const fullUrl = `${appConfig.baseUrl}${appConfig.get.allVacations}${userId}`;
+  try {
+    const vacations = await axios.get(fullUrl);
+    return vacations.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 export const getOneVacation = async (id: string): Promise<VacationType> => {
-  const fullUrl = appConfig.baseUrl + appConfig.get.oneVacation + id;
+  const fullUrl = appConfig.baseUrl + appConfig.get.allVacations + id;
   const data = await axios
     .get(fullUrl)
     .then((res) => res.data)
