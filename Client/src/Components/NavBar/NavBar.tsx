@@ -6,49 +6,64 @@ import { login } from "../../features/loginSlice";
 import { emailAddress } from "../../features/emailSlice";
 import { userRole } from "../../features/adminSlice";
 import Checkbox from '@mui/material/Checkbox';
-import { getAllVacationsByUserId } from '../../services/vacationsServices';
+import { getAllCurrentVacations, getAllFutureVacations, getAllVacationsByUserId } from '../../services/vacationsServices';
 import { getUserId } from '../../services/usersServices';
 import { vacations } from '../../features/vacationsSlice';
 import "./navbar.css";
+
 
 export const Navbar = () => {
     const navigate = useNavigate();
     const loginState = useSelector((state: any) => state.login.text);
     const userEmail = useSelector((state: any) => state.emailAddress.text);
     const isAdmin = useSelector((state: any) => state.userRole.isAdmin);
-    const dispatch = useDispatch();
     const [checkedFollowings, setCheckedFollowings] = React.useState(false);
     const [checkedUpcoming, setCheckedUpcoming] = React.useState(false);
     const [checkedCurrently, setCheckedCurrently] = React.useState(false);
+    const dispatch = useDispatch();
 
     const handleChangeFollowings = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = event.target.checked;
         setCheckedFollowings(isChecked);
         setCheckedUpcoming(false);
         setCheckedCurrently(false);
-        
+
         if (isChecked) {
             const userId = await getUserId(userEmail);
-            const vacationss = await getAllVacationsByUserId(userId);
-            dispatch(vacations(vacationss));
+            const vacationsFollowings = await getAllVacationsByUserId(userId);
+            dispatch(vacations(vacationsFollowings));
             navigate("/filters");
         } else {
             navigate("/userpage");
         }
     };
 
-    const handleChangeUpcoming = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeUpcoming = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = event.target.checked;
         setCheckedUpcoming(isChecked);
         setCheckedFollowings(false);
         setCheckedCurrently(false);
+        if (isChecked) {
+            const futureVacations = await getAllFutureVacations();
+            dispatch(vacations(futureVacations));
+            navigate("/filters");
+        } else {
+            navigate("/userpage");
+        }
     };
 
-    const handleChangeCurrently = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeCurrently = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = event.target.checked;
         setCheckedCurrently(isChecked);
         setCheckedFollowings(false);
         setCheckedUpcoming(false);
+        if (isChecked) {
+            const currentVacations = await getAllCurrentVacations();
+            dispatch(vacations(currentVacations));
+            navigate("/filters");
+        } else {
+            navigate("/userpage");
+        }
     };
 
     const handleSigninClicked = () => {
@@ -77,7 +92,7 @@ export const Navbar = () => {
                 <Typography variant="h4" sx={{}} component="div">
                     Vacations
                 </Typography>
-                {userEmail && <Box sx={{ display: "flex" }}>
+                {userEmail && !isAdmin && <Box sx={{ display: "flex" }}>
                     <Box sx={{ display: "flex", flexDirection: "column", marginLeft: "15px" }}>
                         Followings
                         <Checkbox

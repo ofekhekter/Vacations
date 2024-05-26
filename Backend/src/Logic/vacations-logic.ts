@@ -33,6 +33,14 @@ export const getAllFutureVacationsLogic = async (): Promise<VacationType[]> => {
   } else return [];
 };
 
+export const getAllCurrentVacationsLogic = async (): Promise<VacationType[]> => {
+  const getAllVacationQuery = `SELECT * FROM vacations WHERE startDate <= CURDATE() AND endDate >= CURDATE()`;
+  const vacationsResult = await executeSqlQuery(getAllVacationQuery);
+  if (vacationsResult.length > 0) {
+    return vacationsResult;
+  } else return [];
+};
+
 export const getAllVacationsOffsetLogic = async (page: number, userId: number): Promise<{ vacations: VacationType[], totalCount: number }> => {
   const limit = 10;
   const offset = (page - 1) * limit;
@@ -73,8 +81,6 @@ export const getOneVacationLogic = async (id: number): Promise<VacationType> => 
 
 export const addOneVacationLogic = async (newVacation: VacationType): Promise<VacationType> => {
   validateVacation(newVacation);
-  console.log(newVacation.startDate)
-  console.log(newVacation.endDate)
 
   const checkVacationExistQuery = `
   SELECT * FROM vacations

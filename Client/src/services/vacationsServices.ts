@@ -24,6 +24,28 @@ export const getAllVacations = async (currentPage: number, userId: number): Prom
   }
 };
 
+export const getAllFutureVacations = async (): Promise< VacationType[]> => {
+  const fullUrl = `${appConfig.baseUrl}${appConfig.get.allFutureVacations}`;
+  try {
+    const vacations = await axios.get(fullUrl);
+    return vacations.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const getAllCurrentVacations = async (): Promise< VacationType[]> => {
+  const fullUrl = `${appConfig.baseUrl}${appConfig.get.allCurrentVacations}`;
+  try {
+    const vacations = await axios.get(fullUrl);
+    return vacations.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 export const getAllVacationsByUserId = async (userId: number): Promise<VacationType[]> => {
   const fullUrl = `${appConfig.baseUrl}${appConfig.get.allVacations}${userId}`;
   try {

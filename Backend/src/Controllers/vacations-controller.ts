@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { addOneVacationLogic, deleteVacationLogic, getAllFutureVacationsLogic, getAllVacationsByIdLogic, getAllVacationsLogic, getAllVacationsOffsetLogic, getOneVacationLogic, updateVacationLogic } from "../Logic/vacations-logic";
+import { addOneVacationLogic, deleteVacationLogic, getAllCurrentVacationsLogic, getAllFutureVacationsLogic, getAllVacationsByIdLogic, getAllVacationsLogic, getAllVacationsOffsetLogic, getOneVacationLogic, updateVacationLogic } from "../Logic/vacations-logic";
 import { VacationType } from "../Models/VacationModel";
 import { verifyAdminMW } from "../Middleware/varify-admin";
 
@@ -41,6 +41,16 @@ router.get("/vacations/:userId", async (req: Request, res: Response, next: NextF
 router.get("/futurevacations", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const vacations = await getAllFutureVacationsLogic();
+      res.status(200).json(vacations);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.get("/currentvacations", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const vacations = await getAllCurrentVacationsLogic();
       res.status(200).json(vacations);
     } catch (err) {
       next(err);

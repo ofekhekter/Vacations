@@ -174,7 +174,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     required
                     InputLabelProps={{ shrink: true }}
                     defaultValue={oneVacation?.description}
-                    // value={oneVacation?.description}
+                    value={oneVacation?.description}
                     multiline
                     rows={3}
                     variant="outlined"

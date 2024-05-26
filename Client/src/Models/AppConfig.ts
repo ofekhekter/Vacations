@@ -2,6 +2,8 @@ export type AppConfig = {
   baseUrl: string;
   get: {
     allVacations: string;
+    allFutureVacations: string;
+    allCurrentVacations: string;
     allFollowings: string;
     oneImage: string;
     getUserId: string;
