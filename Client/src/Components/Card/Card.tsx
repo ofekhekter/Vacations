@@ -14,8 +14,8 @@ import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
 import { addFollow, deleteFollow, getAllFollowings } from '../../services/followingsServices';
-import './card.css';
 import { changeStringFormat } from '../../utils/changeFormat';
+import './card.css';
 
 interface FadeProps {
   children?: React.ReactElement;
@@ -84,7 +84,6 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
         }
       }
     } else setFavorites(false);
-
   }, [vacationIdsOfUser, vacation.vacationId]);
 
   const canBeOpen = open && Boolean(anchorEl);

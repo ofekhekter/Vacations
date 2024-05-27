@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationType } from '../../Models/VacationModel';
-import { addVacation, checkLegalDates, getAllImageNames, getOneVacation, updateVacation } from "../../services/vacationsServices";
+import { addVacation, checkLegalDates, getOneVacation, updateVacation } from "../../services/vacationsServices";
 import { useEffect, useState } from "react";
 import { addOneImage, getImageFile } from "../../services/imagesServices";
 import dayjs, { Dayjs } from 'dayjs';
