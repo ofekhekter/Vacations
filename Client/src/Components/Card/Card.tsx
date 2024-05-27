@@ -13,7 +13,7 @@ import { getUserId } from '../../services/usersServices';
 import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
-import { addFollow, deleteFollow } from '../../services/followingsServices';
+import { addFollow, deleteFollow, getAllFollowings } from '../../services/followingsServices';
 import './card.css';
 import { changeStringFormat } from '../../utils/changeFormat';
 
@@ -58,10 +58,22 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   const [favorites, setFavorites] = useState<boolean>(false);
   const [imageError, setImageError] = useState(false);
   const [open, setOpen] = useState(false);
+  const [totalFavorites, setTotalFavorites] = useState<number>(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isAdmin = useSelector((state: any) => state.userRole.isAdmin);
   const userEmail = useSelector((state: any) => state.emailAddress.text);
   const dispatch = useDispatch();
+
+  const fetchAllFollowings = async () => {
+    const allFollowings = await getAllFollowings();
+    for (const follow of allFollowings) {
+      if (follow.vacationId === vacation.vacationId) {
+        setTotalFavorites(follow.totalFollowers);
+      }
+    }
+  };
+
+  fetchAllFollowings();
 
   useEffect(() => {
     setFavorites(false);
@@ -72,6 +84,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
         }
       }
     } else setFavorites(false);
+
   }, [vacationIdsOfUser, vacation.vacationId]);
 
   const canBeOpen = open && Boolean(anchorEl);
@@ -106,9 +119,11 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
     if (favorites) {
       setFavorites(false);
       await deleteFollow(userId, vacation.vacationId);
+      await fetchAllFollowings();
     } else {
       setFavorites(true);
       await addFollow(userId, vacation.vacationId);
+      await fetchAllFollowings();
     }
   };
 
@@ -149,11 +164,14 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
       ) : (
         favorites ? (<IconButton onClick={handleFavorites} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
           <FavoriteIcon />
+          <Typography variant="body2" color="white">{totalFavorites}</Typography>
         </IconButton>) : (<IconButton onClick={handleFavorites} style={{ color: "white" }} className='favorites' aria-label="add to favorites">
           <FavoriteIcon />
+          <Typography variant="body2" color="white">{totalFavorites}</Typography>
         </IconButton>
         )
-      )}
+      )
+      }
     </Box>
     <Typography variant="body2" color="white">
       {changeStringFormat(vacation.startDate.substring(2, 10)) + ' - ' + changeStringFormat(vacation.endDate.substring(2, 10))}

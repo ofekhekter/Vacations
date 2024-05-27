@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { addfollowingLogic, deletefollowingLogic, getAllFollowingsLogic } from "../Logic/followings-logic";
+import { addfollowingLogic, deletefollowingLogic, getAllFollowingsLogic, getAllFollowingsOfUserIdLogic } from "../Logic/followings-logic";
 
 const router = express.Router();
 
@@ -18,8 +18,18 @@ router.post("/followings/:vacationId", async (req: Request, res: Response, next:
 router.get("/followings/:userId", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = +req.params.userId;
-      const allFollowings = await getAllFollowingsLogic(userId);
+      const allFollowings = await getAllFollowingsOfUserIdLogic(userId);
       res.status(200).json(allFollowings);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.get("/followings", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const totalFollowings = await getAllFollowingsLogic();
+      res.status(200).json(totalFollowings);
     } catch (err) {
       next(err);
     }
