@@ -58,7 +58,7 @@ export const getAllVacationsByUserId = async (userId: number): Promise<VacationT
 };
 
 export const getOneVacation = async (id: string): Promise<VacationType> => {
-  const fullUrl = appConfig.baseUrl + appConfig.get.allVacations + id;
+  const fullUrl = appConfig.baseUrl + appConfig.get.oneVacation + id;
   const data = await axios
     .get(fullUrl)
     .then((res) => res.data)

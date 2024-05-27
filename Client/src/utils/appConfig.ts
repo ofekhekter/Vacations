@@ -4,6 +4,7 @@ export const appConfig: AppConfig = {
   baseUrl: "http://localhost:3001/api",
   get: {
     allVacations: "/vacations/",
+    oneVacation: "/onevacation/",
     allFutureVacations: "/futurevacations",
     allCurrentVacations: "/currentvacations",
     allFollowings: "/followings/",

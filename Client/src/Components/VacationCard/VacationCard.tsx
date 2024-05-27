@@ -32,7 +32,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const vacationId = useSelector((state: any) => state.currentVacation.vacationId);
     const today: Dayjs = dayjs().tz("Asia/Jerusalem");
     const minEndDate = dayjs().tz("Asia/Jerusalem").add(1, 'day');
-
+    
     useEffect(() => {
         const fetchAllVacations = async () => {
             const vacation = await getOneVacation(vacationId);
@@ -154,12 +154,12 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     label="destination"
                     multiline
                     rows={1}
-                    required
                     InputLabelProps={{ shrink: true }}
                     defaultValue={oneVacation?.destination}
+                    required
                     variant="outlined"
                     style={{ margin: 16 }}
-                    {...register('destination', { required: false })}
+                    {...register('destination', { required: true })}
                 />) : (<TextField
                     id="outlined-full-width"
                     label="destination"
@@ -171,10 +171,9 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 {isEditMode ? (<TextField
                     id="outlined-multiline-static"
                     label="description"
-                    required
                     InputLabelProps={{ shrink: true }}
                     defaultValue={oneVacation?.description}
-                    value={oneVacation?.description}
+                    required
                     multiline
                     rows={3}
                     variant="outlined"
