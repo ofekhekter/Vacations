@@ -16,6 +16,7 @@ export type AppConfig = {
     addOneImage: string;
     isAdmin: string;
     addFollow: string;
+    checkLegalDates: string;
   };
   update: {
     vacation: string;

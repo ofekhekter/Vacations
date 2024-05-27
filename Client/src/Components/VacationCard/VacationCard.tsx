@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationType } from '../../Models/VacationModel';
-import { addVacation, getAllImageNames, getOneVacation, updateVacation } from "../../services/vacationsServices";
+import { addVacation, checkLegalDates, getAllImageNames, getOneVacation, updateVacation } from "../../services/vacationsServices";
 import { useEffect, useState } from "react";
 import { addOneImage, getImageFile } from "../../services/imagesServices";
 import dayjs, { Dayjs } from 'dayjs';
@@ -55,28 +55,29 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     "price": registerForm.price,
                     "imageName": registerForm.destination
                 } as VacationType;
-                if (isEditMode) {
-                    // const imagesNames = await getAllImageNames();
-                    // console.log(imagesNames);
-                    const response = await updateVacation(vacation, vacationId);
-                    if (response.status === 200) {
-                        const imageFile = await getImageFile(imageSrc);
-                        await addOneImage(registerForm.destination, imageFile);
-                        navigate('/userpage');
+                const result = await checkLegalDates(registerForm.startDate, registerForm.endDate);
+                if (result){
+                    if (isEditMode) {
+                        const response = await updateVacation(vacation, vacationId);
+                        if (response.status === 200) {
+                            const imageFile = await getImageFile(imageSrc);
+                            await addOneImage(registerForm.destination, imageFile);
+                            navigate('/userpage');
+                        } else {
+                            setResponseMessage(response);
+                        }
                     } else {
-                        setResponseMessage(response);
+                        const response = await addVacation(vacation);
+                        if (response.status === 201) {
+                            const imageFile = await getImageFile(imageSrc);
+                            await addOneImage(registerForm.destination, imageFile);
+                            navigate('/userpage');
+                        } else {
+                            setResponseMessage(response);
+                        }
                     }
                 } else {
-                    console.log("registerForm.startDate: ", registerForm.startDate);
-                    console.log("registerForm.endDate: ", registerForm.endDate);
-                    const response = await addVacation(vacation);
-                    if (response.status === 201) {
-                        const imageFile = await getImageFile(imageSrc);
-                        await addOneImage(registerForm.destination, imageFile);
-                        navigate('/userpage');
-                    } else {
-                        setResponseMessage(response);
-                    }
+                    setResponseMessage("The start date cannot be later than the end date");
                 }
             }
         } catch {

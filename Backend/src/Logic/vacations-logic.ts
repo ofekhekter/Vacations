@@ -18,7 +18,7 @@ export const getAllVacationsByIdLogic = async (userId: number): Promise<Vacation
     FROM vacations v
     JOIN followings f ON v.vacationId = f.vacationId
     WHERE f.userId = ?`;
-  
+
   const vacationsResult = await executeSqlQueryWithParams(getAllVacationQuery, [userId]);
   if (vacationsResult.length > 0) {
     return vacationsResult;
@@ -62,9 +62,28 @@ LIMIT ${limit} OFFSET ${offset};`;
     executeSqlQuery(getTotalCountQuery)
   ]);
 
-  const totalCount = totalCountResult[0].totalCount;
+  const totalCount = (totalCountResult[0] as { totalCount: number }).totalCount;
 
-  return { vacations, totalCount };
+  // Function to convert date to Israel time without shifting days
+  const toIsraelDate = (date: string): string => {
+    const dateObject = new Date(date);
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObject.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // Convert the startDate and endDate to Israel time format without shifting days
+  const vacationsWithIsraelTime = vacations.map(vacation => ({
+    ...vacation,
+    startDate: toIsraelDate(vacation.startDate),
+    endDate: toIsraelDate(vacation.endDate)
+  }));
+
+  return {
+    vacations: vacationsWithIsraelTime,
+    totalCount
+  };
 };
 
 export const getOneVacationLogic = async (id: number): Promise<VacationType> => {
@@ -147,3 +166,20 @@ export const deleteVacationLogic = async (id: number): Promise<void> => {
 
   if (info.affectedRows <= 0) ResourceNotFound(id);
 };
+
+export const checkLegalDates = async (dates: { startDate: string, endDate: string }): Promise<boolean> => {
+  const query = `
+    SELECT CASE
+      WHEN STR_TO_DATE('${dates.startDate}', '%Y-%m-%d') < STR_TO_DATE('${dates.endDate}', '%Y-%m-%d') THEN TRUE
+      ELSE FALSE
+    END AS isValid;
+  `;
+
+  try {
+    const result = await executeSqlQuery(query);
+    return result[0].isValid === 1;
+  } catch (error) {
+    console.error("Error checking dates:", error);
+    return false;
+  }
+}

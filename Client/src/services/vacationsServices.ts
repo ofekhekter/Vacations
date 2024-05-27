@@ -57,6 +57,18 @@ export const getAllVacationsByUserId = async (userId: number): Promise<VacationT
   }
 };
 
+export const checkLegalDates = async (startDate: string, endDate: string): Promise<boolean> => {
+  const fullUrl = `${appConfig.baseUrl}${appConfig.post.checkLegalDates}`;
+  const alldates = {startDate, endDate};
+  try {
+    const vacations = await axios.post(fullUrl, alldates);
+    return vacations.data;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export const getOneVacation = async (id: string): Promise<VacationType> => {
   const fullUrl = appConfig.baseUrl + appConfig.get.oneVacation + id;
   const data = await axios

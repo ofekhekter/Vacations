@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { addOneVacationLogic, deleteVacationLogic, getAllCurrentVacationsLogic, getAllFutureVacationsLogic, getAllVacationsByIdLogic, getAllVacationsLogic, getAllVacationsOffsetLogic, getOneVacationLogic, updateVacationLogic } from "../Logic/vacations-logic";
+import { addOneVacationLogic, checkLegalDates, deleteVacationLogic, getAllCurrentVacationsLogic, getAllFutureVacationsLogic, getAllVacationsByIdLogic, getAllVacationsLogic, getAllVacationsOffsetLogic, getOneVacationLogic, updateVacationLogic } from "../Logic/vacations-logic";
 import { VacationType } from "../Models/VacationModel";
 import { verifyAdminMW } from "../Middleware/varify-admin";
 
@@ -74,6 +74,17 @@ router.get("/onevacation/:id", async (req: Request, res: Response, next: NextFun
         const vacation = req.body as VacationType;
         const newVacation = await addOneVacationLogic(vacation);
         res.status(201).json(newVacation);
+      } catch (err) {
+        next(err);
+      }
+    }
+  );
+
+  router.post("/dates", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const dates = req.body as {startDate: string, endDate: string};
+        const isLegal = await checkLegalDates(dates);
+        res.status(200).json(isLegal);
       } catch (err) {
         next(err);
       }
