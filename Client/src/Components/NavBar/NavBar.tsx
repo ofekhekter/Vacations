@@ -86,12 +86,19 @@ export const Navbar = () => {
         navigate('/addvacation');
     };
 
+    const handleReportClicked = () => {
+        navigate('/reportpage');
+    };
+
     return (
         <AppBar className="appBar" position="static" style={{ backgroundColor: "#153448" }}>
             <Toolbar sx={{ display: 'flex', justifyContent: "space-between" }}>
-                <Typography variant="h4" sx={{}} component="div">
+                <Typography variant="h4" component="div">
                     Vacations
                 </Typography>
+                {isAdmin && <Typography variant="h5" onClick={handleCardClicked}>
+                    Home
+                </Typography>}
                 {userEmail && !isAdmin && <Box sx={{ display: "flex" }}>
                     <Box sx={{ display: "flex", flexDirection: "column", marginLeft: "15px" }}>
                         Followings
@@ -122,7 +129,8 @@ export const Navbar = () => {
                     <Typography variant="subtitle2" onClick={handleCardClicked} sx={{ marginRight: "6px" }}>
                         {userEmail}
                     </Typography>
-                    {isAdmin ? <Button onClick={handleVacationClicked} sx={{ color: "#B0EBB4", border: "1px solid white", marginRight: "6px" }}>Add Vacation</Button> : <span></span>}
+                    {isAdmin && <Button onClick={handleReportClicked} sx={{ color: "#B0EBB4", border: "1px solid white", marginRight: "6px" }}>Report</Button>}
+                    {isAdmin && <Button onClick={handleVacationClicked} sx={{ color: "#B0EBB4", border: "1px solid white", marginRight: "6px" }}>Add Vacation</Button>}
                     <Button onClick={handleSigninClicked} color="inherit" sx={{ border: "1px solid white" }}>{loginState}</Button>
                 </Box>
             </Toolbar>

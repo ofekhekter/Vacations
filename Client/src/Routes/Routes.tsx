@@ -7,6 +7,7 @@ import { VacationCard } from "../Components/VacationCard/VacationCard";
 import NotFound from "../Components/404Page/NotFound";
 import PrivateRoute from "./PrivateRoute";
 import { CheckBoxCards } from "../Components/CheckBoxCards/CheckBoxCards";
+import TickPlacementBars from "../Components/Reports/ReportsGraphs";
 
 
 export const router = createBrowserRouter([
@@ -60,6 +61,11 @@ export const router = createBrowserRouter([
       {
         path: "/filters",
         element: <CheckBoxCards />
+        ,
+      },
+      {
+        path: "/reportpage",
+        element: <TickPlacementBars />
         ,
       },
       {

@@ -8,6 +8,7 @@
     "@material/card": "^14.0.0",
     "@mui/icons-material": "^5.15.16",
     "@mui/material": "^5.15.17",
+    "@mui/x-charts": "^7.5.1",
     "@mui/x-date-pickers": "^7.3.2",
     "@react-login-page/page8": "^1.0.4",
     "@react-spring/web": "^9.7.3",
