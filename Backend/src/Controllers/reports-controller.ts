@@ -8,8 +8,7 @@ const router = express.Router();
 router.post("/download", async (req: Request, res: Response, next: NextFunction) => {
     const vacations = req.body as FollowingsDataSetModel[];
     try {
-      await createCSV(vacations);
-      const filePath = join(__dirname, 'destinations.csv');
+      const filePath = await createCSV(vacations);
       res.download(filePath, 'destinations.csv', (err) => {
         if (err) {
           console.error('Error downloading the file:', err);
@@ -21,6 +20,5 @@ router.post("/download", async (req: Request, res: Response, next: NextFunction)
       res.status(500).send('Error creating the CSV file');
     }
 });
-
 
 export default router;

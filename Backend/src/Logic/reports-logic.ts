@@ -3,27 +3,20 @@ import { join } from "path";
 import { format } from "fast-csv";
 import { FollowingsDataSetModel } from "../Models/FollowingsModel";
 
-const destinations = [
-  { destination: "Paris", followers: 1200 },
-  { destination: "New York", followers: 950 },
-  { destination: "Tokyo", followers: 800 },
-  { destination: "Sydney", followers: 450 },
-];
-
 export const createCSV = (vacations: FollowingsDataSetModel[]) => {
-  return new Promise<void>((resolve, reject) => {
-    const filePath = join(__dirname, "destinations.csv");
+  return new Promise<string>((resolve, reject) => {
+    const filePath = join(__dirname, "..", "Assets", "reports", "destinations.csv");
     const ws = createWriteStream(filePath);
+    const csvStream = format({ headers: true });
 
-    format({ headers: true })
+    csvStream.pipe(ws)
       .on("error", (err) => reject(err))
-      .on("finish", () => resolve())
-      .pipe(ws);
+      .on("finish", () => resolve(filePath));
 
-    destinations.forEach((destination) => {
-      ws.write(destination);
+    vacations.forEach((destination) => {
+      csvStream.write(destination);
     });
 
-    ws.end();
+    csvStream.end();
   });
 };

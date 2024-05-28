@@ -30,8 +30,19 @@ export default function TickPlacementBars() {
   }
 
   const handleCsvClick = async () => {
-    await downloadCsvFile(followingsPerVacations);
-  }
+    try {
+      const blobData = await downloadCsvFile(followingsPerVacations);
+      const url = window.URL.createObjectURL(new Blob([blobData]));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'destinations.csv';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div style={{ width: '100%' }}>
