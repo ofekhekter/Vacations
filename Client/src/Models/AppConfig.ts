@@ -17,6 +17,7 @@ export type AppConfig = {
     isAdmin: string;
     addFollow: string;
     checkLegalDates: string;
+    downloadCsvFile: string;
   };
   update: {
     vacation: string;

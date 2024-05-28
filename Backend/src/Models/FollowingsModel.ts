@@ -4,3 +4,9 @@ export type FollowingsType = {
   destination: string;
   totalFollows: number;
 };
+
+export type FollowingsDataSetModel = {
+  destination: string;
+  followers: number;
+};
+

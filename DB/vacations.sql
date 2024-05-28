@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2024 at 08:56 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: May 28, 2024 at 10:14 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,10 +37,32 @@ CREATE TABLE `followings` (
 --
 
 INSERT INTO `followings` (`userId`, `vacationId`) VALUES
-(55, 12),
+(55, 1),
+(55, 2),
+(55, 3),
+(55, 4),
+(55, 7),
 (55, 18),
 (55, 32),
-(55, 200);
+(62, 1),
+(62, 2),
+(62, 3),
+(62, 4),
+(62, 5),
+(62, 7),
+(62, 8),
+(62, 9),
+(62, 12),
+(62, 32),
+(63, 1),
+(63, 12),
+(64, 1),
+(64, 2),
+(64, 5),
+(64, 7),
+(64, 9),
+(64, 10),
+(64, 11);
 
 -- --------------------------------------------------------
 
@@ -62,10 +84,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userId`, `firstName`, `lastName`, `email`, `password`, `role`) VALUES
-(22, 'Ofek', 'Hekter', 'ofekh1989@gmail.com', 'Ofek1989', 2),
-(55, 'ofek', 'hekter', 'ofek@123', 'Ofek1989', 1),
-(60, 'bdgdfgdxg', 'sdsdfsdfsd', 'sdsdf@dvsdfsdf', '1234', 1),
-(61, 'kaka', 'rotto', 'ofek22@123', 'kaka123', 1);
+(22, 'Ofek', 'Hekter', 'admin@gmail.com', '1234', 2),
+(55, 'adir', 'politi', 'user@123', 'Ofek1989', 1),
+(62, 'dani', 'kushmaro', 'dani@gmail.com', 'Dani123', 1),
+(63, 'michael', 'yakobovitch', 'michael@yak.com', 'micha1234', 1),
+(64, 'yonatan', 'akatan', 'yonatn222@walla.co.il', 'yoni123', 1);
 
 -- --------------------------------------------------------
 
@@ -88,7 +111,7 @@ CREATE TABLE `vacations` (
 --
 
 INSERT INTO `vacations` (`vacationId`, `destination`, `description`, `startDate`, `endDate`, `price`, `imageName`) VALUES
-(1, 'Israel', 'Our Jerusalem travel guide offers a comprehensive resource for anyone planning to visit one of the world’s most iconic cities. Jerusalem is a city steeped in history, culture, and religion, and with our travel guide, you’ll have access to all the informat', '2024-06-01', '2024-06-12', 1500, 'Israel'),
+(1, 'Israel', 'Our Jerusalem travel guide offers a comprehensive resource for anyone planning to visit one of the world’s most iconic cities. Jerusalem is a city steeped in history, culture, and religion, and with our travel guide, you’ll have access to all the informat', '2024-05-01', '2024-05-12', 1500, 'Israel'),
 (2, 'Italy', 'Liberty Style, also known as ‘stile floreale’ (floral style) in Italy, is the very specific Italian artistic variant of Art Nouveau which truly became Sicilian thanks to Giovan Battista Filippo and Ernesto Basile. The new movement took different forms in ', '2024-06-05', '2024-06-17', 3250, 'Italy'),
 (3, 'France', 'A legacy of the Age of Enlightenment, the motto \"Liberté, Egalité, Fraternité\" first appeared during the French Revolution. Although it was often called into question, it finally established itself under the Third Republic. It was written into the 1958 Co', '2024-06-12', '2024-06-25', 2990, 'France'),
 (4, 'Germany', 'In several smaller essays written in the late 1760s and the 1770s, Herder discussed German political history. In How the German Bishops Became an Estate of the Realm Herder spelled out his views on the ancient German constitution and the history of the Ho', '2024-06-01', '2024-06-06', 3550, 'Germany'),
@@ -100,8 +123,7 @@ INSERT INTO `vacations` (`vacationId`, `destination`, `description`, `startDate`
 (11, 'Spain', 'Nationals of third States who travel to Spain for stays of up to 90 days (during any period of 180 days) for tourism, business, family visits, medical treatment, study, non-work internships or volunteer activities with a duration not exceeding 3 months, o', '2024-08-02', '2024-08-09', 3150, 'Spain'),
 (12, 'Turkey', 'It is full of archeological findings, diverse cultures, authentic villages, and mosques. While the capital, Ankara, features ancient Ottoman culture in its central squares and bright markets, Antalya\'s well-known beaches and Mediterranean seaside resorts ', '2024-09-04', '2024-09-14', 2000, 'Turkey'),
 (18, 'india', 'Liberty Style, also known as ‘stile floreale’ (floral style) in Italy, is the very specific Italian artistic variant of Art Nouveau which truly became Sicilian thanks to Giovan Battista Filippo and Ernesto Basile. The new movement took different forms in', '2024-08-14', '2024-08-28', 3000, 'india'),
-(32, 'Brazil', 'South America\'s giant, Brazil is a seductive country with dazzling beaches, tropical islands and picturesque colonial towns. Its verdant rainforests boast an astounding array of wildlife, while its wildly energetic cities are home to a multitude of ethnic', '2024-05-19', '2024-05-21', 4000, 'Brazil'),
-(200, 'ofek1', 'ofek123sacascascas', '2024-05-22', '2024-05-23', 234, 'ofek1');
+(32, 'Brazil', 'South America\'s giant, Brazil is a seductive country with dazzling beaches, tropical islands and picturesque colonial towns. Its verdant rainforests boast an astounding array of wildlife, while its wildly energetic cities are home to a multitude of ethnic', '2024-05-19', '2024-05-21', 4000, 'Brazil');
 
 --
 -- Indexes for dumped tables
@@ -135,13 +157,13 @@ ALTER TABLE `vacations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `vacations`
 --
 ALTER TABLE `vacations`
-  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202;
+  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- Constraints for dumped tables
