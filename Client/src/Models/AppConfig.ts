@@ -2,8 +2,10 @@ export type AppConfig = {
   baseUrl: string;
   get: {
     allVacations: string;
-    allFollowings: string;
     oneVacation: string;
+    allFutureVacations: string;
+    allCurrentVacations: string;
+    allFollowings: string;
     oneImage: string;
     getUserId: string;
   };
@@ -14,6 +16,7 @@ export type AppConfig = {
     addOneImage: string;
     isAdmin: string;
     addFollow: string;
+    checkLegalDates: string;
   };
   update: {
     vacation: string;

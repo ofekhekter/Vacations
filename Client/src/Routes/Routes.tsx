@@ -3,10 +3,11 @@ import { Navbar } from "../Components/NavBar/NavBar";
 import { UserScreen } from "../Components/UserScreen/UserScreen";
 import { RegisterPage } from "../Components/Signup/RegisterPage";
 import { LoginPage } from "../Components/Signup/LoginPage";
-import { HomePage } from "../Components/HomePage/HomePage";
 import { VacationCard } from "../Components/VacationCard/VacationCard";
 import NotFound from "../Components/404Page/NotFound";
 import PrivateRoute from "./PrivateRoute";
+import { CheckBoxCards } from "../Components/CheckBoxCards/CheckBoxCards";
+import TickPlacementBars from "../Components/Reports/ReportsGraphs";
 
 
 export const router = createBrowserRouter([
@@ -25,7 +26,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/home",
-        element: <HomePage />,
+        element: <LoginPage />,
       },
       {
         path: "/userpage",
@@ -45,11 +46,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/addvacation",
-        element: <VacationCard isEditMode={false} />,
+        element: (
+          <PrivateRoute>
+            <VacationCard isEditMode={false} />
+          </PrivateRoute>),
       },
       {
         path: "/editvacation",
-        element: <VacationCard isEditMode={true} />,
+        element: (
+          <PrivateRoute>
+            <VacationCard isEditMode={true} />
+          </PrivateRoute>),
+      },
+      {
+        path: "/filters",
+        element: <CheckBoxCards />
+        ,
+      },
+      {
+        path: "/reportpage",
+        element: <TickPlacementBars />
+        ,
       },
       {
         path: "*",

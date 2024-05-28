@@ -3,9 +3,11 @@ import { AppConfig } from "../Models/AppConfig";
 export const appConfig: AppConfig = {
   baseUrl: "http://localhost:3001/api",
   get: {
-    allVacations: "/vacations",
+    allVacations: "/vacations/",
+    oneVacation: "/onevacation/",
+    allFutureVacations: "/futurevacations",
+    allCurrentVacations: "/currentvacations",
     allFollowings: "/followings/",
-    oneVacation: "/vacations/",
     oneImage: "/images/",
     getUserId: "/auth/",
   },
@@ -16,6 +18,7 @@ export const appConfig: AppConfig = {
     addOneImage: "/images",
     isAdmin: "/auth/isadmin",
     addFollow: "/followings/",
+    checkLegalDates: "/dates"
   },
   delete: {
     vacation: "/vacations/",

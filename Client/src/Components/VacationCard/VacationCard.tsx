@@ -4,13 +4,18 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useForm } from 'react-hook-form';
 import { VacationType } from '../../Models/VacationModel';
-import { addVacation, getOneVacation, updateVacation } from "../../services/vacationsServices";
+import { addVacation, checkLegalDates, getOneVacation, updateVacation } from "../../services/vacationsServices";
 import { useEffect, useState } from "react";
 import { addOneImage, getImageFile } from "../../services/imagesServices";
 import dayjs, { Dayjs } from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import './vacationCard.css';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface VacationCardProps {
     isEditMode: boolean;
@@ -22,18 +27,20 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const [imageSrc, setImageSrc] = useState<string>("");
     const [responseMessage, setResponseMessage] = useState<string>("");
     const [selectImage, setSelectImage] = useState<string>("Select Image");
+    const [border, setBorder] = useState<string>('1px solid black');
     const [oneVacation, setOneVacation] = useState<VacationType>();
     const vacationId = useSelector((state: any) => state.currentVacation.vacationId);
-    const today: Dayjs = dayjs();
-    const minEndDate = dayjs().add(1, 'day');
-
+    const today: Dayjs = dayjs().tz("Asia/Jerusalem");
+    const minEndDate = dayjs().tz("Asia/Jerusalem").add(1, 'day');
+    
     useEffect(() => {
         const fetchAllVacations = async () => {
             const vacation = await getOneVacation(vacationId);
             setOneVacation(vacation);
+            if (isEditMode) setImageSrc(`http://localhost:3001/static/images/${vacation.imageName}.jpg`);
         };
         fetchAllVacations();
-    }, [vacationId]);
+    }, [vacationId, isEditMode]);
 
     const submit = async (registerForm: VacationType) => {
         try {
@@ -48,30 +55,35 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     "price": registerForm.price,
                     "imageName": registerForm.destination
                 } as VacationType;
-                if (isEditMode) {
-                    const response = await updateVacation(vacation, vacationId);
-                    if (response.status === 200) {
-                        const imageFile = await getImageFile(imageSrc);
-                        await addOneImage(registerForm.destination, imageFile);
-                        navigate('/userpage');
+                const result = await checkLegalDates(registerForm.startDate, registerForm.endDate);
+                if (result){
+                    if (isEditMode) {
+                        const response = await updateVacation(vacation, vacationId);
+                        if (response.status === 200) {
+                            const imageFile = await getImageFile(imageSrc);
+                            await addOneImage(registerForm.destination, imageFile);
+                            navigate('/userpage');
+                        } else {
+                            setResponseMessage(response);
+                        }
                     } else {
-                        setResponseMessage(response);
+                        const response = await addVacation(vacation);
+                        if (response.status === 201) {
+                            const imageFile = await getImageFile(imageSrc);
+                            await addOneImage(registerForm.destination, imageFile);
+                            navigate('/userpage');
+                        } else {
+                            setResponseMessage(response);
+                        }
                     }
                 } else {
-                    const response = await addVacation(vacation);
-                    if (response.status === 201) {
-                        const imageFile = await getImageFile(imageSrc);
-                        await addOneImage(registerForm.destination, imageFile);
-                        navigate('/userpage');
-                    } else {
-                        setResponseMessage(response);
-                    }
+                    setResponseMessage("The start date cannot be later than the end date");
                 }
             }
         } catch {
             console.log("error");
         }
-    }
+    };
 
     const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -82,14 +94,44 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
             };
             reader.readAsDataURL(file);
         }
+        setBorder('none');
     };
 
     const returnToUserScreen = () => {
         navigate('/userpage');
+    };
+
+    const chengeDateFormatToIsoString = (d: dayjs.Dayjs | null, isStartDate: boolean) => {
+        const inputDateString = `${d?.toDate().toLocaleString()}`;
+        const date = new Date(inputDateString);
+        const options: any = {
+            timeZone: 'Asia/Jerusalem',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        const parts = formatter.formatToParts(date);
+        const getPart = (type: string, defaultValue = "00") => {
+            const part = parts.find(p => p.type === type);
+            return part ? part.value : defaultValue;
+        };
+
+        const adjustedDateString = `${getPart('year')}-${getPart('month')}-${getPart('day')}T${getPart('hour')}:${getPart('minute')}:${getPart('second')}`;
+
+        const adjustedDate = new Date(adjustedDateString + "Z");
+
+        const isoString = adjustedDate.toISOString();
+
+        isStartDate ? setValue('startDate', isoString) : setValue('endDate', isoString);
     }
 
 
-    return <section className="VacationContainer">
+    return <section className="vacationContainer">
         <form onSubmit={handleSubmit(submit)} noValidate>
             <Box
                 sx={{
@@ -111,11 +153,11 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 {isEditMode ? (<TextField
                     id="outlined-full-width"
                     label="destination"
-                    required
                     multiline
                     rows={1}
                     InputLabelProps={{ shrink: true }}
                     defaultValue={oneVacation?.destination}
+                    required
                     variant="outlined"
                     style={{ margin: 16 }}
                     {...register('destination', { required: true })}
@@ -130,22 +172,20 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 {isEditMode ? (<TextField
                     id="outlined-multiline-static"
                     label="description"
-                    required
                     InputLabelProps={{ shrink: true }}
                     defaultValue={oneVacation?.description}
+                    required
                     multiline
-                    rows={4}
+                    rows={3}
                     variant="outlined"
                     style={{ margin: 16 }}
-                    {...register('description', {
-                        required: true
-                    })}
+                    {...register('description', { required: false })}
                 />) : (<TextField
                     id="outlined-multiline-static"
                     label="description"
                     required
                     multiline
-                    rows={4}
+                    rows={3}
                     variant="outlined"
                     style={{ margin: 16 }}
                     {...register('description', { required: true })}
@@ -159,17 +199,16 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 </Typography>
                 {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                        defaultValue={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         value={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         minDate={today}
-                        {...register('startDate', { required: true })}
-                        onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        onChange={(d) => chengeDateFormatToIsoString(d, true)}
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         minDate={today}
-                        {...register('startDate', { required: true })}
-                        onChange={(date) => setValue('startDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        onChange={(d) => chengeDateFormatToIsoString(d, true)}
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>)}
@@ -184,15 +223,13 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     <DatePicker
                         value={oneVacation?.endDate ? dayjs(oneVacation.endDate) : null}
                         minDate={minEndDate}
-                        {...register('endDate', { required: true })}
-                        onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        onChange={(d) => chengeDateFormatToIsoString(d, false)}
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         minDate={minEndDate}
-                        {...register('endDate', { required: true })}
-                        onChange={(date) => setValue('endDate', date ? date.toISOString() : '', { shouldValidate: true })}
+                        onChange={(d) => chengeDateFormatToIsoString(d, false)}
                         sx={{ m: 2, width: '28ch' }}
                     />
                 </LocalizationProvider>)}
@@ -206,7 +243,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         label="price"
                         required
-                        {...register('price', { required: true })}
+                        {...register('price', { required: false })}
                     />) : (<OutlinedInput
                         type="number"
                         id="outlined-adornment-amount"
@@ -235,28 +272,22 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         textAlign: 'center',
-                        width: '250px',
-                        height: '80px',
-                        border: '1px solid black',
+                        width: '200px',
+                        height: '100px',
+                        border: `${border}`,
+                        backgroundImage: imageSrc ? `url(${imageSrc})` : 'url(http://localhost:3001/static/images/No-Image.png)',
+                        backgroundSize: '200px 100px',
+                        backgroundRepeat: 'no-repeat',
                     }}>
-                        {imageSrc && (
-                            <img src={imageSrc} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} />
-                        )}
                         <label htmlFor="file-input">
-                            <span className="selectImage">{selectImage}</span>
-                            {isEditMode ? (<input
+                            {imageSrc ? <span className="changeImage">Change Image</span> : <span className="selectImage">{selectImage}</span>}
+                            <input
                                 id="file-input"
                                 type="file"
                                 className="filetype"
                                 style={{ display: 'none' }}
                                 onChange={handleFileInputChange}
-                            />) : (<input
-                                id="file-input"
-                                type="file"
-                                className="filetype"
-                                style={{ display: 'none' }}
-                                onChange={handleFileInputChange}
-                            />)}
+                            />
                         </label>
                     </div>
                     {isEditMode ? <Button variant="contained" type="submit" sx={{ width: "250px" }}>Update</Button> :

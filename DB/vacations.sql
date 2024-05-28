@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2024 at 03:05 PM
+-- Generation Time: May 23, 2024 at 08:56 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -37,14 +37,10 @@ CREATE TABLE `followings` (
 --
 
 INSERT INTO `followings` (`userId`, `vacationId`) VALUES
-(55, 1),
-(55, 2),
-(55, 3),
-(55, 4),
-(55, 7),
-(60, 1),
-(60, 2),
-(60, 7);
+(55, 12),
+(55, 18),
+(55, 32),
+(55, 200);
 
 -- --------------------------------------------------------
 
@@ -68,7 +64,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`userId`, `firstName`, `lastName`, `email`, `password`, `role`) VALUES
 (22, 'Ofek', 'Hekter', 'ofekh1989@gmail.com', 'Ofek1989', 2),
 (55, 'ofek', 'hekter', 'ofek@123', 'Ofek1989', 1),
-(60, 'bdgdfgdxg', 'sdsdfsdfsd', 'sdsdf@dvsdfsdf', '1234', 1);
+(60, 'bdgdfgdxg', 'sdsdfsdfsd', 'sdsdf@dvsdfsdf', '1234', 1),
+(61, 'kaka', 'rotto', 'ofek22@123', 'kaka123', 1);
 
 -- --------------------------------------------------------
 
@@ -104,7 +101,7 @@ INSERT INTO `vacations` (`vacationId`, `destination`, `description`, `startDate`
 (12, 'Turkey', 'It is full of archeological findings, diverse cultures, authentic villages, and mosques. While the capital, Ankara, features ancient Ottoman culture in its central squares and bright markets, Antalya\'s well-known beaches and Mediterranean seaside resorts ', '2024-09-04', '2024-09-14', 2000, 'Turkey'),
 (18, 'india', 'Liberty Style, also known as ‘stile floreale’ (floral style) in Italy, is the very specific Italian artistic variant of Art Nouveau which truly became Sicilian thanks to Giovan Battista Filippo and Ernesto Basile. The new movement took different forms in', '2024-08-14', '2024-08-28', 3000, 'india'),
 (32, 'Brazil', 'South America\'s giant, Brazil is a seductive country with dazzling beaches, tropical islands and picturesque colonial towns. Its verdant rainforests boast an astounding array of wildlife, while its wildly energetic cities are home to a multitude of ethnic', '2024-05-19', '2024-05-21', 4000, 'Brazil'),
-(50, 'fghdfhdfgd', 'fgfxbxfbxxcv', '2024-05-20', '2024-05-22', 525, 'fghdfhdfgd');
+(200, 'ofek1', 'ofek123sacascascas', '2024-05-22', '2024-05-23', 234, 'ofek1');
 
 --
 -- Indexes for dumped tables
@@ -138,13 +135,13 @@ ALTER TABLE `vacations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `vacations`
 --
 ALTER TABLE `vacations`
-  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `vacationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202;
 
 --
 -- Constraints for dumped tables

@@ -13,7 +13,9 @@ import { getUserId } from '../../services/usersServices';
 import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
-import { addFollow, deleteFollow } from '../../services/followingsServices';
+import { addFollow, deleteFollow, getAllFollowings } from '../../services/followingsServices';
+import { changeStringFormat } from '../../utils/changeFormat';
+import { followersCount } from '../../features/followersSlice';
 import './card.css';
 
 interface FadeProps {
@@ -49,12 +51,7 @@ const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, re
 
 interface CardProps {
   vacation: VacationType;
-  vacationIdsOfUser: number[] | undefined;
-}
-
-export const changeStringFormat = (value: string) => {
-  const [year, month, day] = value.split('').map(word => word === '-' ? '.' : word).join('').split('.');
-  return `${day}.${month}.${year}`;
+  vacationIdsOfUser: number[];
 }
 
 export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
@@ -62,20 +59,32 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   const [favorites, setFavorites] = useState<boolean>(false);
   const [imageError, setImageError] = useState(false);
   const [open, setOpen] = useState(false);
+  const [totalFavorites, setTotalFavorites] = useState<number>(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isAdmin = useSelector((state: any) => state.userRole.isAdmin);
   const userEmail = useSelector((state: any) => state.emailAddress.text);
   const dispatch = useDispatch();
 
+  const fetchAllFollowings = async () => {
+    const allFollowings = await getAllFollowings();
+    for (const follow of allFollowings) {
+      if (follow.vacationId === vacation.vacationId) {
+        setTotalFavorites(follow.followers);
+      }
+    }
+  };
+
+  fetchAllFollowings();
 
   useEffect(() => {
-    if (vacationIdsOfUser !== undefined) {
+    setFavorites(false);
+    if (vacationIdsOfUser.length > 0) {
       for (const vacationId of vacationIdsOfUser) {
         if (vacationId === vacation.vacationId) {
           setFavorites(true);
         }
       }
-    }
+    } else setFavorites(false);
   }, [vacationIdsOfUser, vacation.vacationId]);
 
   const canBeOpen = open && Boolean(anchorEl);
@@ -93,10 +102,10 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   const removeCard = async () => {
     const token = localStorage.getItem('token');
     if (token !== null) {
-      await deleteVacation(vacation.vacationId.toString(), token);
-      await deleteImage(vacation.imageName);
       dispatch(isDeleted(true));
       setOpen(false);
+      await deleteVacation(vacation.vacationId.toString(), token);
+      await deleteImage(vacation.imageName);
     }
   };
 
@@ -108,17 +117,20 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
   const handleFavorites = async () => {
     const userId = await getUserId(userEmail);
     if (favorites) {
-      setFavorites(false)
+      setFavorites(false);
       await deleteFollow(userId, vacation.vacationId);
+      await fetchAllFollowings();
     } else {
       setFavorites(true);
       await addFollow(userId, vacation.vacationId);
+      await fetchAllFollowings();
     }
   };
 
   return <Box className='card'
     sx={{
       width: 345,
+      height: 420,
       backgroundColor: "#153448"
     }}>
     <Box sx={{
@@ -132,13 +144,13 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
       {isAdmin ? (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Button onClick={handleEdit} sx={{ color: "#B0EBB4", backgroundColor: "#006769", height: "25px", width: "60px" }} size="small">Edit</Button>
-          <Button aria-describedby={id} onClick={handleDelete} sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
+          <Button onClick={handleDelete} aria-describedby={id} sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
           <Popper id={id} open={open} anchorEl={anchorEl} transition>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>
                 <Box sx={{ border: 1, p: 2, bgcolor: 'background.paper' }}>
                   <Typography>Are you sure you want to delete the vacation?</Typography>
-                  <Button size='small' onClick={() => removeCard()} variant="contained" color="success">
+                  <Button size='small' onClick={removeCard} variant="contained" color="success">
                     Yes
                   </Button>
                   <Button size='small' onClick={() => setOpen(false)} variant="contained" color="error">
@@ -152,11 +164,14 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
       ) : (
         favorites ? (<IconButton onClick={handleFavorites} style={{ color: "red" }} className='favorites' aria-label="add to favorites">
           <FavoriteIcon />
+          <Typography variant="body2" color="white">{totalFavorites}</Typography>
         </IconButton>) : (<IconButton onClick={handleFavorites} style={{ color: "white" }} className='favorites' aria-label="add to favorites">
           <FavoriteIcon />
+          <Typography variant="body2" color="white">{totalFavorites}</Typography>
         </IconButton>
         )
-      )}
+      )
+      }
     </Box>
     <Typography variant="body2" color="white">
       {changeStringFormat(vacation.startDate.substring(2, 10)) + ' - ' + changeStringFormat(vacation.endDate.substring(2, 10))}
@@ -171,6 +186,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
     <Typography sx={{
       margin: '5px 5px 5px 5px',
       fontSize: 'small',
+      overflowWrap: 'break-word',
     }} variant="body2" color="#EADBC8">
       {vacation.description}
     </Typography>

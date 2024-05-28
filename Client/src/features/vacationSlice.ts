@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const vacationSlice = createSlice({
   name: "vacationState",
   initialState: {
-    vacationId: 0,
+    vacationId: 1,
   },
   reducers: {
     currentVacation: (state, action) => {

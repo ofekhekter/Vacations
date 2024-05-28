@@ -1,4 +1,5 @@
 import { ResourceNotFound, ValidationError } from "../Models/ErrorModels";
+import { FollowingsType } from "../Models/FollowingsModel";
 import { executeSqlQuery } from "../Utils/dal";
 import mysql, { OkPacket } from 'mysql';
 
@@ -20,10 +21,28 @@ export const addfollowingLogic = async (userId: number, vacationId: number): Pro
   }
 };
 
-export const getAllFollowingsLogic = async (userId: number): Promise<any> => {
+export const getAllFollowingsOfUserIdLogic = async (userId: number): Promise<any> => {
   const query = `SELECT vacationId FROM followings WHERE userId = '${userId}'`;
   const result = await executeSqlQuery(query);
   if (result.length === 0) ResourceNotFound(userId);
+  return result;
+};
+
+export const getAllFollowingsLogic = async (): Promise<FollowingsType[]> => {
+  const query = `SELECT 
+  v.vacationId,
+  v.destination,
+  COUNT(f.userId) AS totalFollowers
+FROM 
+  vacations v
+LEFT JOIN 
+  followings f ON v.vacationId = f.vacationId
+GROUP BY 
+  v.vacationId, v.destination
+ORDER BY 
+  totalFollowers DESC;
+`;
+  const result = await executeSqlQuery(query);
   return result;
 };
 
