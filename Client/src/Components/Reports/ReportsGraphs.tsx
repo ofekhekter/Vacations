@@ -1,6 +1,9 @@
+import Button from '@mui/material/Button';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { useSelector } from 'react-redux';
+import { FollowingsDataSetModel } from '../../Models/FollowingsModel';
+import { downloadCsvFile } from '../../services/downloadCsvService';
 
 const valueFormatter = (value: number | null) => `${value} Followers`;
 
@@ -10,8 +13,8 @@ const chartSetting = {
       label: 'Followers',
     },
   ],
-  series: [{ dataKey: 'followers', label: 'followers/Vacation', valueFormatter }],
-  height: 600,
+  series: [{ dataKey: 'followers', label: 'Vacations Reports', valueFormatter }],
+  height: 700,
   sx: {
     [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
       transform: 'translateX(-10px)',
@@ -20,10 +23,14 @@ const chartSetting = {
 };
 
 export default function TickPlacementBars() {
-  const followingsPerVacations = useSelector((state: any) => state.followersCount.followers);
+  const followingsPerVacations: FollowingsDataSetModel[] = useSelector((state: any) => state.followersCount.followers);
 
   if (!followingsPerVacations || followingsPerVacations.length === 0) {
     return <h1 style={{ display: "flex", justifyContent: "center" }}>No data available</h1>;
+  }
+
+  const handleCsvClick = async () => {
+    await downloadCsvFile(followingsPerVacations);
   }
 
   return (
@@ -35,6 +42,14 @@ export default function TickPlacementBars() {
         ]}
         {...chartSetting}
       />
+      <div style={{ display: "flex", justifyContent: "center", flexDirection: "row", gap: "5px" }}>
+        <Button onClick={handleCsvClick} sx={{ width: "200px", alignItems: "center" }} variant="contained" href="#contained-buttons">
+          Click to Download csv report file
+        </Button>
+        <Button sx={{ width: "200px", alignItems: "center" }} variant="contained" color="success">
+          Click to Download Excel report file
+        </Button>
+      </div>
     </div>
   );
 }

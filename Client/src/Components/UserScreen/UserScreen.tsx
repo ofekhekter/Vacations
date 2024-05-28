@@ -33,8 +33,6 @@ export const UserScreen: React.FC = () => {
             }));
 
             dispatch(followersCount(followingsDataSet));
-
-
             const userId = await getUserId(userEmail);
             const { vacations, totalCount } = await getAllVacations(currentPage, userId);
             const vacationIds = vacations.map((vacation: VacationType) => vacation.followedVacationId).filter((vacationId) => vacationId !== null);

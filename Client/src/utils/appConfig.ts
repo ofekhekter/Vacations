@@ -18,7 +18,8 @@ export const appConfig: AppConfig = {
     addOneImage: "/images",
     isAdmin: "/auth/isadmin",
     addFollow: "/followings/",
-    checkLegalDates: "/dates"
+    checkLegalDates: "/dates",
+    downloadCsvFile: "/download",
   },
   delete: {
     vacation: "/vacations/",
