@@ -57,9 +57,6 @@ export default function TickPlacementBars() {
         <Button onClick={handleCsvClick} sx={{ width: "200px", alignItems: "center" }} variant="contained" href="#contained-buttons">
           Click to Download csv report file
         </Button>
-        <Button sx={{ width: "200px", alignItems: "center" }} variant="contained" color="success">
-          Click to Download Excel report file
-        </Button>
       </div>
     </div>
   );
