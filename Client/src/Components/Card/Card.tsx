@@ -15,6 +15,7 @@ import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
 import { addFollow, deleteFollow, getAllFollowings } from '../../services/followingsServices';
 import { changeStringFormat } from '../../utils/changeFormat';
+import { followersCount } from '../../features/followersSlice';
 import './card.css';
 
 interface FadeProps {
@@ -68,7 +69,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
     const allFollowings = await getAllFollowings();
     for (const follow of allFollowings) {
       if (follow.vacationId === vacation.vacationId) {
-        setTotalFavorites(follow.totalFollowers);
+        setTotalFavorites(follow.followers);
       }
     }
   };

@@ -1,5 +1,11 @@
 export type FollowingsType = {
-    vacationId: number;
+    totalFollowers: any;
+    vacationId: number | null;
     destination: string;
-    totalFollowers: number;
+    followers: number;
+};
+
+export type FollowingsDataSetModel = {
+    destination: string;
+    followers: number;
 };

@@ -7,6 +7,9 @@ import Stack from '@mui/material/Stack';
 import { useDispatch, useSelector } from "react-redux";
 import { isDeleted } from "../../features/deletedCardSlice";
 import { getUserId } from "../../services/usersServices";
+import { getAllFollowings } from "../../services/followingsServices";
+import { followersCount } from "../../features/followersSlice";
+import { FollowingsDataSetModel, FollowingsType } from "../../Models/FollowingsModel";
 import './userScreen.css';
 
 export const UserScreen: React.FC = () => {
@@ -20,17 +23,27 @@ export const UserScreen: React.FC = () => {
     dispatch(isDeleted(false));
     const itemsPerPage: number = 10;
 
+
     useEffect(() => {
         const fetchAllVacations = async () => {
+            const allFollowings: FollowingsType[] = await getAllFollowings();
+            const followingsDataSet: FollowingsDataSetModel[] = allFollowings.map(following => ({
+                destination: following.destination,
+                followers: following.totalFollowers,
+            }));
+
+            dispatch(followersCount(followingsDataSet));
+
+
             const userId = await getUserId(userEmail);
             const { vacations, totalCount } = await getAllVacations(currentPage, userId);
-            const vacationIds = vacations.map((vacation: VacationType) => vacation.followedVacationId).filter((vacationId)=> vacationId !== null);
+            const vacationIds = vacations.map((vacation: VacationType) => vacation.followedVacationId).filter((vacationId) => vacationId !== null);
             setVacationIdsOfUser(vacationIds);
             setVacations(vacations);
             setTotalCount(totalCount);
         };
         fetchAllVacations();
-    }, [removedCard, userEmail, currentPage]);
+    }, [removedCard, userEmail, currentPage, dispatch]);
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page);

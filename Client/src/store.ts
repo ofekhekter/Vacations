@@ -5,6 +5,7 @@ import adminSlice from "./features/adminSlice";
 import vacationSlice from "./features/vacationSlice";
 import deletedCardSlice from "./features/deletedCardSlice";
 import vacationsSlice from "./features/vacationsSlice";
+import followersSlice from "./features/followersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     currentVacation: vacationSlice,
     isDeleted: deletedCardSlice,
     vacations: vacationsSlice,
+    followersCount: followersSlice,
   },
 });

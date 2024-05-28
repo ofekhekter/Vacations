@@ -1,61 +1,6 @@
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
-
-
-const dataset = [
-  {
-    followers: 5,
-    month: 'Israel',
-  },
-  {
-    followers: 3,
-    month: 'Italy',
-  },
-  {
-    followers: 3,
-    month: 'France',
-  },
-  {
-    followers: 2,
-    month: 'Germany',
-  },
-  {
-    followers: 6,
-    month: 'Usa',
-  },
-  {
-    followers: 4,
-    month: 'Argentina',
-  },
-  {
-    followers: 8,
-    month: 'Canada',
-  },
-  {
-    followers: 6,
-    month: 'Egypt',
-  },
-  {
-    followers: 5,
-    month: 'Japan',
-  },
-  {
-    followers: 3,
-    month: 'Spain',
-  },
-  {
-    followers: 2,
-    month: 'Turkey',
-  },
-  {
-    followers: 4,
-    month: 'india',
-  },
-  {
-    followers: 1,
-    month: 'Brazil',
-  },
-];
+import { useSelector } from 'react-redux';
 
 const valueFormatter = (value: number | null) => `${value} Followers`;
 
@@ -65,7 +10,7 @@ const chartSetting = {
       label: 'Followers',
     },
   ],
-  series: [{ dataKey: 'followers', label: 'Vacations', valueFormatter }],
+  series: [{ dataKey: 'followers', label: 'followers/Vacation', valueFormatter }],
   height: 600,
   sx: {
     [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
@@ -75,13 +20,18 @@ const chartSetting = {
 };
 
 export default function TickPlacementBars() {
+  const followingsPerVacations = useSelector((state: any) => state.followersCount.followers);
+
+  if (!followingsPerVacations || followingsPerVacations.length === 0) {
+    return <h1 style={{ display: "flex", justifyContent: "center" }}>No data available</h1>;
+  }
 
   return (
-    <div style={{ width: '100%'}}>
+    <div style={{ width: '100%' }}>
       <BarChart
-        dataset={dataset}
+        dataset={followingsPerVacations}
         xAxis={[
-          { scaleType: 'band', dataKey: 'month' },
+          { scaleType: 'band', dataKey: 'destination' },
         ]}
         {...chartSetting}
       />
