@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Button, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
+import { CardHeader, CardMedia, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { VacationType } from '../../Models/VacationModel';
 import { useEffect, useState } from 'react';
@@ -15,6 +17,8 @@ import Popper from '@mui/material/Popper';
 import { useSpring, animated } from '@react-spring/web';
 import { addFollow, deleteFollow, getAllFollowings } from '../../services/followingsServices';
 import { changeStringFormat } from '../../utils/changeFormat';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import './card.css';
 
 interface FadeProps {
@@ -142,8 +146,14 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
       />
       {isAdmin ? (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Button onClick={handleEdit} sx={{ color: "#B0EBB4", backgroundColor: "#006769", height: "25px", width: "60px" }} size="small">Edit</Button>
-          <Button onClick={handleDelete} aria-describedby={id} sx={{ color: "#B0EBB4", backgroundColor: "#A91D3A", height: "25px", width: "60px" }} size="small">Delete</Button>
+          <Stack direction="column" spacing={1} sx={{margin: "3px"}}>
+            <Button onClick={handleEdit} size='small' variant="outlined">
+              edit
+            </Button>
+            <Button onClick={handleDelete} size='small' color='error' variant="contained" startIcon={<DeleteIcon />}>
+              Delete
+            </Button>
+          </Stack>
           <Popper id={id} open={open} anchorEl={anchorEl} transition>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>

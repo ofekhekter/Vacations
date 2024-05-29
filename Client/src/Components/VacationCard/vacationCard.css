@@ -13,12 +13,7 @@
     color: black;
     text-shadow: 1px 0 5px #000000;
     cursor: pointer;
-    /* -webkit-text-stroke: 0.1px #ffffff; */
 }
-
-/* .filetype:hover{
-    cursor: pointer;
-} */
 
 .changeImage{
     font-size: 20px;

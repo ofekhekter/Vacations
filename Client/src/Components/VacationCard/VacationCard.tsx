@@ -140,6 +140,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     justifyContent: 'center',
                     backgroundColor: '#FFFFFF',
                     width: "400px",
+                    height: "100%",
                     boxShadow: '3px 3px 13px 5px #153448',
                 }}>
                 <CardHeader sx={{
