@@ -147,7 +147,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
       {isAdmin ? (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Stack direction="column" spacing={1} sx={{margin: "3px"}}>
-            <Button onClick={handleEdit} size='small' variant="outlined">
+            <Button onClick={handleEdit} size='small' variant="contained">
               edit
             </Button>
             <Button onClick={handleDelete} size='small' color='error' variant="contained" startIcon={<DeleteIcon />}>
