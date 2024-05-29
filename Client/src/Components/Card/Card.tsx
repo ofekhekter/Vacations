@@ -72,7 +72,7 @@ export const Card = ({ vacation, vacationIdsOfUser }: CardProps) => {
     const allFollowings = await getAllFollowings();
     for (const follow of allFollowings) {
       if (follow.vacationId === vacation.vacationId) {
-        setTotalFavorites(follow.followers);
+        setTotalFavorites(follow.totalFollowers);
       }
     }
   };
