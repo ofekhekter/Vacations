@@ -23,7 +23,7 @@ interface VacationCardProps {
 
 export const VacationCard = ({ isEditMode }: VacationCardProps) => {
     const navigate = useNavigate();
-    const { register, handleSubmit, setValue } = useForm<VacationType>();
+    const { register, handleSubmit, setValue, reset } = useForm<VacationType>();
     const [imageSrc, setImageSrc] = useState<string>("");
     const [responseMessage, setResponseMessage] = useState<string>("");
     const [selectImage, setSelectImage] = useState<string>("Select Image");
@@ -37,10 +37,19 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
         const fetchAllVacations = async () => {
             const vacation = await getOneVacation(vacationId);
             setOneVacation(vacation);
-            if (isEditMode) setImageSrc(`http://localhost:3001/static/images/${vacation.imageName}.jpg`);
+            if (isEditMode) {
+                setImageSrc(`http://localhost:3001/static/images/${vacation.imageName}.jpg`);
+                reset({
+                    destination: vacation.destination,
+                    description: vacation.description,
+                    startDate: vacation.startDate,
+                    endDate: vacation.endDate,
+                    price: vacation.price
+                });
+            }
         };
         fetchAllVacations();
-    }, [vacationId, isEditMode]);
+    }, [vacationId, isEditMode, reset]);
 
     const submit = async (registerForm: VacationType) => {
         try {
@@ -130,7 +139,6 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
         isStartDate ? setValue('startDate', isoString) : setValue('endDate', isoString);
     }
 
-
     return <section className="vacationContainer">
         <form onSubmit={handleSubmit(submit)} noValidate>
             <Box
@@ -151,46 +159,26 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                     title={isEditMode ? 'Edit Vacation' : 'Add Vacation'}
                 />
                 <Divider variant="middle" />
-                {isEditMode ? (<TextField
+                <TextField
                     id="outlined-full-width"
                     label="destination"
-                    multiline
-                    rows={1}
                     InputLabelProps={{ shrink: true }}
-                    defaultValue={oneVacation?.destination}
-                    required
-                    variant="outlined"
-                    style={{ margin: 16 }}
-                    {...register('destination', { required: false })}
-                />) : (<TextField
-                    id="outlined-full-width"
-                    label="destination"
                     required
                     variant="outlined"
                     style={{ margin: 16 }}
                     {...register('destination', { required: true })}
-                />)}
-                {isEditMode ? (<TextField
+                />
+                <TextField
                     id="outlined-multiline-static"
                     label="description"
                     InputLabelProps={{ shrink: true }}
-                    defaultValue={oneVacation?.description}
-                    required
-                    multiline
-                    rows={3}
-                    variant="outlined"
-                    style={{ margin: 16 }}
-                    {...register('description', { required: false })}
-                />) : (<TextField
-                    id="outlined-multiline-static"
-                    label="description"
                     required
                     multiline
                     rows={3}
                     variant="outlined"
                     style={{ margin: 16 }}
                     {...register('description', { required: true })}
-                />)}
+                />
                 <Typography style={{
                     marginLeft: 16,
                     marginBottom: -10,
@@ -198,20 +186,14 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 }}>
                     start on
                 </Typography>
-                {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        value={dayjs(oneVacation?.startDate)}
+                        value={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
                         minDate={today}
                         onChange={(d) => chengeDateFormatToIsoString(d, true)}
                         sx={{ m: 2, width: '28ch' }}
                     />
-                </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        minDate={today}
-                        onChange={(d) => chengeDateFormatToIsoString(d, true)}
-                        sx={{ m: 2, width: '28ch' }}
-                    />
-                </LocalizationProvider>)}
+                </LocalizationProvider>
                 <Typography style={{
                     marginLeft: 16,
                     marginBottom: -10,
@@ -219,39 +201,24 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 }}>
                     end on
                 </Typography>
-                {isEditMode ? (<LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        value={dayjs(oneVacation?.endDate)}
+                        value={oneVacation?.endDate ? dayjs(oneVacation.endDate) : null}
                         minDate={minEndDate}
                         onChange={(d) => chengeDateFormatToIsoString(d, false)}
                         sx={{ m: 2, width: '28ch' }}
                     />
-                </LocalizationProvider>) : (<LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        minDate={minEndDate}
-                        onChange={(d) => chengeDateFormatToIsoString(d, false)}
-                        sx={{ m: 2, width: '28ch' }}
-                    />
-                </LocalizationProvider>)}
+                </LocalizationProvider>
                 <FormControl style={{ margin: 16 }}>
                     <InputLabel htmlFor="outlined-adornment-amount">price</InputLabel>
-                    {isEditMode ? (<OutlinedInput
-                        type="number"
-                        id="outlined-adornment-amount"
-                        multiline
-                        defaultValue={oneVacation?.price}
-                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                        label="price"
-                        required
-                        {...register('price', { required: false })}
-                    />) : (<OutlinedInput
+                    <OutlinedInput
                         type="number"
                         id="outlined-adornment-amount"
                         startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         label="price"
                         required
                         {...register('price', { required: true })}
-                    />)}
+                    />
                 </FormControl>
                 <Typography style={{
                     marginLeft: 16,
