@@ -1,6 +1,5 @@
 // src/Components/PrivateRoute/PrivateRoute.tsx
 import React, { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 interface PrivateRouteProps {
@@ -8,8 +7,12 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-    const loginState = useSelector((state: any) => state.login.text);
-  return loginState === 'Logout' ? <>{children}</> : <Navigate to="/signin" />;
+  const token = localStorage.getItem('token');
+  if (token) {
+    return <>{children}</>;
+  } else {
+    return <Navigate to="/signin" />
+  }
 };
 
 export default PrivateRoute;
