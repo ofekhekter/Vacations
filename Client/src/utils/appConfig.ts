@@ -10,6 +10,7 @@ export const appConfig: AppConfig = {
     allFollowings: "/followings/",
     oneImage: "/images/",
     getUserId: "/auth/",
+    getUserByToken: "/getuser/",
   },
   post: {
     vacation: "/vacations",

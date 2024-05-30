@@ -6,10 +6,13 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useDispatch, useSelector } from "react-redux";
 import { isDeleted } from "../../features/deletedCardSlice";
-import { getUserId } from "../../services/usersServices";
+import { checkIsAdmin, getUserByToken, getUserId } from "../../services/usersServices";
 import { getAllFollowings } from "../../services/followingsServices";
 import { followersCount } from "../../features/followersSlice";
 import { FollowingsDataSetModel, FollowingsType } from "../../Models/FollowingsModel";
+import { emailAddress } from "../../features/emailSlice";
+import { login } from "../../features/loginSlice";
+import { userRole } from "../../features/adminSlice";
 import './userScreen.css';
 
 export const UserScreen: React.FC = () => {
@@ -39,6 +42,15 @@ export const UserScreen: React.FC = () => {
                 setVacationIdsOfUser(vacationIds);
                 setVacations(vacations);
                 setTotalCount(totalCount);
+            } else {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const user = await getUserByToken(token);
+                    dispatch(emailAddress(user.email));
+                    dispatch(login("Logout"));
+                    const result = await checkIsAdmin({ email: user.email });
+                    dispatch(userRole(result));
+                }
             }
         };
         fetchAllVacations();

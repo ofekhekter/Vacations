@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request } from "express";
 import { UserType } from "../Models/UserModel";
+import { UnauthorizedError } from "../Models/ErrorModels";
 
 interface UserContainer {
   user: UserType;
@@ -49,4 +50,19 @@ export const verifyAdmin = async (req: Request): Promise<boolean> => {
   const container = jwt.decode(token) as UserContainer;
   const user = container.user;
   return user.role === 2;
+};
+
+export const getCurrentUser = async (request: Request): Promise<UserType> => {
+  try {
+    const isLoggedIn = await verifyToken(request);
+    if (!isLoggedIn) {
+      UnauthorizedError("Not logged in");
+    }
+    const header = request.header("authorization");
+    const token = header.substring(7);
+    const container = jwt.decode(token) as UserContainer;
+    return container.user;
+  } catch (error) {
+    throw error;
+  }
 };

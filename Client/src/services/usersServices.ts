@@ -31,10 +31,23 @@ export const checkIsAdmin = async (email: { email: string }): Promise<any> => {
   }
 };
 
-export const getUserId = async (email: string ): Promise<number | any> => {
+export const getUserId = async (email: string): Promise<number | any> => {
   try {
     const fullUrl = appConfig.baseUrl + appConfig.get.getUserId + email;
     const data = await axios.get(fullUrl);
+    return data.data;
+  } catch (e: any) {
+    console.error(e.response.data);
+  }
+};
+
+export const getUserByToken = async (token: string): Promise<number | any> => {
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const fullUrl = appConfig.baseUrl + appConfig.get.getUserByToken;
+    const data = await axios.get(fullUrl, config);
     return data.data;
   } catch (e: any) {
     console.error(e.response.data);
