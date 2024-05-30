@@ -25,10 +25,6 @@ export const router = createBrowserRouter([
         element: <Navigate to="/home" replace />,
       },
       {
-        path: "/home",
-        element: <LoginPage />,
-      },
-      {
         path: "/userpage",
         element: (
           <PrivateRoute>

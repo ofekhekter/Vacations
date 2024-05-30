@@ -20,11 +20,10 @@ export const UserScreen: React.FC = () => {
     const removedCard = useSelector((state: any) => state.isDeleted.deleted);
     const userEmail = useSelector((state: any) => state.emailAddress.text);
     const dispatch = useDispatch();
-    dispatch(isDeleted(false));
     const itemsPerPage: number = 10;
 
-
     useEffect(() => {
+        dispatch(isDeleted(false));
         const fetchAllVacations = async () => {
             const allFollowings: FollowingsType[] = await getAllFollowings();
             const followingsDataSet: FollowingsDataSetModel[] = allFollowings.map(following => ({
@@ -33,12 +32,14 @@ export const UserScreen: React.FC = () => {
             }));
 
             dispatch(followersCount(followingsDataSet));
-            const userId = await getUserId(userEmail);
-            const { vacations, totalCount } = await getAllVacations(currentPage, userId);
-            const vacationIds = vacations.map((vacation: VacationType) => vacation.followedVacationId).filter((vacationId) => vacationId !== null);
-            setVacationIdsOfUser(vacationIds);
-            setVacations(vacations);
-            setTotalCount(totalCount);
+            if (userEmail) {
+                const userId = await getUserId(userEmail);
+                const { vacations, totalCount } = await getAllVacations(currentPage, userId);
+                const vacationIds = vacations.map((vacation: VacationType) => vacation.followedVacationId).filter((vacationId) => vacationId !== null);
+                setVacationIdsOfUser(vacationIds);
+                setVacations(vacations);
+                setTotalCount(totalCount);
+            }
         };
         fetchAllVacations();
     }, [removedCard, userEmail, currentPage, dispatch]);

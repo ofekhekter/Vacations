@@ -74,7 +74,7 @@ export const Navbar = () => {
             dispatch(login("Login"));
             dispatch(emailAddress(""));
             dispatch(userRole(false));
-            navigate('/home');
+            navigate('/signin');
         }
     };
 

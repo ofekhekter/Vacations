@@ -14,7 +14,7 @@ const chartSetting = {
     },
   ],
   series: [{ dataKey: 'followers', label: 'Vacations Reports', valueFormatter }],
-  height: 700,
+  height: 500,
   sx: {
     [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
       transform: 'translateX(-10px)',
