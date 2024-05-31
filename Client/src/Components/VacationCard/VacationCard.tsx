@@ -188,7 +188,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        value={oneVacation?.startDate ? dayjs(oneVacation.startDate) : null}
+                        value={isEditMode ? (oneVacation?.startDate ? dayjs(oneVacation.startDate) : null) : null}
                         minDate={today}
                         onChange={(d) => chengeDateFormatToIsoString(d, true)}
                         sx={{ m: 2, width: '28ch' }}
@@ -203,7 +203,7 @@ export const VacationCard = ({ isEditMode }: VacationCardProps) => {
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        value={oneVacation?.endDate ? dayjs(oneVacation.endDate) : null}
+                        value={isEditMode ? (oneVacation?.endDate ? dayjs(oneVacation.endDate) : null) : null}
                         minDate={minEndDate}
                         onChange={(d) => chengeDateFormatToIsoString(d, false)}
                         sx={{ m: 2, width: '28ch' }}
