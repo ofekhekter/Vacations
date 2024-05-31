@@ -53,6 +53,7 @@ export const getAllVacationsOffsetLogic = async (page: number, userId: number): 
 SELECT v.*, fv.vacationId AS followedVacationId
 FROM vacations v
 LEFT JOIN FollowedVacations fv ON v.vacationId = fv.vacationId
+ORDER BY v.startDate ASC
 LIMIT ${limit} OFFSET ${offset};`;
 
   const getTotalCountQuery = `SELECT COUNT(*) as totalCount FROM vacations`;
@@ -64,7 +65,6 @@ LIMIT ${limit} OFFSET ${offset};`;
 
   const totalCount = (totalCountResult[0] as { totalCount: number }).totalCount;
 
-  // Function to convert date to Israel time without shifting days
   const toIsraelDate = (date: string): string => {
     const dateObject = new Date(date);
     const year = dateObject.getFullYear();
@@ -73,7 +73,6 @@ LIMIT ${limit} OFFSET ${offset};`;
     return `${year}-${month}-${day}`;
   };
 
-  // Convert the startDate and endDate to Israel time format without shifting days
   const vacationsWithIsraelTime = vacations.map(vacation => ({
     ...vacation,
     startDate: toIsraelDate(vacation.startDate),
