@@ -2,7 +2,8 @@ import { UnauthorizedError, ValidationError } from "./../Models/ErrorModels";
 import { OkPacket } from "mysql";
 import { LoginCredentials, UserType, validateLogin, validateUser } from "../Models/UserModel";
 import { executeSqlQuery } from "../Utils/dal";
-import { getNewToken } from "../Utils/cyber";
+import { getCurrentUser, getNewToken } from "../Utils/cyber";
+import { Request } from "express";
 
 export const signupUserLogic = async (user: UserType): Promise<string> => {
   validateUser(user);
@@ -58,4 +59,9 @@ export const getUserIdByEmail = async (email: string): Promise<number> => {
   const result = await executeSqlQuery(query);
   if (result.length === 0) ValidationError(email);
   return result[0].userId;
+};
+
+export const getUserByToken = async (req: Request): Promise<UserType> => {
+  const user = await getCurrentUser(req);
+  return user;
 };

@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { LoginCredentials, UserType } from "../Models/UserModel";
-import {  getUserIdByEmail, isAdminLogic, loginUserLogic, signupUserLogic } from "../Logic/auth-logic";
+import {  getUserByToken, getUserIdByEmail, isAdminLogic, loginUserLogic, signupUserLogic } from "../Logic/auth-logic";
 
 const router = express.Router();
 
@@ -42,6 +42,16 @@ router.get("/auth/:email", async (req: Request, res: Response, next: NextFunctio
       const email = req.params.email;
       const userId = await getUserIdByEmail(email);
       res.status(200).json(userId);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.get("/getuser", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = await getUserByToken(req);
+      res.status(200).json(user);
     } catch (err) {
       next(err);
     }

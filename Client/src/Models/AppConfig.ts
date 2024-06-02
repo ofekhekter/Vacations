@@ -8,6 +8,7 @@ export type AppConfig = {
     allFollowings: string;
     oneImage: string;
     getUserId: string;
+    getUserByToken: string;
   };
   post: {
     vacation: string;
